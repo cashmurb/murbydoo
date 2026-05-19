@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Archives — Cashmere Blanche Alin</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    .archives-page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+    }
+
+    /* ── Month block ── */
+    .archive-month {
+      margin-bottom: 3rem;
+    }
+
+    .archive-month-heading {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .archive-month-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Category label ── */
+    .archive-category {
+      margin-bottom: 1.25rem;
+    }
+
+    .archive-category-label {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+      display: block;
+    }
+
+    /* ── Swipeable row (reuse about.html pattern) ── */
+    .archive-swipe-wrapper { position: relative; margin-bottom: 0.5rem; }
+
+    .archive-swipe-track {
+      display: flex;
+      gap: 0.85rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 0.4rem;
+      cursor: grab;
+    }
+    .archive-swipe-track:active { cursor: grabbing; }
+    .archive-swipe-track::-webkit-scrollbar { display: none; }
+
+    .archive-swipe-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 36px; height: calc(100% - 0.4rem);
+      background: linear-gradient(to right, transparent, var(--bg));
+      pointer-events: none;
+    }
+
+    .archive-card {
+      flex: 0 0 140px;
+      scroll-snap-align: start;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.15s;
+    }
+    .archive-card:hover { border-color: var(--accent); }
+
+    .archive-card-cover {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+      background: #ececec;
+    }
+
+    .archive-card-cover-placeholder {
+      width: 100%;
+      height: 120px;
+      background: #ececec;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+
+    .archive-card-info {
+      padding: 0.5rem 0.6rem 0.65rem;
+    }
+
+    .archive-card-name {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 0.1rem;
+    }
+
+    .archive-card-sub {
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    /* ── Scrapbook grid for "moments" ── */
+    .archive-scrapbook {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 0.8rem;
+      margin-top: 0.25rem;
+    }
+
+    .archive-scrap {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+
+    .archive-scrap-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+    }
+
+    .archive-scrap-img-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: #e8e8e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      color: #bbb;
+    }
+
+    .archive-scrap-caption {
+      padding: 0.5rem 0.7rem 0.65rem;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .archive-scrap-note {
+      padding: 0.85rem 0.9rem 1rem;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .archive-scrap-note-text {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.55;
+      margin-bottom: 0.5rem;
+    }
+
+    .archive-scrap-note-date {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+      letter-spacing: 0.04em;
+    }
+
+    .archive-scrap-green { background: #f0f5f1; }
+    .archive-scrap-beige { background: #f7f4ef; }
+    .archive-scrap-blue  { background: #f0f3f7; }
+
+    /* ── Divider between categories ── */
+    .archive-cat-divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 1.25rem 0;
+    }
+
+    /* ── Back link ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 2.5rem;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--accent-dark); }
+
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="takeaways.html">Takeaways</a></li>
+        <li><a href="projects.html">Side Projects</a></li>
+        <li><a href="writing.html">Writings</a></li>
+        <li><a href="inprogress.html">In Progress</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="archives-page">
+
+    <a href="about.html" class="back-link">← About Me</a>
+
+    <header class="page-header">
+      <span class="section-label">Archives</span>
+      <h1>Past Interests</h1>
+      <p>A month-by-month record of what I was reading, listening to, doing, and thinking about.</p>
+    </header>
+
+    <!-- ══════════════════════════════════
+         MAY 2026
+    ══════════════════════════════════ -->
+    <div class="archive-month">
+      <p class="archive-month-heading">May 2026</p>
+
+      <!-- Books -->
+      <div class="archive-category">
+        <span class="archive-category-label">Books</span>
+        <div class="archive-swipe-wrapper">
+          <div class="archive-swipe-track">
+            <div class="archive-card">
+              <img class="archive-card-cover" src="after-dark.jpg" alt="After Dark">
+              <div class="archive-card-info">
+                <p class="archive-card-name">After Dark</p>
+                <p class="archive-card-sub">Haruki Murakami</p>
+              </div>
+            </div>
+            <div class="archive-card">
+              <img class="archive-card-cover" src="tuesdays-with-morrie.jpg" alt="Tuesdays With Morrie">
+              <div class="archive-card-info">
+                <p class="archive-card-name">Tuesdays With Morrie</p>
+                <p class="archive-card-sub">Mitch Albom</p>
+              </div>
+            </div>
+            <div class="archive-card">
+              <img class="archive-card-cover" src="a-fine-balance.jpg" alt="A Fine Balance">
+              <div class="archive-card-info">
+                <p class="archive-card-name">A Fine Balance</p>
+                <p class="archive-card-sub">Rohinton Mistry</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="archive-cat-divider">
+
+      <!-- Music -->
+      <div class="archive-category">
+        <span class="archive-category-label">Music</span>
+        <div class="archive-swipe-wrapper">
+          <div class="archive-swipe-track">
+            <div class="archive-card">
+              <div class="archive-card-cover-placeholder">🎵</div>
+              <div class="archive-card-info">
+                <p class="archive-card-name">Artist / Album</p>
+                <p class="archive-card-sub">Genre or note</p>
+              </div>
+            </div>
+            <div class="archive-card">
+              <div class="archive-card-cover-placeholder">🎵</div>
+              <div class="archive-card-info">
+                <p class="archive-card-name">Artist / Album</p>
+                <p class="archive-card-sub">Genre or note</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="archive-cat-divider">
+
+      <!-- Hobbies -->
+      <div class="archive-category">
+        <span class="archive-category-label">Hobbies</span>
+        <div class="archive-swipe-wrapper">
+          <div class="archive-swipe-track">
+            <div class="archive-card">
+              <div class="archive-card-cover-placeholder">🎨</div>
+              <div class="archive-card-info">
+                <p class="archive-card-name">Hobby Name</p>
+                <p class="archive-card-sub">Short note</p>
+              </div>
+            </div>
+            <div class="archive-card">
+              <div class="archive-card-cover-placeholder">🎨</div>
+              <div class="archive-card-info">
+                <p class="archive-card-name">Hobby Name</p>
+                <p class="archive-card-sub">Short note</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="archive-cat-divider">
+
+      <!-- Moments / scrapbook -->
+      <div class="archive-category">
+        <span class="archive-category-label">Moments</span>
+        <div class="archive-scrapbook">
+          <div class="archive-scrap">
+            <div class="archive-scrap-img-placeholder">📷</div>
+            <p class="archive-scrap-caption">[ Caption — a place, a moment, a thing from this month. ]</p>
+          </div>
+          <div class="archive-scrap archive-scrap-green">
+            <div class="archive-scrap-note">
+              <p class="archive-scrap-note-text">[ A thought or memory from this month. ]</p>
+              <span class="archive-scrap-note-date">May 2026</span>
+            </div>
+          </div>
+          <div class="archive-scrap">
+            <div class="archive-scrap-img-placeholder">📷</div>
+            <p class="archive-scrap-caption">[ Another moment worth keeping. ]</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /May 2026 -->
+
+    <!-- ══════════════════════════════════
+         APRIL 2026  (template — duplicate this block for each new month)
+    ══════════════════════════════════ -->
+    <div class="archive-month">
+      <p class="archive-month-heading">April 2026</p>
+
+      <div class="archive-category">
+        <span class="archive-category-label">Books</span>
+        <div class="archive-swipe-wrapper">
+          <div class="archive-swipe-track">
+            <div class="archive-card">
+              <div class="archive-card-cover-placeholder">📖</div>
+              <div class="archive-card-info">
+                <p class="archive-card-name">Book Title</p>
+                <p class="archive-card-sub">Author Name</p>
+              </div>
+            </div>
+            <div class="archive-card">
+              <div class="archive-card-cover-placeholder">📖</div>
+              <div class="archive-card-info">
+                <p class="archive-card-name">Book Title</p>
+                <p class="archive-card-sub">Author Name</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="archive-cat-divider">
+
+      <div class="archive-category">
+        <span class="archive-category-label">Moments</span>
+        <div class="archive-scrapbook">
+          <div class="archive-scrap archive-scrap-beige">
+            <div class="archive-scrap-note">
+              <p class="archive-scrap-note-text">[ A thought or memory from April. ]</p>
+              <span class="archive-scrap-note-date">April 2026</span>
+            </div>
+          </div>
+          <div class="archive-scrap">
+            <div class="archive-scrap-img-placeholder">📷</div>
+            <p class="archive-scrap-caption">[ A photo from April. ]</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /April 2026 -->
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 Cashmere Blanche Alin</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav(btn) {
+      btn.classList.toggle('open');
+      document.getElementById('nav-links').classList.toggle('open');
+    }
+
+    document.querySelectorAll('.archive-swipe-track').forEach(track => {
+      let isDown = false, startX, scrollLeft;
+      track.addEventListener('mousedown', e => {
+        isDown = true;
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+      });
+      track.addEventListener('mouseleave', () => isDown = false);
+      track.addEventListener('mouseup',    () => isDown = false);
+      track.addEventListener('mousemove',  e => {
+        if (!isDown) return;
+        e.preventDefault();
+        track.scrollLeft = scrollLeft - (e.pageX - track.offsetLeft - startX) * 1.2;
+      });
+    });
+  </script>
+</body>
+</html>

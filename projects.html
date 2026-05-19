@@ -3,24 +3,244 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Side Projects — Your Name</title>
+  <title>Side Projects — Cashmere Blanche Alin</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+
+    .projects-page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+    }
+
+    .projects-section { margin-bottom: 4rem; }
+
+    .projects-section-heading {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .projects-section-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Grid */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* Card base */
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 6px 24px rgba(90,138,106,0.10);
+      transform: translateY(-3px);
+    }
+
+    /* Preview area */
+    .project-preview {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #e8e8e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .project-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .project-preview video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .preview-placeholder {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-style: italic;
+      color: #aaa;
+      text-align: center;
+      padding: 1rem;
+      line-height: 1.5;
+    }
+
+    /* play button overlay for film/video */
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.18);
+      transition: background 0.15s;
+    }
+
+    .play-overlay:hover { background: rgba(0,0,0,0.32); }
+
+    .play-btn {
+      width: 48px;
+      height: 48px;
+      background: rgba(255,255,255,0.92);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+
+    /* flipbook preview */
+    .flipbook-preview {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .flipbook-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .flipbook-overlay:hover { background: rgba(0,0,0,0.38); }
+
+    .flipbook-label {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+      background: rgba(0,0,0,0.45);
+      padding: 0.35rem 0.9rem;
+      border-radius: 3px;
+    }
+
+    /* Card body */
+    .project-info {
+      padding: 1.1rem 1.25rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      flex-grow: 1;
+    }
+
+    .project-title {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .project-desc {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin: 0;
+      flex-grow: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.1rem;
+    }
+
+    .project-tag {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--accent-dark);
+      background: var(--accent-light);
+      padding: 0.18rem 0.55rem;
+      border-radius: 3px;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-top: 0.25rem;
+    }
+
+    .project-btn {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      background: var(--bg);
+      text-decoration: none;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    .project-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent-dark);
+      background: var(--accent-light);
+    }
+
+    .project-btn-primary {
+      border-color: var(--accent);
+      color: var(--accent-dark);
+      background: var(--accent-light);
+    }
+
+    @media (max-width: 600px) {
+      .project-grid { grid-template-columns: 1fr; }
+    }
+
+  </style>
 </head>
 <body>
 
-  <!-- Name: fixed top-left -->
   <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
 
-  <!-- ===== NAV ===== -->
   <nav class="site-nav">
     <div class="nav-inner">
-
       <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
         <span></span><span></span><span></span>
       </button>
-
       <ul class="nav-links" id="nav-links">
-        
         <li><a href="takeaways.html">Takeaways</a></li>
         <li><a href="projects.html" class="active">Side Projects</a></li>
         <li><a href="writing.html">Writings</a></li>
@@ -29,81 +249,184 @@
     </div>
   </nav>
 
-  <!-- ===== MAIN ===== -->
-  <main class="page-wrapper">
+  <main class="projects-page">
 
     <header class="page-header">
       <span class="section-label">Work</span>
       <h1>Side Projects</h1>
-      <p>
-        A selection of things I've built. 
-      </p>
+      <p>Code, films, and photobooks. All the trinkets I've built, made, and published.</p>
     </header>
 
-    <div class="projects-grid">
+    <!--1. CODE / GITHUB / DEMOS-->
+    <section class="projects-section">
+      <p class="projects-section-heading">Code &amp; Demos</p>
+      <div class="project-grid">
 
-      <!-- Project 1 -->
-      <div class="project-card">
-        <h3>Intimacy</h3>
-        <p>
-          A short description of what this project does, why you built it,
-          and what made it interesting or difficult. Two to three sentences is plenty.
-        </p>
-        <div class="project-links">
-          <a href="#" class="btn">Code ↗</a>
-          <a href="#" class="btn">Demo ↗</a>
+        <div class="project-card">
+          <div class="project-preview">
+            <div class="preview-placeholder">Preview image / video placeholder<br>Replace with your screenshot</div>
+          </div>
+          <div class="project-info">
+            <h3 class="project-title">Project Title One</h3>
+            <p class="project-desc">[ Short description — what it does, why you built it, what makes it interesting. ]</p>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Deep Learning</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/yourusername/project" class="project-btn project-btn-primary" target="_blank" rel="noopener">GitHub Repo</a>
+              <a href="#" class="project-btn" target="_blank" rel="noopener">Live Demo</a>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Project 2 -->
-      <div class="project-card">
-        <h3>Project Title Two</h3>
-        <p>
-          Placeholder summary. What problem were you solving? What tools or
-          techniques did you use? What would you do differently now?
-        </p>
-        <div class="project-links">
-          <a href="#" class="btn">Code ↗</a>
-          <a href="#" class="btn">Write-up ↗</a>
+        <div class="project-card">
+          <div class="project-preview">
+            <div class="preview-placeholder">Preview image / video placeholder<br>Replace with your screenshot</div>
+          </div>
+          <div class="project-info">
+            <h3 class="project-title">Project Title Two</h3>
+            <p class="project-desc">[ Short description — the problem it solves, tools used, what you learned. ]</p>
+            <div class="project-tags">
+              <span class="project-tag">PyTorch</span>
+              <span class="project-tag">Computer Vision</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/yourusername/project" class="project-btn project-btn-primary" target="_blank" rel="noopener">GitHub Repo</a>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Project 3 -->
-      <div class="project-card">
-        <h3>Project Title Three</h3>
-        <p>
-          Placeholder summary. Feel free to mention collaborators, a rough
-          timeline, or a key thing you learned along the way.
-        </p>
-        <div class="project-links">
-          <a href="#" class="btn">Code ↗</a>
+        <div class="project-card">
+          <div class="project-preview">
+            <div class="preview-placeholder">Preview image / video placeholder<br>Replace with your screenshot</div>
+          </div>
+          <div class="project-info">
+            <h3 class="project-title">Project Title Three</h3>
+            <p class="project-desc">[ Short description — what it does, what tech you used. ]</p>
+            <div class="project-tags">
+              <span class="project-tag">Web App</span>
+              <span class="project-tag">JavaScript</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/yourusername/project" class="project-btn project-btn-primary" target="_blank" rel="noopener">GitHub Repo</a>
+              <a href="#" class="project-btn" target="_blank" rel="noopener">Live Demo</a>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Project 4 -->
-      <div class="project-card">
-        <h3>Project Title Four</h3>
-        <p>
-          Placeholder summary. Even unfinished projects deserve a card —
-          document what you set out to do and where it lives.
-        </p>
-        <div class="project-links">
-          <a href="#" class="btn">Code ↗</a>
-          <a href="#" class="btn">Demo ↗</a>
+      </div>
+    </section>
+
+    <!--2. FILMS-->
+    <section class="projects-section">
+      <p class="projects-section-heading">Films</p>
+      <div class="project-grid">
+
+        <div class="project-card">
+          <a href="https://youtube.com/watch?v=yourvideolink" target="_blank" rel="noopener" style="text-decoration:none;">
+            <div class="project-preview flipbook-preview">
+              <div class="preview-placeholder">Film thumbnail placeholder<br>Replace with your thumbnail image</div>
+              <div class="play-overlay">
+                <div class="play-btn">▶</div>
+              </div>
+            </div>
+          </a>
+          <div class="project-info">
+            <h3 class="project-title">Film Title One</h3>
+            <p class="project-desc">[ Short description — what the film is about, when you made it, what it meant to you. ]</p>
+            <div class="project-tags">
+              <span class="project-tag">Short Film</span>
+              <span class="project-tag">2025</span>
+            </div>
+            <div class="project-links">
+              <a href="https://youtube.com/watch?v=yourvideolink" class="project-btn project-btn-primary" target="_blank" rel="noopener">Watch on YouTube</a>
+            </div>
+          </div>
         </div>
-      </div>
 
-    </div>
+        <div class="project-card">
+          <a href="https://youtube.com/watch?v=yourvideolink" target="_blank" rel="noopener" style="text-decoration:none;">
+            <div class="project-preview flipbook-preview">
+              <div class="preview-placeholder">Film thumbnail placeholder<br>Replace with your thumbnail image</div>
+              <div class="play-overlay">
+                <div class="play-btn">▶</div>
+              </div>
+            </div>
+          </a>
+          <div class="project-info">
+            <h3 class="project-title">Film Title Two</h3>
+            <p class="project-desc">[ Short description — genre, length, what you explored. ]</p>
+            <div class="project-tags">
+              <span class="project-tag">Documentary</span>
+              <span class="project-tag">2024</span>
+            </div>
+            <div class="project-links">
+              <a href="https://youtube.com/watch?v=yourvideolink" class="project-btn project-btn-primary" target="_blank" rel="noopener">Watch on YouTube</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!--3. PHOTOBOOKS / MAGAZINES-->
+    <section class="projects-section">
+      <p class="projects-section-heading">Photobooks &amp; Magazines</p>
+      <div class="project-grid">
+
+        <div class="project-card">
+          <a href="https://yourflipbooklink.com" target="_blank" rel="noopener" style="text-decoration:none;">
+            <div class="project-preview flipbook-preview">
+              <div class="preview-placeholder">Cover / sample page placeholder<br>Replace with your cover image</div>
+              <div class="flipbook-overlay">
+                <span class="flipbook-label">View Flipbook</span>
+              </div>
+            </div>
+          </a>
+          <div class="project-info">
+            <h3 class="project-title">Photobook Title One</h3>
+            <p class="project-desc">[ Short description — theme, how many pages, what it captures. ]</p>
+            <div class="project-tags">
+              <span class="project-tag">Photobook</span>
+              <span class="project-tag">2025</span>
+            </div>
+            <div class="project-links">
+              <a href="https://yourflipbooklink.com" class="project-btn project-btn-primary" target="_blank" rel="noopener">View Flipbook</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <a href="https://yourflipbooklink.com" target="_blank" rel="noopener" style="text-decoration:none;">
+            <div class="project-preview flipbook-preview">
+              <div class="preview-placeholder">Cover / sample page placeholder<br>Replace with your cover image</div>
+              <div class="flipbook-overlay">
+                <span class="flipbook-label">View Flipbook</span>
+              </div>
+            </div>
+          </a>
+          <div class="project-info">
+            <h3 class="project-title">Magazine Title One</h3>
+            <p class="project-desc">[ Short description — what the magazine covers, who it's for. ]</p>
+            <div class="project-tags">
+              <span class="project-tag">Magazine</span>
+              <span class="project-tag">2024</span>
+            </div>
+            <div class="project-links">
+              <a href="https://yourflipbooklink.com" class="project-btn project-btn-primary" target="_blank" rel="noopener">View Flipbook</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
 
   </main>
 
-  <!-- ===== FOOTER ===== -->
   <footer class="site-footer">
     <div class="footer-inner">
       <span>© 2026 Cashmere Blanche Alin</span>
-      
-      
-      
     </div>
   </footer>
 

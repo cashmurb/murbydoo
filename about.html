@@ -52,7 +52,7 @@
     .about-section-body { display: none; padding: 0 0 2rem; }
     .about-section-body.open { display: block; }
 
-    /* ── Bullet lists (Experiences & Goals) ── */
+    /* Bullet lists */
     .about-bullets {
       list-style: none;
       padding: 0; margin: 0;
@@ -142,7 +142,6 @@
     .swipe-track:active { cursor: grabbing; }
     .swipe-track::-webkit-scrollbar { display: none; }
 
-    /* fade right edge */
     .swipe-wrapper::after {
       content: '';
       position: absolute;
@@ -184,9 +183,7 @@
       font-size: 2rem;
     }
 
-    .swipe-card-info {
-      padding: 0.55rem 0.65rem 0.7rem;
-    }
+    .swipe-card-info { padding: 0.55rem 0.65rem 0.7rem; }
 
     .swipe-card-name {
       font-family: var(--font-body);
@@ -311,6 +308,21 @@
     }
     .scrap-add span { font-size: 1.5rem; font-style: normal; }
 
+    /* Archives link */
+    .archives-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-top: 1.25rem;
+      transition: color 0.15s;
+    }
+    .archives-link:hover { color: var(--accent-dark); }
+
   </style>
 </head>
 <body>
@@ -339,7 +351,7 @@
       <p>A little about who I am, what I care about, and where I'm headed.</p>
     </header>
 
-    <!--INTERESTS-->
+    <!-- INTERESTS -->
     <div class="about-section">
       <button class="about-section-btn" onclick="toggleSection(this)">
         <h2>Interests</h2>
@@ -347,6 +359,7 @@
       </button>
       <div class="about-section-body">
         <div class="interests-list">
+
           <!-- Cats -->
           <div class="interest-item">
             <button class="interest-btn" onclick="toggleInterest(this)">
@@ -357,21 +370,21 @@
               <div class="swipe-wrapper">
                 <div class="swipe-track">
                   <div class="swipe-card">
-                    <img class="swipe-card-cover" src="bombay.jpg" alt="cat cover">
+                    <img class="swipe-card-cover" src="bombay.jpg" alt="Bombay Cat">
                     <div class="swipe-card-info">
                       <p class="swipe-card-name">Bombay Cat</p>
                       <p class="swipe-card-sub">I want a cat</p>
                     </div>
                   </div>
                   <div class="swipe-card">
-                    <img class="swipe-card-cover" src="siamese.jpg" alt="cat cover">
+                    <img class="swipe-card-cover" src="siamese.jpg" alt="Siamese Cat">
                     <div class="swipe-card-info">
                       <p class="swipe-card-name">Siamese Cat</p>
                       <p class="swipe-card-sub">I want a cat</p>
                     </div>
                   </div>
                   <div class="swipe-card">
-                    <img class="swipe-card-cover" src="sphynx.jpg" alt="cat cover">
+                    <img class="swipe-card-cover" src="sphynx.jpg" alt="Sphynx Cat">
                     <div class="swipe-card-info">
                       <p class="swipe-card-name">Sphynx Cat</p>
                       <p class="swipe-card-sub">I badly want a cat</p>
@@ -392,21 +405,21 @@
               <div class="swipe-wrapper">
                 <div class="swipe-track">
                   <div class="swipe-card">
-                    <img class="swipe-card-cover" src="after-dark.jpg" alt="Book cover">
+                    <img class="swipe-card-cover" src="after-dark.jpg" alt="After Dark">
                     <div class="swipe-card-info">
                       <p class="swipe-card-name">After Dark</p>
                       <p class="swipe-card-sub">Haruki Murakami</p>
                     </div>
                   </div>
                   <div class="swipe-card">
-                    <img class="swipe-card-cover" src="tuesdays-with-morrie.jpg" alt="Book cover">
+                    <img class="swipe-card-cover" src="tuesdays-with-morrie.jpg" alt="Tuesdays With Morrie">
                     <div class="swipe-card-info">
                       <p class="swipe-card-name">Tuesdays With Morrie</p>
                       <p class="swipe-card-sub">Mitch Albom</p>
                     </div>
                   </div>
                   <div class="swipe-card">
-                    <img class="swipe-card-cover" src="a-fine-balance.jpg" alt="Book cover">
+                    <img class="swipe-card-cover" src="a-fine-balance.jpg" alt="A Fine Balance">
                     <div class="swipe-card-info">
                       <p class="swipe-card-name">A Fine Balance</p>
                       <p class="swipe-card-sub">Rohinton Mistry</p>
@@ -494,7 +507,7 @@
       </div>
     </div>
 
-    <!--EXPERIENCES-->
+    <!-- EXPERIENCES -->
     <div class="about-section">
       <button class="about-section-btn" onclick="toggleSection(this)">
         <h2>Experiences</h2>
@@ -505,12 +518,12 @@
           <li>[ Place, internship, or research role — one sentence on what you did and what it changed about how you think. ]</li>
           <li>[ Another experience — a project, a trip, a course, or a person who shaped your direction. ]</li>
           <li>[ Something that didn't go as planned but taught you more than the things that did. ]</li>
-          <li> I've spent most of my life in China, and it's given me a deep appreciation for culture, community, and the work that gets done behind the scenes to keep things convenient and connected.</li>
+          <li>I've spent most of my life in China, and it's given me a deep appreciation for culture, community, and the work that gets done behind the scenes to keep things convenient and connected.</li>
         </ul>
       </div>
     </div>
 
-    <!--GOALS-->
+    <!-- GOALS -->
     <div class="about-section">
       <button class="about-section-btn" onclick="toggleSection(this)">
         <h2>Goals</h2>
@@ -522,13 +535,12 @@
           <li>Run a marathon.</li>
           <li>2 strength training sessions and run 3x per week.</li>
           <li>Launch my personal website.</li>
-          <li>In 10 years, I hope to be part of a team that builds implantable or non-invasive BCI systems that can be safely inserted and used chronically. If not, something that uses signal processing 
-            and machine learning algorithms that decode neural activity in real time to restore movement or communication for people with neurodegenerative disorders.</li>
+          <li>In 10 years, I hope to be part of a team that builds implantable or non-invasive BCI systems that can be safely inserted and used chronically. If not, something that uses signal processing and machine learning algorithms that decode neural activity in real time to restore movement or communication for people with neurodegenerative disorders.</li>
         </ul>
       </div>
     </div>
 
-    <!--RIGHT NOW  (scrapbook) -->
+    <!-- RIGHT NOW (scrapbook) -->
     <div class="about-section">
       <button class="about-section-btn" onclick="toggleSection(this)">
         <h2>Right Now</h2>
@@ -537,13 +549,11 @@
       <div class="about-section-body">
         <div class="scrapbook">
 
-          <!-- Photo item — replace placeholder div with <img class="scrap-img" src="your-photo.jpg" alt=""> -->
           <div class="scrap">
             <div class="scrap-img-placeholder">📷</div>
             <p class="scrap-caption">[ Caption — where, when, why it matters right now. ]</p>
           </div>
 
-          <!-- Note -->
           <div class="scrap scrap-green">
             <div class="scrap-note">
               <p class="scrap-note-text">[ A thought or thing I'm sitting with right now. ]</p>
@@ -551,13 +561,11 @@
             </div>
           </div>
 
-          <!-- Photo -->
           <div class="scrap">
             <div class="scrap-img-placeholder">📷</div>
             <p class="scrap-caption">[ A book cover, something you're making, somewhere you went. ]</p>
           </div>
 
-          <!-- Note -->
           <div class="scrap scrap-beige">
             <div class="scrap-note">
               <p class="scrap-note-text">[ Currently reading: ... · Currently listening: ... · Currently obsessing over: ... ]</p>
@@ -565,13 +573,11 @@
             </div>
           </div>
 
-          <!-- Photo -->
           <div class="scrap">
             <div class="scrap-img-placeholder">📷</div>
             <p class="scrap-caption">[ A third image — something you made or somewhere you went. ]</p>
           </div>
 
-          <!-- Note -->
           <div class="scrap scrap-blue">
             <div class="scrap-note">
               <p class="scrap-note-text">[ A question I keep returning to, or a small thing making me happy lately. ]</p>
@@ -579,13 +585,16 @@
             </div>
           </div>
 
-          <!-- Add slot -->
           <div class="scrap scrap-add">
             <span>+</span>
             add a moment
           </div>
 
         </div>
+
+        <!-- Archives link — sits below the scrapbook -->
+        <a href="archives.html" class="archives-link">→ view past interests in archives</a>
+
       </div>
     </div>
 
@@ -613,7 +622,6 @@
       btn.nextElementSibling.classList.toggle('open');
     }
 
-    /* Drag-to-scroll on all swipe tracks */
     document.querySelectorAll('.swipe-track').forEach(track => {
       let isDown = false, startX, scrollLeft;
       track.addEventListener('mousedown', e => {
@@ -626,8 +634,7 @@
       track.addEventListener('mousemove',  e => {
         if (!isDown) return;
         e.preventDefault();
-        const x = e.pageX - track.offsetLeft;
-        track.scrollLeft = scrollLeft - (x - startX) * 1.2;
+        track.scrollLeft = scrollLeft - (e.pageX - track.offsetLeft - startX) * 1.2;
       });
     });
   </script>

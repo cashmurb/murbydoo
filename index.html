@@ -7,7 +7,26 @@
   <link rel="stylesheet" href="style.css" />
   <style>
 
-    /* Nav: name left, links right */
+    /* Animation*/
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .welcome-text {
+      animation: fadeUp 0.7s ease both; 
+      animation-delay: 0.15s;
+    }
+    .cat-link:nth-child(1) { animation: fadeUp 0.65s ease both; animation-delay: 0.35s; }
+    .cat-link:nth-child(2) { animation: fadeUp 0.65s ease both; animation-delay: 0.5s; }
+    .cat-link:nth-child(3) { animation: fadeUp 0.65s ease both; animation-delay: 0.65s; }
+ 
+    .site-name { animation: fadeIn 0.6s ease both; animation-delay: 0s; }
+    .site-nav  { animation: fadeIn 0.6s ease both; animation-delay: 0.05s; }
     .cat-section {
       display: flex;
       flex-direction: column;
@@ -22,7 +41,7 @@
     .welcome-text {
       font-family: var(--font-body);
       font-size: 1.065rem;
-      font-style: italic;
+      font-style: normal;
       color: var(--text-muted);
       letter-spacing: 0.03em;
       text-align: center;

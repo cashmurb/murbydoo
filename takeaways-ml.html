@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machine Learning Fundamentals — Cashmere Blanche Alin</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="takeaways.html" class="active">Takeaways</a></li>
+        <li><a href="projects.html">Side Projects</a></li>
+        <li><a href="writing.html">Writings</a></li>
+        <li><a href="inprogress.html">In Progress</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="article-page">
+
+    <a href="takeaways.html" class="back-link">← Undergraduate Takeaways</a>
+
+    <div class="article-eyebrow">
+      <a href="takeaways.html">Takeaways</a>
+      <span class="article-eyebrow-sep">/</span>
+      <span>ML Fundamentals</span>
+    </div>
+
+    <h1 class="article-title">Machine Learning Fundamentals</h1>
+    <p class="article-meta">Undergraduate course notes &nbsp;·&nbsp; Cashmere Blanche Alin</p>
+    <hr class="article-divider" />
+
+    <!-- Table of contents -->
+    <nav class="subtopic-nav" aria-label="Sections">
+      <p class="subtopic-nav-title">In this course</p>
+          <a href="#bias-variance">Bias–variance tradeoff</a>
+          <a href="#gradient-descent">Gradient descent</a>
+          <a href="#regularization">Regularization techniques</a>
+          <a href="#evaluation">Model evaluation & metrics</a>
+    </nav>
+
+
+    <section id="bias-variance" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Bias–variance tradeoff</h2>
+      <div class="article-body">
+        <p>[ Bias and variance pull in opposite directions, and the tradeoff is everywhere in ML. Write about how you think about this intuitively — not as a formula, but as a design choice you make every time you choose a model. ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="gradient-descent" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Gradient descent</h2>
+      <div class="article-body">
+        <p>[ Gradient descent is the engine of most of modern ML. Write about the intuition — what does "following the slope downhill" really mean in high dimensions? What breaks, and how do momentum and adaptive rates fix it? ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="regularization" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Regularization techniques</h2>
+      <div class="article-body">
+        <p>[ L1 sparsifies, L2 shrinks, dropout randomizes — write about what each technique is actually doing to the model, and when you'd reach for one over another. ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="evaluation" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Model evaluation & metrics</h2>
+      <div class="article-body">
+        <p>[ Accuracy is almost never the right metric. Write about precision, recall, AUC, and why picking the wrong metric can make a bad model look good — and why that matters in the real world. ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 Cashmere Blanche Alin</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav(btn) {
+      btn.classList.toggle('open');
+      document.getElementById('nav-links').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Side Projects — Your Name</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Name: fixed top-left -->
+  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+
+  <!-- ===== NAV ===== -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav-links" id="nav-links">
+        
+        <li><a href="takeaways.html">Takeaways</a></li>
+        <li><a href="projects.html" class="active">Projects</a></li>
+        <li><a href="writing.html">Writings</a></li>
+        <li><a href="inprogress.html">In Progress</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="page-wrapper">
+
+    <header class="page-header">
+      <span class="section-label">Work</span>
+      <h1>Side Projects</h1>
+      <p>
+        A selection of things I've built outside of coursework — ranging from
+        tools to experiments to half-finished ideas that taught me something anyway.
+      </p>
+    </header>
+
+    <div class="projects-grid">
+
+      <!-- Project 1 -->
+      <div class="project-card">
+        <h3>Project Title One</h3>
+        <p>
+          A short description of what this project does, why you built it,
+          and what made it interesting or difficult. Two to three sentences is plenty.
+        </p>
+        <div class="project-links">
+          <a href="#" class="btn">Code ↗</a>
+          <a href="#" class="btn">Demo ↗</a>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card">
+        <h3>Project Title Two</h3>
+        <p>
+          Placeholder summary. What problem were you solving? What tools or
+          techniques did you use? What would you do differently now?
+        </p>
+        <div class="project-links">
+          <a href="#" class="btn">Code ↗</a>
+          <a href="#" class="btn">Write-up ↗</a>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card">
+        <h3>Project Title Three</h3>
+        <p>
+          Placeholder summary. Feel free to mention collaborators, a rough
+          timeline, or a key thing you learned along the way.
+        </p>
+        <div class="project-links">
+          <a href="#" class="btn">Code ↗</a>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="project-card">
+        <h3>Project Title Four</h3>
+        <p>
+          Placeholder summary. Even unfinished projects deserve a card —
+          document what you set out to do and where it lives.
+        </p>
+        <div class="project-links">
+          <a href="#" class="btn">Code ↗</a>
+          <a href="#" class="btn">Demo ↗</a>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 Cashmere Blanche Alin</span>
+      
+      
+      
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav(btn) {
+      btn.classList.toggle('open');
+      document.getElementById('nav-links').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

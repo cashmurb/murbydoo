@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cashmere Blanche Alin</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── Nav: name left, links right ── */
+    .cat-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - var(--nav-height) - 80px);
+      padding: 2rem 1.5rem 3rem;
+      gap: 2.5rem;
+    }
+
+    /* ── Welcome text above cats ── */
+    .welcome-text {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+      text-align: center;
+      opacity: 0.75;
+    }
+
+    /* ── Cats ── */
+    .cats-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: clamp(1.5rem, 5vw, 4rem);
+      flex-wrap: wrap;
+    }
+
+    .cat-link {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .cat-link svg {
+      width: clamp(110px, 20vw, 160px);
+      height: auto;
+      transition: transform 0.22s ease, filter 0.22s ease;
+    }
+
+    .cat-link:hover svg {
+      animation: wiggle 0.5s ease;
+      transform: scale(1.07) translateY(-5px);
+      filter: drop-shadow(0 8px 18px rgba(90,138,106,0.16));
+    }
+
+    /* ── Speech bubble ── */
+    .cat-bubble {
+      position: absolute;
+      bottom: calc(100% + 14px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: #fff;
+      border: 1.5px solid #d4d4d4;
+      border-radius: 12px;
+      padding: 0.35rem 0.85rem;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-style: italic;
+      color: var(--text);
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+
+    .cat-bubble::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 7px solid transparent;
+      border-top-color: #fff;
+      filter: drop-shadow(0 1.5px 0px #d4d4d4);
+    }
+
+    .cat-bubble::before {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-top-color: #d4d4d4;
+      margin-top: 1px;
+    }
+
+    .cat-link:hover .cat-bubble {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .cat-svg line { stroke-linecap: round; }
+
+    @keyframes wiggle {
+      0%   { transform: scale(1.07) translateY(-5px) rotate(0deg); }
+      30%  { transform: scale(1.07) translateY(-5px) rotate(-2.5deg); }
+      70%  { transform: scale(1.07) translateY(-5px) rotate(2.5deg); }
+      100% { transform: scale(1.07) translateY(-5px) rotate(0deg); }
+    }
+
+    @media (max-width: 480px) {
+      .cats-row { gap: 1rem; }
+      .cat-link svg { width: 95px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Name pinned top-left, independent of nav -->
+  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+
+  <!-- NAV: links only, top-right -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="takeaways.html">Takeaways</a></li>
+        <li><a href="projects.html">Side Projects</a></li>
+        <li><a href="writing.html">Writings</a></li>
+        <li><a href="inprogress.html">In Progress</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main>
+    <section class="cat-section">
+
+      <!-- Welcome text sits where the hero name used to be, above the cats -->
+      <p class="welcome-text">welcome to murby land! click a cat.</p>
+
+      <div class="cats-row" role="navigation" aria-label="Site sections">
+
+        <!-- Cat 1: who am i → about.html -->
+        <a href="about.html" class="cat-link" aria-label="Who am I">
+          <svg class="cat-svg" viewBox="88 388 148 168" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <line opacity="0.7" x1="128.012" y1="430.763" x2="93.8188" y2="417.466" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="126.145" y1="429.372" x2="98.0219" y2="426.36" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="104.808" y1="435.26" x2="128.185" y2="425.538" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="190.85" y1="429.523" x2="225.85" y2="418.523" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="190.929" y1="429.505" x2="218.929" y2="425.505" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="191.079" y1="429.506" x2="216.079" y2="433.506" stroke="black" stroke-width="1"/>
+            <ellipse cx="159" cy="429.5" rx="43" ry="26.5" fill="#1E1E1E"/>
+            <path d="M120.601 397.154L146.271 404.303L117.517 423.622L120.601 397.154Z" fill="#1E1E1E"/>
+            <path d="M198.069 397.785L200.13 424.352L172.142 403.94L198.069 397.785Z" fill="#1E1E1E"/>
+            <ellipse cx="159" cy="467" rx="37" ry="30" fill="#1E1E1E"/>
+            <path d="M163.05 482.52C109.748 510.866 256.319 476.949 158.5 542" stroke="#1E1E1E" stroke-width="10" fill="none"/>
+            <path d="M165 541.5C165 544.538 160.761 547 158 547C155.239 547 153.5 545.038 153.5 542C153.5 538.962 158 535 161 535C163.761 535 165 538.462 165 541.5Z" fill="#1E1E1E"/>
+          </svg>
+          <span class="cat-bubble">who am i</span>
+        </a>
+
+        <!-- Cat 2: what i am doing → projects.html -->
+        <a href="projects.html" class="cat-link" aria-label="What I am doing">
+          <svg class="cat-svg" viewBox="228 388 148 168" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <line opacity="0.7" x1="268.012" y1="430.763" x2="233.819" y2="417.466" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="266.145" y1="429.372" x2="238.022" y2="426.36" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="244.808" y1="435.26" x2="268.185" y2="425.538" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="326.85" y1="429.523" x2="361.85" y2="418.523" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="326.929" y1="429.505" x2="354.929" y2="425.505" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="327.079" y1="429.506" x2="352.079" y2="433.506" stroke="black" stroke-width="1"/>
+            <ellipse cx="299" cy="429.5" rx="43" ry="26.5" fill="#1E1E1E"/>
+            <path d="M260.601 397.154L286.271 404.303L257.517 423.622L260.601 397.154Z" fill="#1E1E1E"/>
+            <path d="M338.069 397.785L340.13 424.352L312.142 403.94L338.069 397.785Z" fill="#1E1E1E"/>
+            <ellipse cx="299" cy="467" rx="37" ry="30" fill="#1E1E1E"/>
+            <path d="M294.862 482.986C241.56 511.331 388.131 477.415 290.312 542.465" stroke="#1E1E1E" stroke-width="10" fill="none"/>
+            <path d="M296.812 541.965C296.812 545.003 292.573 547.465 289.812 547.465C287.05 547.465 285.312 545.503 285.312 542.465C285.312 539.428 289.812 535.465 292.812 535.465C295.573 535.465 296.812 538.928 296.812 541.965Z" fill="#1E1E1E"/>
+          </svg>
+          <span class="cat-bubble">what i am doing</span>
+        </a>
+
+        <!-- Cat 3: where can you find me → socials.html -->
+        <a href="socials.html" class="cat-link" aria-label="Where can you find me">
+          <svg class="cat-svg" viewBox="364 388 148 168" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <line opacity="0.7" x1="404.012" y1="430.763" x2="369.819" y2="417.466" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="402.145" y1="429.372" x2="374.022" y2="426.36" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="380.808" y1="435.26" x2="404.185" y2="425.538" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="466.85" y1="429.523" x2="501.85" y2="418.523" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="466.929" y1="429.505" x2="494.929" y2="425.505" stroke="black" stroke-width="1"/>
+            <line opacity="0.7" x1="467.079" y1="429.506" x2="492.079" y2="433.506" stroke="black" stroke-width="1"/>
+            <ellipse cx="435" cy="429.5" rx="43" ry="26.5" fill="#1E1E1E"/>
+            <path d="M396.601 397.154L422.271 404.303L393.517 423.622L396.601 397.154Z" fill="#1E1E1E"/>
+            <path d="M474.069 397.785L476.13 424.352L448.142 403.94L474.069 397.785Z" fill="#1E1E1E"/>
+            <ellipse cx="435" cy="467" rx="37" ry="30" fill="#1E1E1E"/>
+            <path d="M438.862 482.986C385.56 511.331 532.131 477.415 434.312 542.465" stroke="#1E1E1E" stroke-width="10" fill="none"/>
+            <path d="M440.812 541.965C440.812 545.003 436.573 547.465 433.812 547.465C431.05 547.465 429.312 545.503 429.312 542.465C429.312 539.428 433.812 535.465 436.812 535.465C439.573 535.465 440.812 538.928 440.812 541.965Z" fill="#1E1E1E"/>
+          </svg>
+          <span class="cat-bubble">where can you find me?</span>
+        </a>
+
+      </div>
+
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 Cashmere Blanche Alin</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav(btn) {
+      btn.classList.toggle('open');
+      document.getElementById('nav-links').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing &amp; Miscellany — Cashmere Blanche Alin</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Name: fixed top-left -->
+  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+
+  <!-- NAV -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="takeaways.html">Takeaways</a></li>
+        <li><a href="projects.html">Side Projects</a></li>
+        <li><a href="writing.html" class="active">Writings</a></li>
+        <li><a href="inprogress.html">In Progress</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="page-wrapper">
+
+    <header class="page-header">
+      <span class="section-label">Words</span>
+      <h1>Writing &amp; Miscellany</h1>
+      <p>
+        Essays, observations, and loose thoughts — published on Substack
+        and collected here.
+      </p>
+    </header>
+
+    <section>
+      <h2>Substack Articles</h2>
+      <ul class="article-list">
+        <li>
+          <a href="https://substack.com/@yourusername" target="_blank" rel="noopener">
+            Article One — Placeholder Title
+          </a>
+        </li>
+        <li>
+          <a href="https://substack.com/@yourusername" target="_blank" rel="noopener">
+            Article Two — Placeholder Title
+          </a>
+        </li>
+        <li>
+          <a href="https://substack.com/@yourusername" target="_blank" rel="noopener">
+            Article Three — Placeholder Title
+          </a>
+        </li>
+        <li>
+          <a href="https://substack.com/@yourusername" target="_blank" rel="noopener">
+            Article Four — Placeholder Title
+          </a>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 Cashmere Blanche Alin</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav(btn) {
+      btn.classList.toggle('open');
+      document.getElementById('nav-links').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

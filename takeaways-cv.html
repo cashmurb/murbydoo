@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Computer Vision — Cashmere Blanche Alin</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="takeaways.html" class="active">Takeaways</a></li>
+        <li><a href="projects.html">Side Projects</a></li>
+        <li><a href="writing.html">Writings</a></li>
+        <li><a href="inprogress.html">In Progress</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="article-page">
+
+    <a href="takeaways.html" class="back-link">← Undergraduate Takeaways</a>
+
+    <div class="article-eyebrow">
+      <a href="takeaways.html">Takeaways</a>
+      <span class="article-eyebrow-sep">/</span>
+      <span>Computer Vision</span>
+    </div>
+
+    <h1 class="article-title">Computer Vision</h1>
+    <p class="article-meta">Undergraduate course notes &nbsp;·&nbsp; Cashmere Blanche Alin</p>
+    <hr class="article-divider" />
+
+    <!-- Table of contents -->
+    <nav class="subtopic-nav" aria-label="Sections">
+      <p class="subtopic-nav-title">In this course</p>
+          <a href="#convolutions">Convolutions & feature maps</a>
+          <a href="#cnns">CNN architectures</a>
+          <a href="#detection">Object detection</a>
+          <a href="#segmentation">Segmentation</a>
+    </nav>
+
+
+    <section id="convolutions" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Convolutions & feature maps</h2>
+      <div class="article-body">
+        <p>[ A convolution is just a sliding dot product — but that simple operation underlies almost all of modern vision. Write about what a feature map is, and what it felt like to visualize what early vs. late layers "see." ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="cnns" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">CNN architectures</h2>
+      <div class="article-body">
+        <p>[ From LeNet to ResNet — write about how CNN architectures evolved, and what problem each innovation (pooling, skip connections, batch norm) was actually solving. ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="detection" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Object detection</h2>
+      <div class="article-body">
+        <p>[ Classification tells you what's in an image; detection tells you where. Write about the jump from classification to detection — what's the hard part, and how does something like YOLO make it tractable? ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="segmentation" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Segmentation</h2>
+      <div class="article-body">
+        <p>[ Segmentation is detection taken to the pixel level. Write about the difference between semantic and instance segmentation, and what made this problem hard before deep learning. ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 Cashmere Blanche Alin</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav(btn) {
+      btn.classList.toggle('open');
+      document.getElementById('nav-links').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Science and Big Data Technology</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .course-list {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .course-item {
+      border-top: 1px solid var(--border);
+    }
+
+    .course-item:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .course-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 0;
+      cursor: pointer;
+      gap: 1rem;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .course-header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .course-number {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+      min-width: 1.5rem;
+    }
+
+    .course-title-link {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .course-title-link:hover {
+      color: var(--accent-dark);
+    }
+
+    .course-toggle-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.25rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      line-height: 1;
+      font-size: 1.2rem;
+      transition: transform 0.2s, color 0.15s;
+    }
+
+    .course-toggle-btn.open {
+      transform: rotate(45deg);
+      color: var(--accent);
+    }
+
+    .course-subtopics {
+      display: none;
+      padding: 0 0 1.25rem 2.5rem;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .course-subtopics.open {
+      display: flex;
+    }
+
+    .subtopic-link {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.2rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.15s;
+    }
+
+    .subtopic-link::before {
+      content: "→";
+      font-style: normal;
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+
+    .subtopic-link:hover {
+      color: var(--accent-dark);
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="takeaways.html" class="active">Takeaways</a></li>
+        <li><a href="projects.html">Side Projects</a></li>
+        <li><a href="writing.html">Writings</a></li>
+        <li><a href="inprogress.html">In Progress</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="page-wrapper">
+
+    <header class="page-header">
+      <span class="section-label">Courses</span>
+      <h1>Data Science and Big Data Technology</h1>
+      <p>Click a course to explore its topics, or expand to browse subtopics.</p>
+    </header>
+
+    <div class="course-list">
+
+      <!-- 1. Neural Networks -->
+      <div class="course-item">
+        <div class="course-header">
+          <div class="course-header-left">
+            <span class="course-number">01</span>
+            <a href="takeaways-neural-networks.html" class="course-title-link">Introduction to Neural Networks</a>
+          </div>
+          <button class="course-toggle-btn" onclick="toggleCourse(this)" aria-label="Expand subtopics">+</button>
+        </div>
+        <div class="course-subtopics">
+          <a href="takeaways-neural-networks.html#perceptrons" class="subtopic-link">Perceptrons & the building blocks</a>
+          <a href="takeaways-neural-networks.html#backprop" class="subtopic-link">Backpropagation intuition</a>
+          <a href="takeaways-neural-networks.html#activation" class="subtopic-link">Activation functions</a>
+          <a href="takeaways-neural-networks.html#overfitting" class="subtopic-link">Overfitting & regularization</a>
+        </div>
+      </div>
+
+      <!-- 2. DSA -->
+      <div class="course-item">
+        <div class="course-header">
+          <div class="course-header-left">
+            <span class="course-number">02</span>
+            <a href="takeaways-dsa.html" class="course-title-link">Data Structures and Algorithms</a>
+          </div>
+          <button class="course-toggle-btn" onclick="toggleCourse(this)" aria-label="Expand subtopics">+</button>
+        </div>
+        <div class="course-subtopics">
+          <a href="takeaways-dsa.html#complexity" class="subtopic-link">Big-O and complexity thinking</a>
+          <a href="takeaways-dsa.html#trees" class="subtopic-link">Trees & graphs</a>
+          <a href="takeaways-dsa.html#dynamic" class="subtopic-link">Dynamic programming</a>
+          <a href="takeaways-dsa.html#sorting" class="subtopic-link">Sorting algorithms</a>
+        </div>
+      </div>
+
+      <!-- 3. Numerical Methods -->
+      <div class="course-item">
+        <div class="course-header">
+          <div class="course-header-left">
+            <span class="course-number">03</span>
+            <a href="takeaways-numerical.html" class="course-title-link">Numerical Methods</a>
+          </div>
+          <button class="course-toggle-btn" onclick="toggleCourse(this)" aria-label="Expand subtopics">+</button>
+        </div>
+        <div class="course-subtopics">
+          <a href="takeaways-numerical.html#errors" class="subtopic-link">Floating-point error & stability</a>
+          <a href="takeaways-numerical.html#rootfinding" class="subtopic-link">Root-finding methods</a>
+          <a href="takeaways-numerical.html#interpolation" class="subtopic-link">Interpolation</a>
+          <a href="takeaways-numerical.html#odes" class="subtopic-link">Solving ODEs numerically</a>
+        </div>
+      </div>
+
+      <!-- 4. Computer Vision -->
+      <div class="course-item">
+        <div class="course-header">
+          <div class="course-header-left">
+            <span class="course-number">04</span>
+            <a href="takeaways-cv.html" class="course-title-link">Computer Vision</a>
+          </div>
+          <button class="course-toggle-btn" onclick="toggleCourse(this)" aria-label="Expand subtopics">+</button>
+        </div>
+        <div class="course-subtopics">
+          <a href="takeaways-cv.html#convolutions" class="subtopic-link">Convolutions & feature maps</a>
+          <a href="takeaways-cv.html#cnns" class="subtopic-link">CNN architectures</a>
+          <a href="takeaways-cv.html#detection" class="subtopic-link">Object detection</a>
+          <a href="takeaways-cv.html#segmentation" class="subtopic-link">Segmentation</a>
+        </div>
+      </div>
+
+      <!-- 5. ML Fundamentals -->
+      <div class="course-item">
+        <div class="course-header">
+          <div class="course-header-left">
+            <span class="course-number">05</span>
+            <a href="takeaways-ml.html" class="course-title-link">Machine Learning Fundamentals</a>
+          </div>
+          <button class="course-toggle-btn" onclick="toggleCourse(this)" aria-label="Expand subtopics">+</button>
+        </div>
+        <div class="course-subtopics">
+          <a href="takeaways-ml.html#bias-variance" class="subtopic-link">Bias–variance tradeoff</a>
+          <a href="takeaways-ml.html#gradient-descent" class="subtopic-link">Gradient descent</a>
+          <a href="takeaways-ml.html#regularization" class="subtopic-link">Regularization techniques</a>
+          <a href="takeaways-ml.html#evaluation" class="subtopic-link">Model evaluation & metrics</a>
+        </div>
+      </div>
+
+      <!-- 6. RL -->
+      <div class="course-item">
+        <div class="course-header">
+          <div class="course-header-left">
+            <span class="course-number">06</span>
+            <a href="takeaways-rl.html" class="course-title-link">Reinforcement Learning Fundamentals</a>
+          </div>
+          <button class="course-toggle-btn" onclick="toggleCourse(this)" aria-label="Expand subtopics">+</button>
+        </div>
+        <div class="course-subtopics">
+          <a href="takeaways-rl.html#mdp" class="subtopic-link">Markov Decision Processes</a>
+          <a href="takeaways-rl.html#bellman" class="subtopic-link">Bellman equations</a>
+          <a href="takeaways-rl.html#policy" class="subtopic-link">Policy vs value methods</a>
+          <a href="takeaways-rl.html#exploration" class="subtopic-link">Exploration vs exploitation</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 Cashmere Blanche Alin</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav(btn) {
+      btn.classList.toggle('open');
+      document.getElementById('nav-links').classList.toggle('open');
+    }
+
+    function toggleCourse(btn) {
+      btn.classList.toggle('open');
+      const subtopics = btn.closest('.course-header').nextElementSibling;
+      subtopics.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

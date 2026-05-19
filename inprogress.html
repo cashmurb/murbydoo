@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>In Progress — Your Name</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Name: fixed top-left -->
+  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+
+  <!-- ===== NAV ===== -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav-links" id="nav-links">
+        
+        <li><a href="takeaways.html">Takeaways</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="writing.html">Writings</a></li>
+        <li><a href="inprogress.html" class="active">In Progress</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="page-wrapper">
+
+    <header class="page-header">
+      <span class="section-label">Live log</span>
+      <h1>In Progress</h1>
+      <p>
+        A running, honest list of things I'm currently learning, relearning,
+        or trying to finally make stick. Updated whenever something shifts.
+      </p>
+    </header>
+
+    <!-- Currently learning -->
+    <section>
+      <h2>Currently Learning</h2>
+      <ul class="progress-list">
+        <li>
+          <span class="progress-tag">Relearning</span>
+          Gradient descent intuition — why momentum helps, and when Adam actually beats SGD.
+        </li>
+        <li>
+          <span class="progress-tag">Studying</span>
+          Placeholder concept — describe what it is and why it keeps slipping from memory.
+        </li>
+        <li>
+          <span class="progress-tag">Reading</span>
+          Placeholder book or paper — a line or two on what prompted you to pick it up.
+        </li>
+        <li>
+          <span class="progress-tag">Building</span>
+          Placeholder project — what's the goal, and what's the hardest part right now?
+        </li>
+      </ul>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- Hard-to-retain concepts -->
+    <section>
+      <h2>Concepts I Keep Forgetting</h2>
+      <p style="font-family: var(--font-ui); font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+        These aren't failures — they're a list of targets. Returning to them regularly is the whole point.
+      </p>
+      <ul class="progress-list">
+        <li>
+          <span class="progress-tag">Math</span>
+          Placeholder — e.g., "The connection between KL divergence and cross-entropy loss."
+        </li>
+        <li>
+          <span class="progress-tag">CS</span>
+          Placeholder — e.g., "How amortized analysis works for dynamic arrays."
+        </li>
+        <li>
+          <span class="progress-tag">ML</span>
+          Placeholder — e.g., "When to use batch norm vs layer norm and why."
+        </li>
+        <li>
+          <span class="progress-tag">RL</span>
+          Placeholder — e.g., "The difference between on-policy and off-policy methods, concretely."
+        </li>
+      </ul>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- Recently finished -->
+    <section>
+      <h2>Recently Wrapped Up</h2>
+      <ul class="progress-list">
+        <li>
+          <span class="progress-tag">Done</span>
+          Placeholder — e.g., "Finished working through <em>Understanding Deep Learning</em>, Ch. 1–5."
+        </li>
+        <li>
+          <span class="progress-tag">Done</span>
+          Placeholder — describe something you recently completed and what you'd say about it now.
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 Cashmere Blanche Alin</span>
+      
+      
+      
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav(btn) {
+      btn.classList.toggle('open');
+      document.getElementById('nav-links').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

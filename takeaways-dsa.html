@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Structures and Algorithms — Cashmere Blanche Alin</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="takeaways.html" class="active">Takeaways</a></li>
+        <li><a href="projects.html">Side Projects</a></li>
+        <li><a href="writing.html">Writings</a></li>
+        <li><a href="inprogress.html">In Progress</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="article-page">
+
+    <a href="takeaways.html" class="back-link">← Undergraduate Takeaways</a>
+
+    <div class="article-eyebrow">
+      <a href="takeaways.html">Takeaways</a>
+      <span class="article-eyebrow-sep">/</span>
+      <span>DSA</span>
+    </div>
+
+    <h1 class="article-title">Data Structures and Algorithms</h1>
+    <p class="article-meta">Undergraduate course notes &nbsp;·&nbsp; Cashmere Blanche Alin</p>
+    <hr class="article-divider" />
+
+    <!-- Table of contents -->
+    <nav class="subtopic-nav" aria-label="Sections">
+      <p class="subtopic-nav-title">In this course</p>
+          <a href="#complexity">Big-O and complexity thinking</a>
+          <a href="#trees">Trees & graphs</a>
+          <a href="#dynamic">Dynamic programming</a>
+          <a href="#sorting">Sorting algorithms</a>
+    </nav>
+
+
+    <section id="complexity" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Big-O and complexity thinking</h2>
+      <div class="article-body">
+        <p>[ Big-O is a way of thinking, not just notation. Write about how understanding complexity changed how you approached problems — not just "what's the answer" but "how does this scale?" ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="trees" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Trees & graphs</h2>
+      <div class="article-body">
+        <p>[ Trees and graphs show up everywhere once you start seeing them. Write about the problems they solve elegantly, and when a graph is the right abstraction versus when it isn't. ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="dynamic" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Dynamic programming</h2>
+      <div class="article-body">
+        <p>[ Dynamic programming is famously hard to see at first. Write about how you learned to recognize a DP problem — what's the tell? What's the mental framework you now reach for? ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="sorting" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Sorting algorithms</h2>
+      <div class="article-body">
+        <p>[ Most sorting is just `sort()` in practice, but the algorithms themselves are full of insight. Write about what quicksort and mergesort taught you about recursion, tradeoffs, and the gap between theory and practice. ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 Cashmere Blanche Alin</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav(btn) {
+      btn.classList.toggle('open');
+      document.getElementById('nav-links').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

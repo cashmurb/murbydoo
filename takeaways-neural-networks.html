@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction to Neural Networks — Cashmere Blanche Alin</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="takeaways.html" class="active">Takeaways</a></li>
+        <li><a href="projects.html">Side Projects</a></li>
+        <li><a href="writing.html">Writings</a></li>
+        <li><a href="inprogress.html">In Progress</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="article-page">
+
+    <a href="takeaways.html" class="back-link">← Undergraduate Takeaways</a>
+
+    <div class="article-eyebrow">
+      <a href="takeaways.html">Takeaways</a>
+      <span class="article-eyebrow-sep">/</span>
+      <span>Neural Networks</span>
+    </div>
+
+    <h1 class="article-title">Introduction to Neural Networks</h1>
+    <p class="article-meta">Undergraduate course notes &nbsp;·&nbsp; Cashmere Blanche Alin</p>
+    <hr class="article-divider" />
+
+    <!-- Table of contents -->
+    <nav class="subtopic-nav" aria-label="Sections">
+      <p class="subtopic-nav-title">In this course</p>
+          <a href="#perceptrons">Perceptrons & the building blocks</a>
+          <a href="#backprop">Backpropagation intuition</a>
+          <a href="#activation">Activation functions</a>
+          <a href="#overfitting">Overfitting & regularization</a>
+    </nav>
+
+
+    <section id="perceptrons" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Perceptrons & the building blocks</h2>
+      <div class="article-body">
+        <p>[ Write about what a perceptron is — the simplest unit of a neural network. How did it change your mental model of computation? What surprised you about its limitations, and why did that make multi-layer networks feel inevitable? ]</p>
+<p>[ This is where you can be personal. Did the concept click immediately, or did it take a while? What analogy finally made it make sense? ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="backprop" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Backpropagation intuition</h2>
+      <div class="article-body">
+        <p>[ Backpropagation is one of those things that's easy to implement and hard to truly understand. Write about when it finally made sense — not the math, but the <em>intuition</em>. ]</p>
+<p>[ What's the chain rule actually doing here? What does it mean to "propagate error backwards"? ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="activation" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Activation functions</h2>
+      <div class="article-body">
+        <p>[ ReLU, sigmoid, tanh — why does the choice of activation function matter? Write about what each one does geometrically, and what happens when you pick the wrong one. ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="overfitting" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Overfitting & regularization</h2>
+      <div class="article-body">
+        <p>[ What does it mean for a model to memorize rather than learn? Write about how you'd explain overfitting to someone without an ML background, and the intuition behind dropout, L1, and L2. ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 Cashmere Blanche Alin</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav(btn) {
+      btn.classList.toggle('open');
+      document.getElementById('nav-links').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

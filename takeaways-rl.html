@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reinforcement Learning Fundamentals — Cashmere Blanche Alin</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="takeaways.html" class="active">Takeaways</a></li>
+        <li><a href="projects.html">Side Projects</a></li>
+        <li><a href="writing.html">Writings</a></li>
+        <li><a href="inprogress.html">In Progress</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="article-page">
+
+    <a href="takeaways.html" class="back-link">← Undergraduate Takeaways</a>
+
+    <div class="article-eyebrow">
+      <a href="takeaways.html">Takeaways</a>
+      <span class="article-eyebrow-sep">/</span>
+      <span>RL Fundamentals</span>
+    </div>
+
+    <h1 class="article-title">Reinforcement Learning Fundamentals</h1>
+    <p class="article-meta">Undergraduate course notes &nbsp;·&nbsp; Cashmere Blanche Alin</p>
+    <hr class="article-divider" />
+
+    <!-- Table of contents -->
+    <nav class="subtopic-nav" aria-label="Sections">
+      <p class="subtopic-nav-title">In this course</p>
+          <a href="#mdp">Markov Decision Processes</a>
+          <a href="#bellman">Bellman equations</a>
+          <a href="#policy">Policy vs value methods</a>
+          <a href="#exploration">Exploration vs exploitation</a>
+    </nav>
+
+
+    <section id="mdp" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Markov Decision Processes</h2>
+      <div class="article-body">
+        <p>[ MDPs are the language of RL. Write about what the Markov property actually means — why does "only the current state matters" seem wrong but work in practice? ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="bellman" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Bellman equations</h2>
+      <div class="article-body">
+        <p>[ The Bellman equation is a recursive definition of value. Write about the intuition — what does it mean for the value of a state to depend on the value of future states? ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="policy" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Policy vs value methods</h2>
+      <div class="article-body">
+        <p>[ Policy gradient methods and value-based methods (like Q-learning) are two different philosophies. Write about when you'd choose one over the other, and what each one gets wrong. ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+    <section id="exploration" style="scroll-margin-top: 5rem; margin-bottom: 3.5rem;">
+      <h2 class="article-body" style="font-size:1.4rem; margin-bottom: 1rem;">Exploration vs exploitation</h2>
+      <div class="article-body">
+        <p>[ Should you try the thing that's worked before, or explore something new? Write about this tradeoff — epsilon-greedy, UCB, Thompson sampling — and why it's deeper than it looks. ]</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">[ Your notes go here. Write as much or as little as you want — this is your space. ]</p>
+      </div>
+    </section>
+
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 Cashmere Blanche Alin</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav(btn) {
+      btn.classList.toggle('open');
+      document.getElementById('nav-links').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

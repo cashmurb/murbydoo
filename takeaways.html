@@ -99,6 +99,10 @@ class Component extends DCLogic {
     { number: '06', title: 'Reinforcement Learning Fundamentals', subtitle: 'Markov Decision Processes · Bellman equations · Policy vs value methods · Exploration vs exploitation', url: 'takeaways-rl.html' },
   ];
 
+  componentDidMount() {
+    import('./content/takeaways-entries.js').then((m) => { this.entries = m.entries; this.forceUpdate(); }).catch(() => {});
+  }
+
   nextArticle = () => this.setState((s) => ({ index: (s.index + 1) % this.entries.length }));
   prevArticle = () => this.setState((s) => ({ index: (s.index + this.entries.length - 1) % this.entries.length }));
 

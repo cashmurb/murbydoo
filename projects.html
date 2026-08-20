@@ -109,6 +109,19 @@ class Component extends DCLogic {
   nextProject = () => this.setState((s) => ({ index: (s.index + 1) % 3 }));
   prevProject = () => this.setState((s) => ({ index: (s.index + 2) % 3 }));
 
+  projects = {
+    Code: [
+      { title: 'OSA: Observational\nSpatiotemporal Anomaly Detector', subtitle: 'a modular framework for weakly supervised abnormality detection in paediatric echocardiographic video', tag: 'Python - PyTorch', github: 'https://github.com/cashmurb/OSA-' },
+      null, null,
+    ],
+    Film: [null, null, null],
+    Photo: [null, null, null],
+  };
+
+  componentDidMount() {
+    import('./content/projects-data.js').then((m) => { this.projects = m.projects; this.forceUpdate(); }).catch(() => {});
+  }
+
   renderVals() {
     const accentColor = this.props.accentColor ?? '#D96614';
     const mutedTextColor = this.props.mutedTextColor ?? '#B4B4B4';
@@ -140,15 +153,7 @@ class Component extends DCLogic {
       onClick: this.setCategory(name),
     }));
 
-    const projects = {
-      Code: [
-        { title: 'OSA: Observational\nSpatiotemporal Anomaly Detector', subtitle: 'a modular framework for weakly supervised abnormality detection in paediatric echocardiographic video', tag: 'Python - PyTorch', github: 'https://github.com/cashmurb/OSA-' },
-        null, null,
-      ],
-      Film: [null, null, null],
-      Photo: [null, null, null],
-    };
-    const currentProject = projects[this.state.category][this.state.index];
+    const currentProject = this.projects[this.state.category][this.state.index];
 
     const dots = [0, 1, 2].map((i) => ({
       color: i === this.state.index ? accentColor : '#BFBFBF',

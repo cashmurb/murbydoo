@@ -50,7 +50,7 @@ window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContent
     <path d="M104.055 820.8H154.635L164.895 835.92L154.455 847.08L146.715 835.74H111.255L106.395 840.06V851.94L112.695 860.76H154.995L167.775 880.02V903.78L154.995 918H97.2152L89.2952 905.58L99.7352 894.6L105.135 902.52H147.795L151.035 899.1V882.9L146.355 876.24H103.875L89.6552 854.82V834.84L104.055 820.8Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
   </svg>
 
-  <div style="position:absolute;left:272px;top:247px;font-size:15px;color:{{ mutedTextColor }};max-width:700px;">Works that I have yet to finish and ideas that have no come to life yet.</div>
+  <div style="position:absolute;left:272px;top:247px;font-size:15px;color:{{ mutedTextColor }};max-width:700px;">Works that I have yet to finish and ideas that have not come to life yet.</div>
 
   <div style="position:absolute;left:270px;top:283px;width:899px;height:459px;border:1px solid #000000;border-radius:15px;">
 
@@ -89,10 +89,14 @@ class Component extends DCLogic {
   goToIndex = (i) => () => this.setState({ index: i });
 
   items = [
-    { title: 'MsPacman', subtitle: 'Make any image an svg file.' },
+    { title: 'MsPacman', subtitle: 'RL Coursework.' },
     { title: 'Coming soon', subtitle: '' },
     { title: 'Coming soon', subtitle: '' },
   ];
+
+  componentDidMount() {
+    import('./content/inprogress-items.js').then((m) => { this.items = m.items; this.forceUpdate(); }).catch(() => {});
+  }
 
   nextItem = () => this.setState((s) => ({ index: (s.index + 1) % this.items.length }));
   prevItem = () => this.setState((s) => ({ index: (s.index + this.items.length - 1) % this.items.length }));

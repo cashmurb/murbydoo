@@ -12,6 +12,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   body { margin: 0; }
+  @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+
   a { color: #D96614; }
   a:hover { color: #D96614; opacity: 0.8; }
 </style>
@@ -20,19 +22,19 @@ function __scaleFit(){var s=Math.min(window.innerWidth/1440,window.innerHeight/1
 window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContentLoaded',__scaleFit);__scaleFit();
 </script>
 </helmet>
-<div id="scale-wrap" style="width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#FFFFFF;">
-<div style="width:1440px;height:1024px;background:#FFFFFF;position:relative;overflow:hidden;font-family:'Kode Mono',monospace;color:#000000;flex-shrink:0;transform:scale(var(--s,1));">
+<div style="width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#FFFFFF;">
+<div style="width:1440px;height:1024px;background:#FFFFFF;position:relative;overflow:hidden;font-family:'Kode Mono',monospace;color:#000000;flex-shrink:0;transform:scale(var(--s,1));animation:fadeInPage .5s ease both;">
 
   <a href="index.html" style="position:absolute;top:44px;left:40px;font-size:15px;color:#000000;text-decoration:none;z-index:10;">Cashmere Blanche Alin</a>
 
   <div style="position:absolute;left:1085px;top:43px;width:267px;height:64px;z-index:10;">
     <svg width="267" height="64" viewBox="0 0 267 64" style="position:absolute;top:0;left:0;">
-      <line x1="45" y1="45.56" x2="98" y2="20" stroke="{{ edgeColor.brainWips }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
-      <line x1="118" y1="20" x2="181" y2="46" stroke="{{ edgeColor.brainWorld }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
-      <line x1="142" y1="12" x2="227" y2="12" stroke="{{ edgeColor.brainDump }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
-      <line x1="45" y1="59" x2="142" y2="59" stroke="{{ edgeColor.wipsWorld }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
-      <line x1="216" y1="54" x2="252" y2="20" stroke="{{ edgeColor.worldDump }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
-      <line x1="58" y1="49" x2="234" y2="20" stroke="{{ edgeColor.wipsDump }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="45" y1="45.56" x2="98" y2="20" stroke="{{ edgeColor.brainWips }}" stroke-width="{{ edgeWidth.brainWips }}" stroke-linecap="round" onmouseenter="{{ hoverEdge('brainWips') }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), filter .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);filter:{{ edgeGlow.brainWips }};pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="118" y1="20" x2="181" y2="46" stroke="{{ edgeColor.brainWorld }}" stroke-width="{{ edgeWidth.brainWorld }}" stroke-linecap="round" onmouseenter="{{ hoverEdge('brainWorld') }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), filter .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);filter:{{ edgeGlow.brainWorld }};pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="142" y1="12" x2="227" y2="12" stroke="{{ edgeColor.brainDump }}" stroke-width="{{ edgeWidth.brainDump }}" stroke-linecap="round" onmouseenter="{{ hoverEdge('brainDump') }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), filter .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);filter:{{ edgeGlow.brainDump }};pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="45" y1="59" x2="142" y2="59" stroke="{{ edgeColor.wipsWorld }}" stroke-width="{{ edgeWidth.wipsWorld }}" stroke-linecap="round" onmouseenter="{{ hoverEdge('wipsWorld') }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), filter .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);filter:{{ edgeGlow.wipsWorld }};pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="216" y1="54" x2="252" y2="20" stroke="{{ edgeColor.worldDump }}" stroke-width="{{ edgeWidth.worldDump }}" stroke-linecap="round" onmouseenter="{{ hoverEdge('worldDump') }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), filter .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);filter:{{ edgeGlow.worldDump }};pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="58" y1="49" x2="234" y2="20" stroke="{{ edgeColor.wipsDump }}" stroke-width="{{ edgeWidth.wipsDump }}" stroke-linecap="round" onmouseenter="{{ hoverEdge('wipsDump') }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), filter .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);filter:{{ edgeGlow.wipsDump }};pointer-events:stroke;cursor:pointer;"></line>
     </svg>
     <a href="takeaways.html" onmouseenter="{{ hoverNode('brain') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:88px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.brain }};transition:color .2s;">Brain</a>
     <a href="writing.html" onmouseenter="{{ hoverNode('dump') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:235px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.dump }};transition:color .2s;">Dump</a>
@@ -41,7 +43,11 @@ window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContent
   </div>
 
   <svg width="1440" height="1024" viewBox="0 0 1440 1024" style="position:absolute;top:0;left:0;pointer-events:none;">
-    <path d="M83.7152 -13H100.635V86L106.755 95.9H110.175L119.895 85.64V37.76H136.995V80.42L147.255 95.9H150.315L156.075 89.6V-13H173.175V95L155.535 113H139.155L129.795 98.6L116.115 113H100.635L83.7152 87.98V-13ZM102.795 217H154.815L169.575 239.5V327.34L154.635 343H102.615L87.4952 320.5V232.66L102.795 217ZM104.235 317.98L110.715 327.52H147.975L152.655 322.48V242.02L146.355 232.48H109.095L104.235 237.52V317.98ZM87.3152 447H149.775L169.755 476.16V495.06L152.295 512.88L169.755 538.26V573H152.655V540.6L135.195 514.86H116.835L104.235 507.12V573H87.3152V447ZM104.235 462.48V499.38H144.195L152.655 490.92V478.86L141.315 462.48H104.235ZM87.3152 677H104.235V777.62L111.075 787.52H152.655V774.38H169.755V803H102.795L87.3152 779.78V677ZM89.2952 907H146.715L171.555 944.08V1017.34L156.435 1033H89.2952V907ZM106.215 922.48V1017.7H149.415L154.455 1012.48V946.6L138.255 922.48H106.215Z" fill="black" fill-opacity="0.17"></path>
+    <path d="M83.7152 -13H100.635V86L106.755 95.9H110.175L119.895 85.64V37.76H136.995V80.42L147.255 95.9H150.315L156.075 89.6V-13H173.175V95L155.535 113H139.155L129.795 98.6L116.115 113H100.635L83.7152 87.98V-13Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+    <path d="M102.795 217H154.815L169.575 239.5V327.34L154.635 343H102.615L87.4952 320.5V232.66L102.795 217Z M104.235 317.98L110.715 327.52H147.975L152.655 322.48V242.02L146.355 232.48H109.095L104.235 237.52V317.98Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+    <path d="M87.3152 447H149.775L169.755 476.16V495.06L152.295 512.88L169.755 538.26V573H152.655V540.6L135.195 514.86H116.835L104.235 507.12V573H87.3152V447Z M104.235 462.48V499.38H144.195L152.655 490.92V478.86L141.315 462.48H104.235Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+    <path d="M87.3152 677H104.235V777.62L111.075 787.52H152.655V774.38H169.755V803H102.795L87.3152 779.78V677Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+    <path d="M89.2952 907H146.715L171.555 944.08V1017.34L156.435 1033H89.2952V907Z M106.215 922.48V1017.7H149.415L154.455 1012.48V946.6L138.255 922.48H106.215Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
   </svg>
 
   <div style="position:absolute;left:272px;top:247px;font-size:15px;color:#B4B4B4;">Code, films, and photobooks. All the trinkets I've built, made, and published.</div>
@@ -83,6 +89,7 @@ window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContent
   </div>
 
 </div>
+</div>
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
@@ -91,10 +98,12 @@ window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContent
   &quot;contentGap&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 14, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 6, &quot;max&quot;: 28, &quot;step&quot;: 1, &quot;unit&quot;: &quot;px&quot;, &quot;section&quot;: &quot;Layout&quot;}
 }">
 class Component extends DCLogic {
-  state = { hoveredNode: null, category: 'Code', index: 0 };
+  state = { hoveredNode: null, category: 'Code', index: 0 , hoveredEdge: null };
 
   hoverNode = (name) => () => this.setState({ hoveredNode: name });
   unhoverNode = () => this.setState({ hoveredNode: null });
+  hoverEdge = (key) => () => this.setState({ hoveredEdge: key });
+  unhoverEdge = () => this.setState({ hoveredEdge: null });
   setCategory = (cat) => () => this.setState({ category: cat, index: 0 });
   goToIndex = (i) => () => this.setState({ index: i });
   nextProject = () => this.setState((s) => ({ index: (s.index + 1) % 3 }));
@@ -111,6 +120,13 @@ class Component extends DCLogic {
     const edgeColor = {};
     for (const key in edges) {
       edgeColor[key] = edges[key].includes(this.state.hoveredNode) ? accentColor : '#000000';
+    }
+    const edgeGlow = {};
+    const edgeWidth = {};
+    for (const key in edges) {
+      const active = edges[key].includes(this.state.hoveredNode) || this.state.hoveredEdge === key;
+      edgeGlow[key] = active ? 'drop-shadow(0 0 3px #D96614) drop-shadow(0 0 8px #D96614) drop-shadow(0 0 14px #D96614)' : 'none';
+      edgeWidth[key] = active ? 2 : 1;
     }
     const navColor = { brain: '#000000', dump: '#000000', wips: '#000000', world: accentColor };
     if (this.state.hoveredNode) navColor[this.state.hoveredNode] = accentColor;
@@ -138,7 +154,7 @@ class Component extends DCLogic {
 
     return {
       accentColor, mutedTextColor, contentGap,
-      edgeColor, navColor, categories, dots,
+      edgeGlow, edgeWidth, edgeColor, navColor, categories, dots,
       hasProject: !!currentProject, currentProject: currentProject ?? {},
       hoverNode: this.hoverNode, unhoverNode: this.unhoverNode,
       nextProject: this.nextProject, prevProject: this.prevProject,

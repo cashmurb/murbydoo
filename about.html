@@ -7,6 +7,7 @@
 </head>
 <body>
 <x-dc>
+
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,59 +16,96 @@
   a { color: #D96614; }
   a:hover { color: #D96614; opacity: 0.8; }
 </style>
+<script>
+function __scaleFit(){var s=Math.min(window.innerWidth/1440,window.innerHeight/1024);document.documentElement.style.setProperty('--s',s);}
+window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContentLoaded',__scaleFit);__scaleFit();
+</script>
 </helmet>
-<div style="font-family:'Kode Mono',monospace;color:#000000;background:#FFFFFF;min-height:100vh;">
-  <dc-import name="NavHeader" active="none" hint-size="100%,96px"></dc-import>
+<div style="width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#FFFFFF;">
+<div style="width:1440px;height:1024px;background:#FFFFFF;position:relative;overflow:hidden;font-family:'Kode Mono',monospace;color:#000000;flex-shrink:0;transform:scale(var(--s,1));">
 
-  <main style="max-width:760px;margin:0 auto;padding:170px 24px 120px;">
-    <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#D96614;margin-bottom:16px;">who am I</div>
-    <h1 style="font-size:38px;font-weight:400;margin:0 0 14px;">About Me</h1>
-    <p style="font-size:15px;color:#B4B4B4;line-height:1.7;margin:0 0 64px;max-width:520px;">A little about who I am, what I care about, and where I'm headed.</p>
+  <a href="index.html" style="position:absolute;top:44px;left:40px;font-size:15px;color:#000000;text-decoration:none;z-index:10;">Cashmere Blanche Alin</a>
 
-    <section style="margin-bottom:56px;">
-      <h2 style="font-size:20px;font-weight:400;margin:0 0 20px;border-top:1px solid #EDEDED;padding-top:24px;">Interests</h2>
-      <div style="display:flex;flex-direction:column;gap:18px;font-size:15px;line-height:1.7;">
-        <div><strong>Cats —</strong> Bombay, Siamese, Sphynx. I want a cat (badly).</div>
-        <div><strong>Books —</strong> <em>After Dark</em> (Haruki Murakami), <em>Tuesdays With Morrie</em> (Mitch Albom), <em>A Fine Balance</em> (Rohinton Mistry).</div>
-        <div><strong>Hobbies —</strong> Performance (singing &amp; dancing), sports (running &amp; bouldering), arts (photography &amp; filmmaking).</div>
-      </div>
-    </section>
+  <div style="position:absolute;left:1085px;top:43px;width:267px;height:64px;z-index:10;">
+    <svg width="267" height="64" viewBox="0 0 267 64" style="position:absolute;top:0;left:0;">
+      <line x1="45" y1="45.56" x2="98" y2="20" stroke="{{ edgeColor.brainWips }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="118" y1="20" x2="181" y2="46" stroke="{{ edgeColor.brainWorld }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="142" y1="12" x2="227" y2="12" stroke="{{ edgeColor.brainDump }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="45" y1="59" x2="142" y2="59" stroke="{{ edgeColor.wipsWorld }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="216" y1="54" x2="252" y2="20" stroke="{{ edgeColor.worldDump }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="58" y1="49" x2="234" y2="20" stroke="{{ edgeColor.wipsDump }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+    </svg>
+    <a href="takeaways.html" onmouseenter="{{ hoverNode('brain') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:88px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.brain }};transition:color .2s;">Brain</a>
+    <a href="writing.html" onmouseenter="{{ hoverNode('dump') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:235px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.dump }};transition:color .2s;">Dump</a>
+    <a href="inprogress.html" onmouseenter="{{ hoverNode('wips') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:0px;top:53px;font-size:15px;text-decoration:none;color:{{ navColor.wips }};transition:color .2s;">WIPs</a>
+    <a href="projects.html" onmouseenter="{{ hoverNode('world') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:158px;top:52px;font-size:15px;text-decoration:none;color:{{ navColor.world }};transition:color .2s;">World</a>
+  </div>
 
-    <section style="margin-bottom:56px;">
-      <h2 style="font-size:20px;font-weight:400;margin:0 0 20px;border-top:1px solid #EDEDED;padding-top:24px;">Experiences</h2>
-      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;font-size:15px;line-height:1.7;">
-        <li>[ Place, internship, or research role — one sentence on what you did and what it changed about how you think. ]</li>
-        <li>[ Something that didn't go as planned but taught you more than the things that did. ]</li>
-        <li>I was born and raised in the Philippines, but I've spent almost a decade most of my life in China. I'm still terrible in speaking Chinese and I haven't travelled the country much, but I consider it more of my home than where I'm from. I've developed a deep appreciation for its culture, community, and most especially, the work that gets done behind the scenes to keep things convenient and connected.</li>
-      </ul>
-    </section>
+  <div style="position:absolute;left:880px;top:282px;width:370px;height:459px;border:1px solid #000000;border-radius:14.5px;overflow:hidden;">
+    <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#000000;text-align:center;padding:20px;box-sizing:border-box;">[ photo of my self ]</div>
+  </div>
 
-    <section style="margin-bottom:56px;">
-      <h2 style="font-size:20px;font-weight:400;margin:0 0 20px;border-top:1px solid #EDEDED;padding-top:24px;">Goals</h2>
-      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;font-size:15px;line-height:1.7;">
-        <li>Complete my master's degree in Computational Biomedical Engineering in UPF Spain!</li>
-        <li>Join a climbing competition.</li>
-        <li>Run a marathon.</li>
-        <li>2 strength training sessions and run 3x per week.</li>
-        <li>Launch my personal website.</li>
-        <li>In 10 years, I hope to be part of a team that builds implantable or non-invasive BCI systems that can be safely inserted and used chronically. If not, something that uses signal processing and machine learning algorithms that decode neural activity in real time to restore movement or communication for people with neurodegenerative disorders.</li>
-      </ul>
-    </section>
+  <div style="position:absolute;left:190px;top:230px;font-size:40px;">about me</div>
 
-    <section>
-      <h2 style="font-size:20px;font-weight:400;margin:0 0 20px;border-top:1px solid #EDEDED;padding-top:24px;">Right Now</h2>
-      <ul style="list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:14px;font-size:15px;color:#B4B4B4;line-height:1.7;">
-        <li>[ A thought or thing I'm sitting with right now. ] — May 2026</li>
-        <li>[ Currently reading: ... · Currently listening: ... · Currently obsessing over: ... ] — May 2026</li>
-        <li>[ A question I keep returning to, or a small thing making me happy lately. ] — May 2026</li>
-      </ul>
-      <a href="archive.html" style="font-size:14px;text-decoration:none;">&#8594; view past interests in archives</a>
-    </section>
-  </main>
+  <div style="position:absolute;left:190px;top:302px;width:560px;font-size:15px;line-height:1.7;color:#000000;">I build systems that teach computers to see, and spend a lot of time thinking about how they might one day help us understand the brain. My background is in data science, computer vision, and medical imaging, with a growing focus on BCI and neurotech.</div>
 
-  <footer style="text-align:center;padding:40px 24px;font-size:13px;color:#B4B4B4;">&copy; 2026 Cashmere Blanche Alin</footer>
+  <div style="position:absolute;left:190px;top:474px;font-size:15px;color:#000000;">Some of the tools I work with:</div>
+
+  <sc-for list="{{ toolsLeft }}" as="tool" hint-placeholder-count="3">
+    <div>
+      <svg width="6" height="7" viewBox="0 0 6 7" style="position:absolute;left:190px;top:{{ tool.top }}px;"><path d="M6 3.5L0 7V0L6 3.5Z" fill="#D96614"></path></svg>
+      <div style="position:absolute;left:206px;top:{{ tool.top }}px;font-size:15px;color:{{ tool.color }};">{{ tool.name }}</div>
+    </div>
+  </sc-for>
+
+  <sc-for list="{{ toolsRight }}" as="tool" hint-placeholder-count="3">
+    <div>
+      <svg width="6" height="7" viewBox="0 0 6 7" style="position:absolute;left:397px;top:{{ tool.top }}px;"><path d="M6 3.5L0 7V0L6 3.5Z" fill="#D96614"></path></svg>
+      <div style="position:absolute;left:413px;top:{{ tool.top }}px;font-size:15px;color:{{ tool.color }};">{{ tool.name }}</div>
+    </div>
+  </sc-for>
+
+  <div style="position:absolute;left:190px;top:636px;width:560px;font-size:15px;line-height:1.7;color:#000000;">Outside of tech, I take photos, make films, sing, dance a little, and read books - usually with a cat somewhere nearby.</div>
+
+</div>
 </div>
 
 </x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { hoveredNode: null };
+  hoverNode = (name) => () => this.setState({ hoveredNode: name });
+  unhoverNode = () => this.setState({ hoveredNode: null });
+
+  renderVals() {
+    const accentColor = '#D96614';
+    const edges = {
+      brainWips: ['brain', 'wips'], brainWorld: ['brain', 'world'], brainDump: ['brain', 'dump'],
+      wipsWorld: ['wips', 'world'], worldDump: ['world', 'dump'], wipsDump: ['wips', 'dump'],
+    };
+    const edgeColor = {};
+    for (const key in edges) {
+      edgeColor[key] = edges[key].includes(this.state.hoveredNode) ? accentColor : '#000000';
+    }
+    const navColor = { brain: '#000000', dump: '#000000', wips: '#000000', world: '#000000' };
+    if (this.state.hoveredNode) navColor[this.state.hoveredNode] = accentColor;
+
+    return {
+      edgeColor, navColor, hoverNode: this.hoverNode, unhoverNode: this.unhoverNode,
+      toolsLeft: [
+        { name: 'Python', top: 510, color: '#000000' },
+        { name: 'MATLAB', top: 552, color: '#000000' },
+        { name: 'C++', top: 594, color: '#000000' },
+      ],
+      toolsRight: [
+        { name: 'R', top: 510, color: '#000000' },
+        { name: 'OpenCV', top: 552, color: '#000000' },
+        { name: 'MONAI', top: 594, color: '#000000' },
+      ],
+    };
+  }
+}
+
+</script>
 </body>
 </html>

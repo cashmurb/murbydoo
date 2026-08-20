@@ -23,8 +23,13 @@
   }
   .murb-letter:hover { animation: letterBounce 0.55s ease; }
 </style>
+<script>
+function __scaleFit(){var s=Math.min(window.innerWidth/1440,window.innerHeight/1024);document.documentElement.style.setProperty('--s',s);}
+window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContentLoaded',__scaleFit);__scaleFit();
+</script>
 </helmet>
-<div style="width:1440px;height:1024px;background:#FFFFFF;position:relative;overflow:hidden;font-family:'Kode Mono',monospace;color:#000000;">
+<div id="scale-wrap" style="width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#FFFFFF;">
+<div style="width:1440px;height:1024px;background:#FFFFFF;position:relative;overflow:hidden;font-family:'Kode Mono',monospace;color:#000000;flex-shrink:0;transform:scale(var(--s,1));">
 
   <a href="index.html" style="position:absolute;top:44px;left:40px;font-size:15px;color:#000000;text-decoration:none;z-index:10;">Cashmere Blanche Alin</a>
 
@@ -102,6 +107,7 @@
     </a>
 
   </div>
+</div>
 </div>
 
 </x-dc>

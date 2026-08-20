@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</helmet>
+<div style="position:fixed;top:0;left:0;width:100%;height:96px;background:#FFFFFF;border-bottom:1px solid #EDEDED;z-index:100;font-family:'Kode Mono',monospace;">
+  <a href="index.html" style="position:absolute;top:40px;left:40px;font-size:15px;color:#000000;text-decoration:none;">Cashmere Blanche Alin</a>
+
+  <div style="position:absolute;right:60px;top:16px;width:267px;height:64px;">
+    <svg width="267" height="64" viewBox="0 0 267 64" style="position:absolute;top:0;left:0;">
+      <line x1="45" y1="45.56" x2="98" y2="20" stroke="{{ edgeColor.brainWips }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="118" y1="20" x2="181" y2="46" stroke="{{ edgeColor.brainWorld }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="142" y1="12" x2="227" y2="12" stroke="{{ edgeColor.brainDump }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="45" y1="59" x2="142" y2="59" stroke="{{ edgeColor.wipsWorld }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="216" y1="54" x2="252" y2="20" stroke="{{ edgeColor.worldDump }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="58" y1="49" x2="234" y2="20" stroke="{{ edgeColor.wipsDump }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+    </svg>
+    <a href="takeaways.html" onmouseenter="{{ hoverNode('brain') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:88px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.brain }};transition:color .2s;">Brain</a>
+    <a href="writing.html" onmouseenter="{{ hoverNode('dump') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:235px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.dump }};transition:color .2s;">Dump</a>
+    <a href="inprogress.html" onmouseenter="{{ hoverNode('wips') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:0px;top:53px;font-size:15px;text-decoration:none;color:{{ navColor.wips }};transition:color .2s;">WIPs</a>
+    <a href="projects.html" onmouseenter="{{ hoverNode('world') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:158px;top:52px;font-size:15px;text-decoration:none;color:{{ navColor.world }};transition:color .2s;">World</a>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { hoveredNode: null };
+  hoverNode = (name) => () => this.setState({ hoveredNode: name });
+  unhoverNode = () => this.setState({ hoveredNode: null });
+
+  renderVals() {
+    const accentColor = '#D96614';
+    const active = this.props.active ?? null;
+    const edges = {
+      brainWips: ['brain', 'wips'], brainWorld: ['brain', 'world'], brainDump: ['brain', 'dump'],
+      wipsWorld: ['wips', 'world'], worldDump: ['world', 'dump'], wipsDump: ['wips', 'dump'],
+    };
+    const edgeColor = {};
+    for (const key in edges) {
+      edgeColor[key] = edges[key].includes(this.state.hoveredNode) ? accentColor : '#000000';
+    }
+    const navColor = { brain: '#000000', dump: '#000000', wips: '#000000', world: '#000000' };
+    if (active && navColor[active] !== undefined) navColor[active] = accentColor;
+    if (this.state.hoveredNode) navColor[this.state.hoveredNode] = accentColor;
+
+    return { edgeColor, navColor, hoverNode: this.hoverNode, unhoverNode: this.unhoverNode };
+  }
+}
+
+</script>
+</body>
+</html>

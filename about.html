@@ -1,643 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About Me — Cashmere Blanche Alin</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-
-    .about-page {
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem 6rem;
-    }
-
-    /* Top-level collapsible sections */
-    .about-section { border-top: 1px solid var(--border); }
-    .about-section:last-of-type { border-bottom: 1px solid var(--border); }
-
-    .about-section-btn {
-      width: 100%;
-      background: none;
-      border: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.3rem 0;
-      cursor: pointer;
-      gap: 1rem;
-      text-align: left;
-    }
-
-    .about-section-btn h2 {
-      font-family: var(--font-body);
-      font-size: 1.25rem;
-      font-weight: 400;
-      margin: 0;
-      color: var(--text);
-      transition: color 0.15s;
-    }
-
-    .about-section-btn:hover h2 { color: var(--accent-dark); }
-
-    .about-chevron {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      transition: transform 0.22s;
-      flex-shrink: 0;
-    }
-    .about-section-btn.open .about-chevron { transform: rotate(45deg); color: var(--accent); }
-
-    .about-section-body { display: none; padding: 0 0 2rem; }
-    .about-section-body.open { display: block; }
-
-    /* Bullet lists */
-    .about-bullets {
-      list-style: none;
-      padding: 0; margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-    }
-
-    .about-bullets li {
-      font-family: var(--font-body);
-      font-size: 1rem;
-      color: var(--text);
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      line-height: 1.65;
-    }
-
-    .about-bullets li::before {
-      content: "·";
-      color: var(--accent);
-      font-size: 1.5rem;
-      line-height: 1.15;
-      flex-shrink: 0;
-    }
-
-    /* Nested interest accordion */
-    .interests-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-    }
-
-    .interest-item {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      background: var(--bg-card);
-    }
-
-    .interest-btn {
-      width: 100%;
-      background: none;
-      border: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.85rem 1.2rem;
-      cursor: pointer;
-      font-family: var(--font-body);
-      font-size: 0.98rem;
-      color: var(--text);
-      transition: background 0.15s;
-      gap: 1rem;
-    }
-    .interest-btn:hover { background: var(--accent-light); }
-    .interest-btn.open { background: var(--accent-light); color: var(--accent-dark); }
-
-    .interest-icon {
-      font-size: 1rem;
-      color: var(--text-muted);
-      transition: transform 0.22s;
-      flex-shrink: 0;
-    }
-    .interest-btn.open .interest-icon { transform: rotate(45deg); color: var(--accent); }
-
-    .interest-body {
-      display: none;
-      padding: 1rem 1.2rem 1.3rem;
-      border-top: 1px solid var(--border);
-    }
-    .interest-body.open { display: block; }
-
-    /* Swipeable card track */
-    .swipe-wrapper { position: relative; }
-
-    .swipe-track {
-      display: flex;
-      gap: 0.85rem;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      padding-bottom: 0.4rem;
-      cursor: grab;
-    }
-    .swipe-track:active { cursor: grabbing; }
-    .swipe-track::-webkit-scrollbar { display: none; }
-
-    .swipe-wrapper::after {
-      content: '';
-      position: absolute;
-      top: 0; right: 0;
-      width: 36px; height: calc(100% - 0.4rem);
-      background: linear-gradient(to right, transparent, var(--bg-card));
-      pointer-events: none;
-      border-radius: 0 var(--radius) var(--radius) 0;
-    }
-
-    .swipe-card {
-      flex: 0 0 148px;
-      scroll-snap-align: start;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: border-color 0.15s;
-    }
-    .swipe-card:hover { border-color: var(--accent); }
-
-    .swipe-card-cover {
-      width: 100%;
-      height: 130px;
-      object-fit: cover;
-      display: block;
-      background: #e8e8e8;
-    }
-
-    .swipe-card-cover-placeholder {
-      width: 100%;
-      height: 130px;
-      background: #ececec;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-    }
-
-    .swipe-card-info { padding: 0.55rem 0.65rem 0.7rem; }
-
-    .swipe-card-name {
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      font-weight: 400;
-      color: var(--text);
-      line-height: 1.3;
-      margin-bottom: 0.1rem;
-    }
-
-    .swipe-card-sub {
-      font-family: var(--font-body);
-      font-size: 0.7rem;
-      font-style: italic;
-      color: var(--text-muted);
-    }
-
-    .swipe-card-add {
-      flex: 0 0 148px;
-      scroll-snap-align: start;
-      height: 185px;
-      border: 1.5px dashed var(--border);
-      border-radius: var(--radius);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.35rem;
-      color: var(--text-muted);
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      font-style: italic;
-      opacity: 0.5;
-    }
-    .swipe-card-add span { font-size: 1.5rem; font-style: normal; opacity: 0.6; }
-
-    /* Scrapbook / Right Now */
-    .scrapbook {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-      gap: 0.9rem;
-      margin-top: 0.25rem;
-    }
-
-    .scrap {
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      transition: box-shadow 0.15s, border-color 0.15s;
-    }
-    .scrap:hover { border-color: var(--accent); box-shadow: 0 3px 14px rgba(90,138,106,0.09); }
-
-    .scrap-img {
-      width: 100%;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-      display: block;
-    }
-
-    .scrap-img-placeholder {
-      width: 100%;
-      aspect-ratio: 4/3;
-      background: #e8e8e8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      color: #bbb;
-    }
-
-    .scrap-caption {
-      padding: 0.55rem 0.8rem 0.75rem;
-      font-family: var(--font-body);
-      font-size: 0.78rem;
-      font-style: italic;
-      color: var(--text-muted);
-      line-height: 1.45;
-    }
-
-    .scrap-note {
-      padding: 1rem 1rem 1.1rem;
-      min-height: 130px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .scrap-note-text {
-      font-family: var(--font-body);
-      font-size: 0.88rem;
-      font-style: italic;
-      color: var(--text);
-      line-height: 1.6;
-      margin-bottom: 0.65rem;
-    }
-    .scrap-note-date {
-      font-family: var(--font-body);
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      opacity: 0.55;
-      letter-spacing: 0.04em;
-    }
-
-    .scrap-green { background: #f0f5f1; }
-    .scrap-beige { background: #f7f4ef; }
-    .scrap-blue  { background: #f0f3f7; }
-
-    .scrap-add {
-      border: 1.5px dashed #d4d4d4;
-      background: none;
-      min-height: 130px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.35rem;
-      color: var(--text-muted);
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      font-style: italic;
-      opacity: 0.45;
-    }
-    .scrap-add span { font-size: 1.5rem; font-style: normal; }
-
-    /* Archives link */
-    .archives-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      font-style: italic;
-      color: var(--text-muted);
-      text-decoration: none;
-      margin-top: 1.25rem;
-      transition: color 0.15s;
-    }
-    .archives-link:hover { color: var(--accent-dark); }
-
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
 <body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; }
+  a { color: #D96614; }
+  a:hover { color: #D96614; opacity: 0.8; }
+</style>
+</helmet>
+<div style="font-family:'Kode Mono',monospace;color:#000000;background:#FFFFFF;min-height:100vh;">
+  <dc-import name="NavHeader" active="none" hint-size="100%,96px"></dc-import>
 
-  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+  <main style="max-width:760px;margin:0 auto;padding:170px 24px 120px;">
+    <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#D96614;margin-bottom:16px;">who am I</div>
+    <h1 style="font-size:38px;font-weight:400;margin:0 0 14px;">About Me</h1>
+    <p style="font-size:15px;color:#B4B4B4;line-height:1.7;margin:0 0 64px;max-width:520px;">A little about who I am, what I care about, and where I'm headed.</p>
 
-  <nav class="site-nav">
-    <div class="nav-inner">
-      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-links" id="nav-links">
-        <li><a href="takeaways.html">Takeaways</a></li>
-        <li><a href="projects.html">Side Projects</a></li>
-        <li><a href="writing.html">Writings</a></li>
-        <li><a href="inprogress.html">In Progress</a></li>
+    <section style="margin-bottom:56px;">
+      <h2 style="font-size:20px;font-weight:400;margin:0 0 20px;border-top:1px solid #EDEDED;padding-top:24px;">Interests</h2>
+      <div style="display:flex;flex-direction:column;gap:18px;font-size:15px;line-height:1.7;">
+        <div><strong>Cats —</strong> Bombay, Siamese, Sphynx. I want a cat (badly).</div>
+        <div><strong>Books —</strong> <em>After Dark</em> (Haruki Murakami), <em>Tuesdays With Morrie</em> (Mitch Albom), <em>A Fine Balance</em> (Rohinton Mistry).</div>
+        <div><strong>Hobbies —</strong> Performance (singing &amp; dancing), sports (running &amp; bouldering), arts (photography &amp; filmmaking).</div>
+      </div>
+    </section>
+
+    <section style="margin-bottom:56px;">
+      <h2 style="font-size:20px;font-weight:400;margin:0 0 20px;border-top:1px solid #EDEDED;padding-top:24px;">Experiences</h2>
+      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;font-size:15px;line-height:1.7;">
+        <li>[ Place, internship, or research role — one sentence on what you did and what it changed about how you think. ]</li>
+        <li>[ Something that didn't go as planned but taught you more than the things that did. ]</li>
+        <li>I was born and raised in the Philippines, but I've spent almost a decade most of my life in China. I'm still terrible in speaking Chinese and I haven't travelled the country much, but I consider it more of my home than where I'm from. I've developed a deep appreciation for its culture, community, and most especially, the work that gets done behind the scenes to keep things convenient and connected.</li>
       </ul>
-    </div>
-  </nav>
+    </section>
 
-  <main class="about-page">
+    <section style="margin-bottom:56px;">
+      <h2 style="font-size:20px;font-weight:400;margin:0 0 20px;border-top:1px solid #EDEDED;padding-top:24px;">Goals</h2>
+      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;font-size:15px;line-height:1.7;">
+        <li>Complete my master's degree in Computational Biomedical Engineering in UPF Spain!</li>
+        <li>Join a climbing competition.</li>
+        <li>Run a marathon.</li>
+        <li>2 strength training sessions and run 3x per week.</li>
+        <li>Launch my personal website.</li>
+        <li>In 10 years, I hope to be part of a team that builds implantable or non-invasive BCI systems that can be safely inserted and used chronically. If not, something that uses signal processing and machine learning algorithms that decode neural activity in real time to restore movement or communication for people with neurodegenerative disorders.</li>
+      </ul>
+    </section>
 
-    <header class="page-header">
-      <span class="section-label">Who am I</span>
-      <h1>About Me</h1>
-      <p>A little about who I am, what I care about, and where I'm headed.</p>
-    </header>
-
-    <!-- INTERESTS -->
-    <div class="about-section">
-      <button class="about-section-btn" onclick="toggleSection(this)">
-        <h2>Interests</h2>
-        <span class="about-chevron">+</span>
-      </button>
-      <div class="about-section-body">
-        <div class="interests-list">
-
-          <!-- Cats -->
-          <div class="interest-item">
-            <button class="interest-btn" onclick="toggleInterest(this)">
-              Cats
-              <span class="interest-icon">+</span>
-            </button>
-            <div class="interest-body">
-              <div class="swipe-wrapper">
-                <div class="swipe-track">
-                  <div class="swipe-card">
-                    <img class="swipe-card-cover" src="bombay.jpg" alt="Bombay Cat">
-                    <div class="swipe-card-info">
-                      <p class="swipe-card-name">Bombay Cat</p>
-                      <p class="swipe-card-sub">I want a cat</p>
-                    </div>
-                  </div>
-                  <div class="swipe-card">
-                    <img class="swipe-card-cover" src="siamese.jpg" alt="Siamese Cat">
-                    <div class="swipe-card-info">
-                      <p class="swipe-card-name">Siamese Cat</p>
-                      <p class="swipe-card-sub">I want a cat</p>
-                    </div>
-                  </div>
-                  <div class="swipe-card">
-                    <img class="swipe-card-cover" src="sphynx.jpg" alt="Sphynx Cat">
-                    <div class="swipe-card-info">
-                      <p class="swipe-card-name">Sphynx Cat</p>
-                      <p class="swipe-card-sub">I badly want a cat</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Books -->
-          <div class="interest-item">
-            <button class="interest-btn" onclick="toggleInterest(this)">
-              Books
-              <span class="interest-icon">+</span>
-            </button>
-            <div class="interest-body">
-              <div class="swipe-wrapper">
-                <div class="swipe-track">
-                  <div class="swipe-card">
-                    <img class="swipe-card-cover" src="after-dark.jpg" alt="After Dark">
-                    <div class="swipe-card-info">
-                      <p class="swipe-card-name">After Dark</p>
-                      <p class="swipe-card-sub">Haruki Murakami</p>
-                    </div>
-                  </div>
-                  <div class="swipe-card">
-                    <img class="swipe-card-cover" src="tuesdays-with-morrie.jpg" alt="Tuesdays With Morrie">
-                    <div class="swipe-card-info">
-                      <p class="swipe-card-name">Tuesdays With Morrie</p>
-                      <p class="swipe-card-sub">Mitch Albom</p>
-                    </div>
-                  </div>
-                  <div class="swipe-card">
-                    <img class="swipe-card-cover" src="a-fine-balance.jpg" alt="A Fine Balance">
-                    <div class="swipe-card-info">
-                      <p class="swipe-card-name">A Fine Balance</p>
-                      <p class="swipe-card-sub">Rohinton Mistry</p>
-                    </div>
-                  </div>
-                  <div class="swipe-card-add"><span>+</span>add a book</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Hobbies -->
-          <div class="interest-item">
-            <button class="interest-btn" onclick="toggleInterest(this)">
-              Hobbies
-              <span class="interest-icon">+</span>
-            </button>
-            <div class="interest-body">
-              <div class="swipe-wrapper">
-                <div class="swipe-track">
-                  <div class="swipe-card">
-                    <div class="swipe-card-cover-placeholder"></div>
-                    <div class="swipe-card-info">
-                      <p class="swipe-card-name">Performance</p>
-                      <p class="swipe-card-sub">Singing & Dancing</p>
-                    </div>
-                  </div>
-                  <div class="swipe-card">
-                    <div class="swipe-card-cover-placeholder"></div>
-                    <div class="swipe-card-info">
-                      <p class="swipe-card-name">Sports</p>
-                      <p class="swipe-card-sub">Running & Bouldering</p>
-                    </div>
-                  </div>
-                  <div class="swipe-card">
-                    <div class="swipe-card-cover-placeholder"></div>
-                    <div class="swipe-card-info">
-                      <p class="swipe-card-name">Arts</p>
-                      <p class="swipe-card-sub">Photography & Filmmaking</p>
-                    </div>
-                  </div>
-                  <div class="swipe-card-add"><span>+</span>add a hobby</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Music -->
-          <div class="interest-item">
-            <button class="interest-btn" onclick="toggleInterest(this)">
-              Music
-              <span class="interest-icon">+</span>
-            </button>
-            <div class="interest-body">
-              <div class="swipe-wrapper">
-                <div class="swipe-track">
-                  <div class="swipe-card">
-                    <div class="swipe-card-cover-placeholder">🎵</div>
-                    <div class="swipe-card-info">
-                      <p class="swipe-card-name">Artist / Album</p>
-                      <p class="swipe-card-sub">Genre or note</p>
-                    </div>
-                  </div>
-                  <div class="swipe-card">
-                    <div class="swipe-card-cover-placeholder">🎵</div>
-                    <div class="swipe-card-info">
-                      <p class="swipe-card-name">Artist / Album</p>
-                      <p class="swipe-card-sub">Genre or note</p>
-                    </div>
-                  </div>
-                  <div class="swipe-card">
-                    <div class="swipe-card-cover-placeholder">🎵</div>
-                    <div class="swipe-card-info">
-                      <p class="swipe-card-name">Artist / Album</p>
-                      <p class="swipe-card-sub">Genre or note</p>
-                    </div>
-                  </div>
-                  <div class="swipe-card-add"><span>+</span>add music</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- EXPERIENCES -->
-    <div class="about-section">
-      <button class="about-section-btn" onclick="toggleSection(this)">
-        <h2>Experiences</h2>
-        <span class="about-chevron">+</span>
-      </button>
-      <div class="about-section-body">
-        <ul class="about-bullets">
-          <li>[ Place, internship, or research role — one sentence on what you did and what it changed about how you think. ]</li>
-          <li>[ Something that didn't go as planned but taught you more than the things that did. ]</li>
-          <li>I was born and raised in the Philippines, but I've spent almost a decade most of my life in China. I'm still terrible in speaking Chinese and I haven't travelled the country much, but I consider it more of my home than where I'm from. 
-            I've developed a deep appreciation for its culture, community, and most especially, the work that gets done behind the scenes to keep things convenient and connected.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- GOALS -->
-    <div class="about-section">
-      <button class="about-section-btn" onclick="toggleSection(this)">
-        <h2>Goals</h2>
-        <span class="about-chevron">+</span>
-      </button>
-      <div class="about-section-body">
-        <ul class="about-bullets">
-          <li>Complete my master's degree in Computational Biomedical Engineering in UPF Spain!</li>
-          <li>Join a climbing competition.</li>
-          <li>Run a marathon.</li>
-          <li>2 strength training sessions and run 3x per week.</li>
-          <li>Launch my personal website.</li>
-          <li>In 10 years, I hope to be part of a team that builds implantable or non-invasive BCI systems that can be safely inserted and used chronically. If not, something that uses signal processing and machine learning algorithms that decode neural activity in real time to restore movement or communication for people with neurodegenerative disorders.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- RIGHT NOW (scrapbook) -->
-    <div class="about-section">
-      <button class="about-section-btn" onclick="toggleSection(this)">
-        <h2>Right Now</h2>
-        <span class="about-chevron">+</span>
-      </button>
-      <div class="about-section-body">
-        <div class="scrapbook">
-
-          <div class="scrap">
-            <div class="scrap-img-placeholder">📷</div>
-            <p class="scrap-caption">[ Caption — where, when, why it matters right now. ]</p>
-          </div>
-
-          <div class="scrap scrap-green">
-            <div class="scrap-note">
-              <p class="scrap-note-text">[ A thought or thing I'm sitting with right now. ]</p>
-              <span class="scrap-note-date">May 2026</span>
-            </div>
-          </div>
-
-          <div class="scrap">
-            <div class="scrap-img-placeholder">📷</div>
-            <p class="scrap-caption">[ A book cover, something you're making, somewhere you went. ]</p>
-          </div>
-
-          <div class="scrap scrap-beige">
-            <div class="scrap-note">
-              <p class="scrap-note-text">[ Currently reading: ... · Currently listening: ... · Currently obsessing over: ... ]</p>
-              <span class="scrap-note-date">May 2026</span>
-            </div>
-          </div>
-
-          <div class="scrap">
-            <div class="scrap-img-placeholder">📷</div>
-            <p class="scrap-caption">[ A third image — something you made or somewhere you went. ]</p>
-          </div>
-
-          <div class="scrap scrap-blue">
-            <div class="scrap-note">
-              <p class="scrap-note-text">[ A question I keep returning to, or a small thing making me happy lately. ]</p>
-              <span class="scrap-note-date">May 2026</span>
-            </div>
-          </div>
-
-          <div class="scrap scrap-add">
-            <span>+</span>
-            add a moment
-          </div>
-
-        </div>
-
-        <!-- Archives link — sits below the scrapbook -->
-        <a href="archive.html" class="archives-link">→ view past interests in archives</a>
-
-      </div>
-    </div>
-
+    <section>
+      <h2 style="font-size:20px;font-weight:400;margin:0 0 20px;border-top:1px solid #EDEDED;padding-top:24px;">Right Now</h2>
+      <ul style="list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:14px;font-size:15px;color:#B4B4B4;line-height:1.7;">
+        <li>[ A thought or thing I'm sitting with right now. ] — May 2026</li>
+        <li>[ Currently reading: ... · Currently listening: ... · Currently obsessing over: ... ] — May 2026</li>
+        <li>[ A question I keep returning to, or a small thing making me happy lately. ] — May 2026</li>
+      </ul>
+      <a href="archive.html" style="font-size:14px;text-decoration:none;">&#8594; view past interests in archives</a>
+    </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <span>© 2026 Cashmere Blanche Alin</span>
-    </div>
-  </footer>
+  <footer style="text-align:center;padding:40px 24px;font-size:13px;color:#B4B4B4;">&copy; 2026 Cashmere Blanche Alin</footer>
+</div>
 
-  <script>
-    function toggleNav(btn) {
-      btn.classList.toggle('open');
-      document.getElementById('nav-links').classList.toggle('open');
-    }
-
-    function toggleSection(btn) {
-      btn.classList.toggle('open');
-      btn.nextElementSibling.classList.toggle('open');
-    }
-
-    function toggleInterest(btn) {
-      btn.classList.toggle('open');
-      btn.nextElementSibling.classList.toggle('open');
-    }
-
-    document.querySelectorAll('.swipe-track').forEach(track => {
-      let isDown = false, startX, scrollLeft;
-      track.addEventListener('mousedown', e => {
-        isDown = true;
-        startX = e.pageX - track.offsetLeft;
-        scrollLeft = track.scrollLeft;
-      });
-      track.addEventListener('mouseleave', () => isDown = false);
-      track.addEventListener('mouseup',    () => isDown = false);
-      track.addEventListener('mousemove',  e => {
-        if (!isDown) return;
-        e.preventDefault();
-        track.scrollLeft = scrollLeft - (e.pageX - track.offsetLeft - startX) * 1.2;
-      });
-    });
-  </script>
+</x-dc>
 </body>
 </html>

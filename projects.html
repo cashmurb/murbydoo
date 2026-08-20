@@ -1,440 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Side Projects — Cashmere Blanche Alin</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-
-    .projects-page {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem 6rem;
-    }
-
-    .projects-section { margin-bottom: 4rem; }
-
-    .projects-section-heading {
-      font-family: var(--font-body);
-      font-size: 0.72rem;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .projects-section-heading::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    /* Grid */
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
-    }
-
-    /* Card base */
-    .project-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
-    }
-
-    .project-card:hover {
-      border-color: var(--accent);
-      box-shadow: 0 6px 24px rgba(90,138,106,0.10);
-      transform: translateY(-3px);
-    }
-
-    /* Preview area */
-    .project-preview {
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: #e8e8e8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-
-    .project-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .project-preview video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .preview-placeholder {
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      font-style: italic;
-      color: #aaa;
-      text-align: center;
-      padding: 1rem;
-      line-height: 1.5;
-    }
-
-    /* play button overlay for film/video */
-    .play-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.18);
-      transition: background 0.15s;
-    }
-
-    .play-overlay:hover { background: rgba(0,0,0,0.32); }
-
-    .play-btn {
-      width: 48px;
-      height: 48px;
-      background: rgba(255,255,255,0.92);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-    }
-
-    /* flipbook preview */
-    .flipbook-preview {
-      position: relative;
-      cursor: pointer;
-    }
-
-    .flipbook-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.22);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.15s;
-    }
-
-    .flipbook-overlay:hover { background: rgba(0,0,0,0.38); }
-
-    .flipbook-label {
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #fff;
-      background: rgba(0,0,0,0.45);
-      padding: 0.35rem 0.9rem;
-      border-radius: 3px;
-    }
-
-    /* Card body */
-    .project-info {
-      padding: 1.1rem 1.25rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      flex-grow: 1;
-    }
-
-    .project-title {
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 400;
-      color: var(--text);
-      margin: 0;
-    }
-
-    .project-desc {
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      font-style: italic;
-      color: var(--text-muted);
-      line-height: 1.55;
-      margin: 0;
-      flex-grow: 1;
-    }
-
-    .project-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem;
-      margin-top: 0.1rem;
-    }
-
-    .project-tag {
-      font-family: var(--font-body);
-      font-size: 0.65rem;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--accent-dark);
-      background: var(--accent-light);
-      padding: 0.18rem 0.55rem;
-      border-radius: 3px;
-    }
-
-    .project-links {
-      display: flex;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-      margin-top: 0.25rem;
-    }
-
-    .project-btn {
-      font-family: var(--font-body);
-      font-size: 0.78rem;
-      padding: 0.35rem 0.85rem;
-      border-radius: 3px;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      background: var(--bg);
-      text-decoration: none;
-      transition: border-color 0.15s, color 0.15s, background 0.15s;
-    }
-
-    .project-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent-dark);
-      background: var(--accent-light);
-    }
-
-    .project-btn-primary {
-      border-color: var(--accent);
-      color: var(--accent-dark);
-      background: var(--accent-light);
-    }
-
-    @media (max-width: 600px) {
-      .project-grid { grid-template-columns: 1fr; }
-    }
-
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
 <body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; }
+  a { color: #D96614; }
+  a:hover { color: #D96614; opacity: 0.8; }
+</style>
+</helmet>
+<div style="width:1440px;height:1024px;background:#FFFFFF;position:relative;overflow:hidden;font-family:'Kode Mono',monospace;color:#000000;">
 
-  <a href="index.html" class="site-name">Cashmere Blanche Alin</a>
+  <a href="index.html" style="position:absolute;top:44px;left:40px;font-size:15px;color:#000000;text-decoration:none;z-index:10;">Cashmere Blanche Alin</a>
 
-  <nav class="site-nav">
-    <div class="nav-inner">
-      <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav(this)">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-links" id="nav-links">
-        <li><a href="takeaways.html">Takeaways</a></li>
-        <li><a href="projects.html" class="active">Side Projects</a></li>
-        <li><a href="writing.html">Writings</a></li>
-        <li><a href="inprogress.html">In Progress</a></li>
-      </ul>
-    </div>
-  </nav>
+  <div style="position:absolute;left:1085px;top:43px;width:267px;height:64px;z-index:10;">
+    <svg width="267" height="64" viewBox="0 0 267 64" style="position:absolute;top:0;left:0;">
+      <line x1="45" y1="45.56" x2="98" y2="20" stroke="{{ edgeColor.brainWips }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="118" y1="20" x2="181" y2="46" stroke="{{ edgeColor.brainWorld }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="142" y1="12" x2="227" y2="12" stroke="{{ edgeColor.brainDump }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="45" y1="59" x2="142" y2="59" stroke="{{ edgeColor.wipsWorld }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="216" y1="54" x2="252" y2="20" stroke="{{ edgeColor.worldDump }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+      <line x1="58" y1="49" x2="234" y2="20" stroke="{{ edgeColor.wipsDump }}" stroke-linecap="round" style="transition:stroke .2s;"></line>
+    </svg>
+    <a href="takeaways.html" onmouseenter="{{ hoverNode('brain') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:88px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.brain }};transition:color .2s;">Brain</a>
+    <a href="writing.html" onmouseenter="{{ hoverNode('dump') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:235px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.dump }};transition:color .2s;">Dump</a>
+    <a href="inprogress.html" onmouseenter="{{ hoverNode('wips') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:0px;top:53px;font-size:15px;text-decoration:none;color:{{ navColor.wips }};transition:color .2s;">WIPs</a>
+    <a href="projects.html" onmouseenter="{{ hoverNode('world') }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:158px;top:52px;font-size:15px;text-decoration:none;color:{{ navColor.world }};transition:color .2s;">World</a>
+  </div>
 
-  <main class="projects-page">
+  <svg width="1440" height="1024" viewBox="0 0 1440 1024" style="position:absolute;top:0;left:0;pointer-events:none;">
+    <path d="M83.7152 -13H100.635V86L106.755 95.9H110.175L119.895 85.64V37.76H136.995V80.42L147.255 95.9H150.315L156.075 89.6V-13H173.175V95L155.535 113H139.155L129.795 98.6L116.115 113H100.635L83.7152 87.98V-13ZM102.795 217H154.815L169.575 239.5V327.34L154.635 343H102.615L87.4952 320.5V232.66L102.795 217ZM104.235 317.98L110.715 327.52H147.975L152.655 322.48V242.02L146.355 232.48H109.095L104.235 237.52V317.98ZM87.3152 447H149.775L169.755 476.16V495.06L152.295 512.88L169.755 538.26V573H152.655V540.6L135.195 514.86H116.835L104.235 507.12V573H87.3152V447ZM104.235 462.48V499.38H144.195L152.655 490.92V478.86L141.315 462.48H104.235ZM87.3152 677H104.235V777.62L111.075 787.52H152.655V774.38H169.755V803H102.795L87.3152 779.78V677ZM89.2952 907H146.715L171.555 944.08V1017.34L156.435 1033H89.2952V907ZM106.215 922.48V1017.7H149.415L154.455 1012.48V946.6L138.255 922.48H106.215Z" fill="black" fill-opacity="0.17"></path>
+  </svg>
 
-    <header class="page-header">
-      <span class="section-label">Work</span>
-      <h1>Side Projects</h1>
-      <p>Code, films, and photobooks. All the trinkets I've built, made, and published.</p>
-    </header>
+  <div style="position:absolute;left:272px;top:247px;font-size:15px;color:#B4B4B4;">Code, films, and photobooks. All the trinkets I've built, made, and published.</div>
 
-    <!--1. CODE / GITHUB / DEMOS-->
-    <section class="projects-section">
-      <p class="projects-section-heading">Code &amp; Demos</p>
-      <div class="project-grid">
+  <div style="position:absolute;left:270px;top:283px;width:899px;height:459px;border:1px solid #000000;border-radius:15px;">
 
-        <div class="project-card">
-          <div class="project-preview">
-            <div class="preview-placeholder">Preview image / video placeholder<br>Replace with your screenshot</div>
-          </div>
-          <div class="project-info">
-            <h3 class="project-title">Project Title One</h3>
-            <p class="project-desc">[ Short description — what it does, why you built it, what makes it interesting. ]</p>
-            <div class="project-tags">
-              <span class="project-tag">Python</span>
-              <span class="project-tag">Deep Learning</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/yourusername/project" class="project-btn project-btn-primary" target="_blank" rel="noopener">GitHub Repo</a>
-              <a href="#" class="project-btn" target="_blank" rel="noopener">Live Demo</a>
-            </div>
-          </div>
-        </div>
+    <div onclick="{{ prevProject }}" style="position:absolute;left:56px;top:222px;cursor:pointer;font-size:24px;color:#000000;user-select:none;">&#10094;</div>
+    <div onclick="{{ nextProject }}" style="position:absolute;right:64px;top:222px;cursor:pointer;font-size:24px;color:#000000;user-select:none;">&#10095;</div>
 
-        <div class="project-card">
-          <div class="project-preview">
-            <div class="preview-placeholder">Preview image / video placeholder<br>Replace with your screenshot</div>
-          </div>
-          <div class="project-info">
-            <h3 class="project-title">Project Title Two</h3>
-            <p class="project-desc">[ Short description — the problem it solves, tools used, what you learned. ]</p>
-            <div class="project-tags">
-              <span class="project-tag">PyTorch</span>
-              <span class="project-tag">Computer Vision</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/yourusername/project" class="project-btn project-btn-primary" target="_blank" rel="noopener">GitHub Repo</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-preview">
-            <div class="preview-placeholder">Preview image / video placeholder<br>Replace with your screenshot</div>
-          </div>
-          <div class="project-info">
-            <h3 class="project-title">Project Title Three</h3>
-            <p class="project-desc">[ Short description — what it does, what tech you used. ]</p>
-            <div class="project-tags">
-              <span class="project-tag">Web App</span>
-              <span class="project-tag">JavaScript</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/yourusername/project" class="project-btn project-btn-primary" target="_blank" rel="noopener">GitHub Repo</a>
-              <a href="#" class="project-btn" target="_blank" rel="noopener">Live Demo</a>
-            </div>
-          </div>
-        </div>
-
+    <sc-if value="{{ hasProject }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;inset:0;left:120px;right:120px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:{{ contentGap }}px;">
+        <div style="font-size:32px;font-weight:600;line-height:1.25;white-space:pre-line;">{{ currentProject.title }}</div>
+        <div style="font-size:15px;color:{{ mutedTextColor }};max-width:520px;">{{ currentProject.subtitle }}</div>
+        <div style="font-size:15px;color:{{ accentColor }};display:flex;align-items:center;">{{ currentProject.tag }}</div>
+        <a href="{{ currentProject.github }}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;line-height:0;">
+          <svg width="20" height="20" viewBox="712 698 16 16" style="display:block;">
+            <path d="M718.874 709.276C716.94 709.042 715.578 707.65 715.578 705.849C715.578 705.116 715.842 704.325 716.281 703.798C716.091 703.314 716.12 702.289 716.34 701.864C716.926 701.791 717.717 702.099 718.186 702.523C718.742 702.348 719.328 702.26 720.046 702.26C720.764 702.26 721.35 702.348 721.877 702.509C722.331 702.099 723.137 701.791 723.723 701.864C723.928 702.26 723.957 703.285 723.767 703.783C724.235 704.34 724.484 705.087 724.484 705.849C724.484 707.65 723.122 709.013 721.159 709.262C721.657 709.584 721.994 710.287 721.994 711.093V712.616C721.994 713.056 722.36 713.305 722.8 713.129C725.451 712.118 727.531 709.467 727.531 706.186C727.531 702.04 724.162 698.656 720.017 698.656C715.871 698.656 712.531 702.04 712.531 706.186C712.531 709.438 714.597 712.133 717.38 713.144C717.775 713.29 718.156 713.026 718.156 712.631V711.459C717.951 711.547 717.688 711.605 717.453 711.605C716.486 711.605 715.915 711.078 715.505 710.097C715.344 709.701 715.168 709.467 714.831 709.423C714.655 709.408 714.597 709.335 714.597 709.247C714.597 709.071 714.89 708.939 715.183 708.939C715.607 708.939 715.974 709.203 716.354 709.745C716.647 710.17 716.955 710.36 717.321 710.36C717.688 710.36 717.922 710.229 718.259 709.892C718.508 709.643 718.698 709.423 718.874 709.276Z" fill="{{ accentColor }}"></path>
+          </svg>
+        </a>
       </div>
-    </section>
-
-    <!--2. FILMS-->
-    <section class="projects-section">
-      <p class="projects-section-heading">Films</p>
-      <div class="project-grid">
-
-        <div class="project-card">
-          <a href="https://youtube.com/watch?v=yourvideolink" target="_blank" rel="noopener" style="text-decoration:none;">
-            <div class="project-preview flipbook-preview">
-              <div class="preview-placeholder">Film thumbnail placeholder<br>Replace with your thumbnail image</div>
-              <div class="play-overlay">
-                <div class="play-btn">▶</div>
-              </div>
-            </div>
-          </a>
-          <div class="project-info">
-            <h3 class="project-title">Film Title One</h3>
-            <p class="project-desc">[ Short description — what the film is about, when you made it, what it meant to you. ]</p>
-            <div class="project-tags">
-              <span class="project-tag">Short Film</span>
-              <span class="project-tag">2025</span>
-            </div>
-            <div class="project-links">
-              <a href="https://youtube.com/watch?v=yourvideolink" class="project-btn project-btn-primary" target="_blank" rel="noopener">Watch on YouTube</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <a href="https://youtube.com/watch?v=yourvideolink" target="_blank" rel="noopener" style="text-decoration:none;">
-            <div class="project-preview flipbook-preview">
-              <div class="preview-placeholder">Film thumbnail placeholder<br>Replace with your thumbnail image</div>
-              <div class="play-overlay">
-                <div class="play-btn">▶</div>
-              </div>
-            </div>
-          </a>
-          <div class="project-info">
-            <h3 class="project-title">Film Title Two</h3>
-            <p class="project-desc">[ Short description — genre, length, what you explored. ]</p>
-            <div class="project-tags">
-              <span class="project-tag">Documentary</span>
-              <span class="project-tag">2024</span>
-            </div>
-            <div class="project-links">
-              <a href="https://youtube.com/watch?v=yourvideolink" class="project-btn project-btn-primary" target="_blank" rel="noopener">Watch on YouTube</a>
-            </div>
-          </div>
-        </div>
-
+    </sc-if>
+    <sc-if value="{{ !hasProject }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;left:120px;right:120px;display:flex;align-items:center;justify-content:center;">
+        <div style="font-size:24px;color:{{ mutedTextColor }};">coming soon</div>
       </div>
-    </section>
+    </sc-if>
+  </div>
 
-    <!--3. PHOTOBOOKS / MAGAZINES-->
-    <section class="projects-section">
-      <p class="projects-section-heading">Photobooks &amp; Magazines</p>
-      <div class="project-grid">
+  <div style="position:absolute;left:1191px;top:456px;display:flex;flex-direction:column;gap:38px;">
+    <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="3">
+      <div onclick="{{ cat.onClick }}" style="cursor:pointer;font-size:15px;color:{{ cat.color }};">{{ cat.name }}</div>
+    </sc-for>
+  </div>
 
-        <div class="project-card">
-          <a href="https://yourflipbooklink.com" target="_blank" rel="noopener" style="text-decoration:none;">
-            <div class="project-preview flipbook-preview">
-              <div class="preview-placeholder">Cover / sample page placeholder<br>Replace with your cover image</div>
-              <div class="flipbook-overlay">
-                <span class="flipbook-label">View Flipbook</span>
-              </div>
-            </div>
-          </a>
-          <div class="project-info">
-            <h3 class="project-title">Photobook Title One</h3>
-            <p class="project-desc">[ Short description — theme, how many pages, what it captures. ]</p>
-            <div class="project-tags">
-              <span class="project-tag">Photobook</span>
-              <span class="project-tag">2025</span>
-            </div>
-            <div class="project-links">
-              <a href="https://yourflipbooklink.com" class="project-btn project-btn-primary" target="_blank" rel="noopener">View Flipbook</a>
-            </div>
-          </div>
-        </div>
+  <div style="position:absolute;top:770px;left:0;width:100%;display:flex;justify-content:center;gap:29px;">
+    <sc-for list="{{ dots }}" as="dot" hint-placeholder-count="3">
+      <div onclick="{{ dot.onClick }}" style="width:72px;height:4px;background:{{ dot.color }};cursor:pointer;"></div>
+    </sc-for>
+  </div>
 
-        <div class="project-card">
-          <a href="https://yourflipbooklink.com" target="_blank" rel="noopener" style="text-decoration:none;">
-            <div class="project-preview flipbook-preview">
-              <div class="preview-placeholder">Cover / sample page placeholder<br>Replace with your cover image</div>
-              <div class="flipbook-overlay">
-                <span class="flipbook-label">View Flipbook</span>
-              </div>
-            </div>
-          </a>
-          <div class="project-info">
-            <h3 class="project-title">Magazine Title One</h3>
-            <p class="project-desc">[ Short description — what the magazine covers, who it's for. ]</p>
-            <div class="project-tags">
-              <span class="project-tag">Magazine</span>
-              <span class="project-tag">2024</span>
-            </div>
-            <div class="project-links">
-              <a href="https://yourflipbooklink.com" class="project-btn project-btn-primary" target="_blank" rel="noopener">View Flipbook</a>
-            </div>
-          </div>
-        </div>
+</div>
 
-      </div>
-    </section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;accentColor&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#D96614&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#D96614&quot;, &quot;#000000&quot;, &quot;#B4B4B4&quot;], &quot;section&quot;: &quot;Style&quot;},
+  &quot;mutedTextColor&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#B4B4B4&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#B4B4B4&quot;, &quot;#000000&quot;, &quot;#D96614&quot;], &quot;section&quot;: &quot;Style&quot;},
+  &quot;contentGap&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 14, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 6, &quot;max&quot;: 28, &quot;step&quot;: 1, &quot;unit&quot;: &quot;px&quot;, &quot;section&quot;: &quot;Layout&quot;}
+}">
+class Component extends DCLogic {
+  state = { hoveredNode: null, category: 'Code', index: 0 };
 
-  </main>
+  hoverNode = (name) => () => this.setState({ hoveredNode: name });
+  unhoverNode = () => this.setState({ hoveredNode: null });
+  setCategory = (cat) => () => this.setState({ category: cat, index: 0 });
+  goToIndex = (i) => () => this.setState({ index: i });
+  nextProject = () => this.setState((s) => ({ index: (s.index + 1) % 3 }));
+  prevProject = () => this.setState((s) => ({ index: (s.index + 2) % 3 }));
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <span>© 2026 Cashmere Blanche Alin</span>
-    </div>
-  </footer>
-
-  <script>
-    function toggleNav(btn) {
-      btn.classList.toggle('open');
-      document.getElementById('nav-links').classList.toggle('open');
+  renderVals() {
+    const accentColor = this.props.accentColor ?? '#D96614';
+    const mutedTextColor = this.props.mutedTextColor ?? '#B4B4B4';
+    const contentGap = this.props.contentGap ?? 14;
+    const edges = {
+      brainWips: ['brain', 'wips'], brainWorld: ['brain', 'world'], brainDump: ['brain', 'dump'],
+      wipsWorld: ['wips', 'world'], worldDump: ['world', 'dump'], wipsDump: ['wips', 'dump'],
+    };
+    const edgeColor = {};
+    for (const key in edges) {
+      edgeColor[key] = edges[key].includes(this.state.hoveredNode) ? accentColor : '#000000';
     }
-  </script>
+    const navColor = { brain: '#000000', dump: '#000000', wips: '#000000', world: accentColor };
+    if (this.state.hoveredNode) navColor[this.state.hoveredNode] = accentColor;
+
+    const categories = ['Code', 'Film', 'Photo'].map((name) => ({
+      name,
+      color: this.state.category === name ? accentColor : '#000000',
+      onClick: this.setCategory(name),
+    }));
+
+    const projects = {
+      Code: [
+        { title: 'OSA: Observational\nSpatiotemporal Anomaly Detector', subtitle: 'a modular framework for weakly supervised abnormality detection in paediatric echocardiographic video', tag: 'Python - PyTorch', github: 'https://github.com/cashmurb/OSA-' },
+        null, null,
+      ],
+      Film: [null, null, null],
+      Photo: [null, null, null],
+    };
+    const currentProject = projects[this.state.category][this.state.index];
+
+    const dots = [0, 1, 2].map((i) => ({
+      color: i === this.state.index ? accentColor : '#BFBFBF',
+      onClick: this.goToIndex(i),
+    }));
+
+    return {
+      accentColor, mutedTextColor, contentGap,
+      edgeColor, navColor, categories, dots,
+      hasProject: !!currentProject, currentProject: currentProject ?? {},
+      hoverNode: this.hoverNode, unhoverNode: this.unhoverNode,
+      nextProject: this.nextProject, prevProject: this.prevProject,
+    };
+  }
+}
+
+</script>
 </body>
 </html>

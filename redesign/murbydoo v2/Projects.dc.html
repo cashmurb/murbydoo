@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; }
+  @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+
+  a { color: #D96614; }
+  a:hover { color: #D96614; opacity: 0.8; }
+</style>
+<script>
+function __scaleFit(){var s=Math.min(window.innerWidth/1440,window.innerHeight/1024);document.documentElement.style.setProperty('--s',s);}
+window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContentLoaded',__scaleFit);__scaleFit();
+</script>
+</helmet>
+<div style="width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#FFFFFF;">
+<div style="width:1440px;height:1024px;background:#FFFFFF;position:relative;overflow:hidden;font-family:'Kode Mono',monospace;color:#000000;flex-shrink:0;transform:scale(var(--s,1));animation:fadeInPage .5s ease both;">
+
+  <a href="Home.dc.html" style="position:absolute;top:44px;left:50%;transform:translateX(-50%);font-size:15px;color:#000000;text-decoration:none;z-index:10;">Cashmere Blanche Alin</a>
+
+  <div style="position:absolute;left:1085px;top:43px;width:267px;height:64px;z-index:10;">
+    <svg width="267" height="64" viewBox="0 0 267 64" style="position:absolute;top:0;left:0;">
+      <line x1="45" y1="45.56" x2="98" y2="20" stroke="{{ edgeColor.brainWips }}" stroke-width="{{ edgeWidth.brainWips }}" stroke-linecap="round" onmouseenter="{{ edgeHover.brainWips }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="118" y1="20" x2="181" y2="46" stroke="{{ edgeColor.brainWorld }}" stroke-width="{{ edgeWidth.brainWorld }}" stroke-linecap="round" onmouseenter="{{ edgeHover.brainWorld }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="142" y1="12" x2="227" y2="12" stroke="{{ edgeColor.brainDump }}" stroke-width="{{ edgeWidth.brainDump }}" stroke-linecap="round" onmouseenter="{{ edgeHover.brainDump }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="45" y1="59" x2="142" y2="59" stroke="{{ edgeColor.wipsWorld }}" stroke-width="{{ edgeWidth.wipsWorld }}" stroke-linecap="round" onmouseenter="{{ edgeHover.wipsWorld }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="216" y1="54" x2="252" y2="20" stroke="{{ edgeColor.worldDump }}" stroke-width="{{ edgeWidth.worldDump }}" stroke-linecap="round" onmouseenter="{{ edgeHover.worldDump }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="58" y1="49" x2="234" y2="20" stroke="{{ edgeColor.wipsDump }}" stroke-width="{{ edgeWidth.wipsDump }}" stroke-linecap="round" onmouseenter="{{ edgeHover.wipsDump }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+    </svg>
+    <a href="Takeaways.dc.html" onmouseenter="{{ navHover.brain }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:88px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.brain }};transition:color .2s;">Brain</a>
+    <a href="Writing.dc.html" onmouseenter="{{ navHover.dump }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:235px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.dump }};transition:color .2s;">Dump</a>
+    <a href="InProgress.dc.html" onmouseenter="{{ navHover.wips }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:0px;top:53px;font-size:15px;text-decoration:none;color:{{ navColor.wips }};transition:color .2s;">WIPs</a>
+    <a href="Projects.dc.html" onmouseenter="{{ navHover.world }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:158px;top:52px;font-size:15px;text-decoration:none;color:{{ navColor.world }};transition:color .2s;">World</a>
+  </div>
+
+  <svg width="1440" height="1024" viewBox="0 0 1440 1024" style="position:absolute;top:0;left:0;pointer-events:none;">
+    <path d="M83.7152 -13H100.635V86L106.755 95.9H110.175L119.895 85.64V37.76H136.995V80.42L147.255 95.9H150.315L156.075 89.6V-13H173.175V95L155.535 113H139.155L129.795 98.6L116.115 113H100.635L83.7152 87.98V-13Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+    <path d="M102.795 217H154.815L169.575 239.5V327.34L154.635 343H102.615L87.4952 320.5V232.66L102.795 217Z M104.235 317.98L110.715 327.52H147.975L152.655 322.48V242.02L146.355 232.48H109.095L104.235 237.52V317.98Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+    <path d="M87.3152 447H149.775L169.755 476.16V495.06L152.295 512.88L169.755 538.26V573H152.655V540.6L135.195 514.86H116.835L104.235 507.12V573H87.3152V447Z M104.235 462.48V499.38H144.195L152.655 490.92V478.86L141.315 462.48H104.235Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+    <path d="M87.3152 677H104.235V777.62L111.075 787.52H152.655V774.38H169.755V803H102.795L87.3152 779.78V677Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+    <path d="M89.2952 907H146.715L171.555 944.08V1017.34L156.435 1033H89.2952V907Z M106.215 922.48V1017.7H149.415L154.455 1012.48V946.6L138.255 922.48H106.215Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+  </svg>
+
+  <div style="position:absolute;left:272px;top:247px;font-size:15px;color:#B4B4B4;">Code, films, and photobooks. All the trinkets I've built, made, and published.</div>
+
+  <div style="position:absolute;left:270px;top:283px;width:899px;height:459px;border:1px solid #000000;border-radius:15px;">
+
+    <div onclick="{{ prevProject }}" style="position:absolute;left:56px;top:222px;cursor:pointer;font-size:24px;color:#000000;user-select:none;">&#10094;</div>
+    <div onclick="{{ nextProject }}" style="position:absolute;right:64px;top:222px;cursor:pointer;font-size:24px;color:#000000;user-select:none;">&#10095;</div>
+
+    <sc-if value="{{ hasProject }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;inset:0;left:120px;right:120px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:{{ contentGap }}px;">
+        <div style="font-size:32px;font-weight:600;line-height:1.25;white-space:pre-line;">{{ currentProject.title }}</div>
+        <div style="font-size:15px;color:{{ mutedTextColor }};max-width:520px;">{{ currentProject.subtitle }}</div>
+        <div style="font-size:15px;color:{{ accentColor }};display:flex;align-items:center;">{{ currentProject.tag }}</div>
+        <a href="{{ currentProject.github }}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;line-height:0;">
+          <svg width="20" height="20" viewBox="712 698 16 16" style="display:block;">
+            <path d="M718.874 709.276C716.94 709.042 715.578 707.65 715.578 705.849C715.578 705.116 715.842 704.325 716.281 703.798C716.091 703.314 716.12 702.289 716.34 701.864C716.926 701.791 717.717 702.099 718.186 702.523C718.742 702.348 719.328 702.26 720.046 702.26C720.764 702.26 721.35 702.348 721.877 702.509C722.331 702.099 723.137 701.791 723.723 701.864C723.928 702.26 723.957 703.285 723.767 703.783C724.235 704.34 724.484 705.087 724.484 705.849C724.484 707.65 723.122 709.013 721.159 709.262C721.657 709.584 721.994 710.287 721.994 711.093V712.616C721.994 713.056 722.36 713.305 722.8 713.129C725.451 712.118 727.531 709.467 727.531 706.186C727.531 702.04 724.162 698.656 720.017 698.656C715.871 698.656 712.531 702.04 712.531 706.186C712.531 709.438 714.597 712.133 717.38 713.144C717.775 713.29 718.156 713.026 718.156 712.631V711.459C717.951 711.547 717.688 711.605 717.453 711.605C716.486 711.605 715.915 711.078 715.505 710.097C715.344 709.701 715.168 709.467 714.831 709.423C714.655 709.408 714.597 709.335 714.597 709.247C714.597 709.071 714.89 708.939 715.183 708.939C715.607 708.939 715.974 709.203 716.354 709.745C716.647 710.17 716.955 710.36 717.321 710.36C717.688 710.36 717.922 710.229 718.259 709.892C718.508 709.643 718.698 709.423 718.874 709.276Z" fill="{{ accentColor }}"></path>
+          </svg>
+        </a>
+      </div>
+    </sc-if>
+    <sc-if value="{{ !hasProject }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;left:120px;right:120px;display:flex;align-items:center;justify-content:center;">
+        <div style="font-size:24px;color:{{ mutedTextColor }};">coming soon</div>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="position:absolute;left:1191px;top:456px;display:flex;flex-direction:column;gap:38px;">
+    <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="3">
+      <div onclick="{{ cat.onClick }}" style="cursor:pointer;font-size:15px;color:{{ cat.color }};">{{ cat.name }}</div>
+    </sc-for>
+  </div>
+
+  <div style="position:absolute;top:770px;left:0;width:100%;display:flex;justify-content:center;gap:29px;">
+    <sc-for list="{{ dots }}" as="dot" hint-placeholder-count="3">
+      <div onclick="{{ dot.onClick }}" style="width:72px;height:4px;background:{{ dot.color }};cursor:pointer;"></div>
+    </sc-for>
+  </div>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;accentColor&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#D96614&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#D96614&quot;, &quot;#000000&quot;, &quot;#B4B4B4&quot;], &quot;section&quot;: &quot;Style&quot;},
+  &quot;mutedTextColor&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#B4B4B4&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#B4B4B4&quot;, &quot;#000000&quot;, &quot;#D96614&quot;], &quot;section&quot;: &quot;Style&quot;},
+  &quot;contentGap&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 14, &quot;tsType&quot;: &quot;number&quot;, &quot;min&quot;: 6, &quot;max&quot;: 28, &quot;step&quot;: 1, &quot;unit&quot;: &quot;px&quot;, &quot;section&quot;: &quot;Layout&quot;}
+}">
+class Component extends DCLogic {
+  state = { hoveredNode: null, category: 'Code', index: 0 , hoveredEdge: null };
+
+  hoverNode = (name) => () => this.setState({ hoveredNode: name });
+  unhoverNode = () => this.setState({ hoveredNode: null });
+  hoverEdge = (key) => () => this.setState({ hoveredEdge: key });
+  unhoverEdge = () => this.setState({ hoveredEdge: null });
+  setCategory = (cat) => () => this.setState({ category: cat, index: 0 });
+  goToIndex = (i) => () => this.setState({ index: i });
+  nextProject = () => this.setState((s) => ({ index: (s.index + 1) % 3 }));
+  prevProject = () => this.setState((s) => ({ index: (s.index + 2) % 3 }));
+
+  projects = {
+    Code: [
+      { title: 'OSA: Observational\nSpatiotemporal Anomaly Detector', subtitle: 'a modular framework for weakly supervised abnormality detection in paediatric echocardiographic video', tag: 'Python - PyTorch', github: 'https://github.com/cashmurb/OSA-' },
+      null, null,
+    ],
+    Film: [null, null, null],
+    Photo: [null, null, null],
+  };
+
+  componentDidMount() {
+    import('./content/projects-data.js').then((m) => { this.projects = m.projects; this.forceUpdate(); }).catch(() => {});
+  }
+
+  renderVals() {
+    const accentColor = this.props.accentColor ?? '#D96614';
+    const mutedTextColor = this.props.mutedTextColor ?? '#B4B4B4';
+    const contentGap = this.props.contentGap ?? 14;
+    const edges = {
+      brainWips: ['brain', 'wips'], brainWorld: ['brain', 'world'], brainDump: ['brain', 'dump'],
+      wipsWorld: ['wips', 'world'], worldDump: ['world', 'dump'], wipsDump: ['wips', 'dump'],
+    };
+    const edgeColor = {};
+    for (const key in edges) {
+      edgeColor[key] = edges[key].includes(this.state.hoveredNode) ? accentColor : '#000000';
+    }
+    const edgeGlow = {};
+    const edgeWidth = {};
+    for (const key in edges) {
+      const active = edges[key].includes(this.state.hoveredNode) || this.state.hoveredEdge === key;
+      edgeGlow[key] = 'none';
+      edgeWidth[key] = active ? 2 : 1;
+    }
+    const navHover = { brain: this.hoverNode('brain'), dump: this.hoverNode('dump'), wips: this.hoverNode('wips'), world: this.hoverNode('world') };
+    const edgeHover = {};
+    for (const key in edges) { edgeHover[key] = this.hoverEdge(key); }
+    const navColor = { brain: '#000000', dump: '#000000', wips: '#000000', world: accentColor };
+    if (this.state.hoveredNode) navColor[this.state.hoveredNode] = accentColor;
+
+    const categories = ['Code', 'Film', 'Photo'].map((name) => ({
+      name,
+      color: this.state.category === name ? accentColor : '#000000',
+      onClick: this.setCategory(name),
+    }));
+
+    const currentProject = this.projects[this.state.category][this.state.index];
+
+    const dots = [0, 1, 2].map((i) => ({
+      color: i === this.state.index ? accentColor : '#BFBFBF',
+      onClick: this.goToIndex(i),
+    }));
+
+    return {
+      accentColor, mutedTextColor, contentGap,
+      edgeGlow, edgeWidth, edgeColor, navColor, navHover, edgeHover, categories, dots,
+      hasProject: !!currentProject, currentProject: currentProject ?? {},
+      hoverNode: this.hoverNode, unhoverNode: this.unhoverNode,
+      nextProject: this.nextProject, prevProject: this.prevProject,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

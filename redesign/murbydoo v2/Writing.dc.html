@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; }
+  @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+
+  a { color: #D96614; }
+  a:hover { color: #D96614; opacity: 0.8; }
+</style>
+<script>
+function __scaleFit(){var s=Math.min(window.innerWidth/1440,window.innerHeight/1024);document.documentElement.style.setProperty('--s',s);}
+window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContentLoaded',__scaleFit);__scaleFit();
+</script>
+</helmet>
+<div style="width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#FFFFFF;">
+<div style="width:1440px;height:1024px;background:#FFFFFF;position:relative;overflow:hidden;font-family:'Kode Mono',monospace;color:#000000;flex-shrink:0;transform:scale(var(--s,1));animation:fadeInPage .5s ease both;">
+
+  <a href="Home.dc.html" style="position:absolute;top:44px;left:50%;transform:translateX(-50%);font-size:15px;color:#000000;text-decoration:none;z-index:10;">Cashmere Blanche Alin</a>
+
+  <div style="position:absolute;left:1085px;top:43px;width:267px;height:64px;z-index:10;">
+    <svg width="267" height="64" viewBox="0 0 267 64" style="position:absolute;top:0;left:0;">
+      <line x1="45" y1="45.56" x2="98" y2="20" stroke="{{ edgeColor.brainWips }}" stroke-width="{{ edgeWidth.brainWips }}" stroke-linecap="round" onmouseenter="{{ edgeHover.brainWips }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="118" y1="20" x2="181" y2="46" stroke="{{ edgeColor.brainWorld }}" stroke-width="{{ edgeWidth.brainWorld }}" stroke-linecap="round" onmouseenter="{{ edgeHover.brainWorld }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="142" y1="12" x2="227" y2="12" stroke="{{ edgeColor.brainDump }}" stroke-width="{{ edgeWidth.brainDump }}" stroke-linecap="round" onmouseenter="{{ edgeHover.brainDump }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="45" y1="59" x2="142" y2="59" stroke="{{ edgeColor.wipsWorld }}" stroke-width="{{ edgeWidth.wipsWorld }}" stroke-linecap="round" onmouseenter="{{ edgeHover.wipsWorld }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="216" y1="54" x2="252" y2="20" stroke="{{ edgeColor.worldDump }}" stroke-width="{{ edgeWidth.worldDump }}" stroke-linecap="round" onmouseenter="{{ edgeHover.worldDump }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="58" y1="49" x2="234" y2="20" stroke="{{ edgeColor.wipsDump }}" stroke-width="{{ edgeWidth.wipsDump }}" stroke-linecap="round" onmouseenter="{{ edgeHover.wipsDump }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+    </svg>
+    <a href="Takeaways.dc.html" onmouseenter="{{ navHover.brain }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:88px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.brain }};transition:color .2s;">Brain</a>
+    <a href="Writing.dc.html" onmouseenter="{{ navHover.dump }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:235px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.dump }};transition:color .2s;">Dump</a>
+    <a href="InProgress.dc.html" onmouseenter="{{ navHover.wips }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:0px;top:53px;font-size:15px;text-decoration:none;color:{{ navColor.wips }};transition:color .2s;">WIPs</a>
+    <a href="Projects.dc.html" onmouseenter="{{ navHover.world }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:158px;top:52px;font-size:15px;text-decoration:none;color:{{ navColor.world }};transition:color .2s;">World</a>
+  </div>
+
+  <svg width="1440" height="1024" viewBox="0 0 1440 1024" style="position:absolute;top:0;left:0;pointer-events:none;">
+    <path d="M89.2952 102H146.715L171.555 139.08V212.34L156.435 228H89.2952V102Z M106.215 117.48V212.7H149.415L154.455 207.48V141.6L138.255 117.48H106.215Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+    <path d="M152.655 332H169.755V458H152.655V450.08L139.875 458H102.615L87.3152 435.5V332H104.235V432.98L110.715 442.52H147.615L152.655 437.48V332Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+    <path d="M87.4952 562H104.415V565.96L123.315 594.04L152.655 562H169.755V688H152.655V584.32L136.095 602.5V617.08H120.435V616L104.415 592.24V688H87.4952V562Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+    <path d="M87.4952 792H154.635L169.575 814.5V844.56L154.455 859.86H104.415V918H87.4952V792Z M104.415 807.48V852.3L117.555 844.56H147.795L152.655 839.7V817.2L146.355 807.48H104.415Z" fill="black" fill-opacity="0.17" style="pointer-events:auto;cursor:default;transition:fill .2s,fill-opacity .2s;" style-hover="fill:#D96614;fill-opacity:0.55;"></path>
+  </svg>
+
+  <div style="position:absolute;left:272px;top:247px;font-size:15px;color:{{ mutedTextColor }};">A collection of essays, observations, and loose thoughts published on Substack.</div>
+
+  <div style="position:absolute;left:270px;top:283px;width:899px;height:459px;border:1px solid #000000;border-radius:15px;">
+
+    <div onclick="{{ prevArticle }}" style="position:absolute;left:56px;top:222px;cursor:pointer;font-size:24px;color:#000000;user-select:none;">&#10094;</div>
+    <div onclick="{{ nextArticle }}" style="position:absolute;right:64px;top:222px;cursor:pointer;font-size:24px;color:#000000;user-select:none;">&#10095;</div>
+
+    <a href="{{ currentArticle.url }}" target="_blank" rel="noopener" style="position:absolute;inset:0;left:120px;right:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;text-decoration:none;color:#000000;">
+      <div style="font-size:32px;font-weight:600;">{{ currentArticle.title }}</div>
+      <sc-if value="{{ currentArticle.subtitle }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:12px;color:{{ mutedTextColor }};max-width:600px;">{{ currentArticle.subtitle }}</div>
+      </sc-if>
+      <svg width="20" height="20" viewBox="0 0 24 24" style="margin-top:2px;">
+        <path d="M22 5.892H2V8.3h20V5.892zM2 10.708V24l10-4.917L22 24V10.708H2zM22 0H2v2.408h20V0z" fill="{{ accentColor }}"></path>
+      </svg>
+    </a>
+  </div>
+
+  <div style="position:absolute;top:770px;left:0;width:100%;display:flex;justify-content:center;gap:29px;">
+    <sc-for list="{{ dots }}" as="dot" hint-placeholder-count="4">
+      <div onclick="{{ goToIndex($index) }}" style="width:72px;height:4px;background:{{ dot.color }};cursor:pointer;"></div>
+    </sc-for>
+  </div>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;accentColor&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#D96614&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#D96614&quot;, &quot;#000000&quot;, &quot;#B4B4B4&quot;], &quot;section&quot;: &quot;Style&quot;},
+  &quot;mutedTextColor&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#B4B4B4&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#B4B4B4&quot;, &quot;#000000&quot;, &quot;#D96614&quot;], &quot;section&quot;: &quot;Style&quot;}
+}">
+class Component extends DCLogic {
+  state = { hoveredNode: null, index: 0 , hoveredEdge: null };
+
+  hoverNode = (name) => () => this.setState({ hoveredNode: name });
+  unhoverNode = () => this.setState({ hoveredNode: null });
+  hoverEdge = (key) => () => this.setState({ hoveredEdge: key });
+  unhoverEdge = () => this.setState({ hoveredEdge: null });
+  goToIndex = (i) => () => this.setState({ index: i });
+
+  articles = [
+    { title: 'the toilet brings me peace', subtitle: "It's been officially 2 months since I started my internship, and it really hasn't been easy.", url: 'https://open.substack.com/pub/casmurb/p/the-toilet-brings-me-peace?r=52iek6&utm_campaign=post&utm_medium=web' },
+    { title: "you shouldn't cling to someone", subtitle: 'a lesson I learned from loving someone', url: 'https://open.substack.com/pub/casmurb/p/you-shouldnt-cling-onto-someone?r=52iek6&utm_campaign=post&utm_medium=web' },
+    { title: 'little things', subtitle: 'ending march with a memory', url: 'https://open.substack.com/pub/casmurb/p/a-vivid-memory?r=52iek6&utm_campaign=post&utm_medium=web' },
+    { title: 'some lives are not empty, they are just harder to see', subtitle: 'My boyfriend and I were out for our usual late night walk when we saw four uncles coming down the street.', url: 'https://open.substack.com/pub/casmurb/p/some-lives-are-not-empty-they-are?r=52iek6&utm_campaign=post&utm_medium=web' },
+  ];
+
+  componentDidMount() {
+    import('./content/writing-articles.js').then((m) => { this.articles = m.articles; this.forceUpdate(); }).catch(() => {});
+  }
+
+  nextArticle = () => this.setState((s) => ({ index: (s.index + 1) % this.articles.length }));
+  prevArticle = () => this.setState((s) => ({ index: (s.index + this.articles.length - 1) % this.articles.length }));
+  renderVals() {
+    const accentColor = this.props.accentColor ?? '#D96614';
+    const mutedTextColor = this.props.mutedTextColor ?? '#B4B4B4';
+    const edges = {
+      brainWips: ['brain', 'wips'], brainWorld: ['brain', 'world'], brainDump: ['brain', 'dump'],
+      wipsWorld: ['wips', 'world'], worldDump: ['world', 'dump'], wipsDump: ['wips', 'dump'],
+    };
+    const edgeColor = {};
+    for (const key in edges) {
+      edgeColor[key] = edges[key].includes(this.state.hoveredNode) ? accentColor : '#000000';
+    }
+    const edgeGlow = {};
+    const edgeWidth = {};
+    for (const key in edges) {
+      const active = edges[key].includes(this.state.hoveredNode) || this.state.hoveredEdge === key;
+      edgeGlow[key] = 'none';
+      edgeWidth[key] = active ? 2 : 1;
+    }
+    const navHover = { brain: this.hoverNode('brain'), dump: this.hoverNode('dump'), wips: this.hoverNode('wips'), world: this.hoverNode('world') };
+    const edgeHover = {};
+    for (const key in edges) { edgeHover[key] = this.hoverEdge(key); }
+    const navColor = { brain: '#000000', dump: accentColor, wips: '#000000', world: '#000000' };
+    if (this.state.hoveredNode) navColor[this.state.hoveredNode] = accentColor;
+
+    const dots = this.articles.map((_, i) => ({ color: i === this.state.index ? accentColor : '#BFBFBF' }));
+
+    return {
+      accentColor, mutedTextColor,
+      edgeGlow, edgeWidth, edgeColor, navColor, navHover, edgeHover, articles: this.articles, dots,
+      currentArticle: this.articles[this.state.index],
+      hoverNode: this.hoverNode, unhoverNode: this.unhoverNode,
+      goToIndex: this.goToIndex, nextArticle: this.nextArticle, prevArticle: this.prevArticle,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

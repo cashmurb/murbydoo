@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; }
+  @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+
+  a { color: #D96614; }
+  a:hover { color: #D96614; opacity: 0.8; }
+</style>
+<script>
+function __scaleFit(){var s=Math.min(window.innerWidth/1440,window.innerHeight/1024);document.documentElement.style.setProperty('--s',s);}
+window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContentLoaded',__scaleFit);__scaleFit();
+</script>
+</helmet>
+<div style="width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#FFFFFF;">
+<div style="width:1440px;height:1024px;background:#FFFFFF;position:relative;overflow:hidden;font-family:'Kode Mono',monospace;color:#000000;flex-shrink:0;transform:scale(var(--s,1));animation:fadeInPage .5s ease both;">
+
+  <a href="Home.dc.html" style="position:absolute;top:44px;left:50%;transform:translateX(-50%);font-size:15px;color:#000000;text-decoration:none;z-index:10;">Cashmere Blanche Alin</a>
+
+  <div style="position:absolute;left:1085px;top:43px;width:267px;height:64px;z-index:10;">
+    <svg width="267" height="64" viewBox="0 0 267 64" style="position:absolute;top:0;left:0;">
+      <line x1="45" y1="45.56" x2="98" y2="20" stroke="{{ edgeColor.brainWips }}" stroke-width="{{ edgeWidth.brainWips }}" stroke-linecap="round" onmouseenter="{{ edgeHover.brainWips }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="118" y1="20" x2="181" y2="46" stroke="{{ edgeColor.brainWorld }}" stroke-width="{{ edgeWidth.brainWorld }}" stroke-linecap="round" onmouseenter="{{ edgeHover.brainWorld }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="142" y1="12" x2="227" y2="12" stroke="{{ edgeColor.brainDump }}" stroke-width="{{ edgeWidth.brainDump }}" stroke-linecap="round" onmouseenter="{{ edgeHover.brainDump }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="45" y1="59" x2="142" y2="59" stroke="{{ edgeColor.wipsWorld }}" stroke-width="{{ edgeWidth.wipsWorld }}" stroke-linecap="round" onmouseenter="{{ edgeHover.wipsWorld }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="216" y1="54" x2="252" y2="20" stroke="{{ edgeColor.worldDump }}" stroke-width="{{ edgeWidth.worldDump }}" stroke-linecap="round" onmouseenter="{{ edgeHover.worldDump }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+      <line x1="58" y1="49" x2="234" y2="20" stroke="{{ edgeColor.wipsDump }}" stroke-width="{{ edgeWidth.wipsDump }}" stroke-linecap="round" onmouseenter="{{ edgeHover.wipsDump }}" onmouseleave="{{ unhoverEdge }}" style="transition:stroke .3s cubic-bezier(0.4,0,0.2,1), stroke-width .3s cubic-bezier(0.4,0,0.2,1);pointer-events:stroke;cursor:pointer;"></line>
+    </svg>
+    <a href="Takeaways.dc.html" onmouseenter="{{ navHover.brain }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:88px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.brain }};transition:color .2s;">Brain</a>
+    <a href="Writing.dc.html" onmouseenter="{{ navHover.dump }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:235px;top:1px;font-size:15px;text-decoration:none;color:{{ navColor.dump }};transition:color .2s;">Dump</a>
+    <a href="InProgress.dc.html" onmouseenter="{{ navHover.wips }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:0px;top:53px;font-size:15px;text-decoration:none;color:{{ navColor.wips }};transition:color .2s;">WIPs</a>
+    <a href="Projects.dc.html" onmouseenter="{{ navHover.world }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:158px;top:52px;font-size:15px;text-decoration:none;color:{{ navColor.world }};transition:color .2s;">World</a>
+  </div>
+
+  <div style="position:absolute;left:0;top:96px;bottom:0;width:100%;display:flex;flex-direction:column;justify-content:center;">
+    <div style="padding-left:189px;">
+      <div style="font-size:48px;font-weight:400;margin-bottom:38px;">experience</div>
+
+      <div style="display:flex;flex-direction:column;gap:32px;max-width:1200px;">
+        <sc-for list="{{ roles }}" as="role" hint-placeholder-count="3">
+          <div>
+            <div onclick="{{ role.onClick }}" style="display:flex;align-items:flex-start;gap:16px;cursor:pointer;">
+              <svg width="14" height="14" viewBox="0 0 14 14" style="flex-shrink:0;margin-top:4px;transform:rotate({{ role.rotation }}deg);transition:transform .25s ease;">
+                <path d="M14 7L0 14V0L14 7Z" fill="#D96614"></path>
+              </svg>
+              <div style="font-size:20px;line-height:1.4;white-space:pre-line;">{{ role.title }}</div>
+            </div>
+            <div style="max-height:{{ role.descMaxHeight }};opacity:{{ role.descOpacity }};overflow:hidden;transition:max-height .4s cubic-bezier(0.4,0,0.2,1), opacity .3s ease;">
+              <div style="margin-top:16px;margin-left:30px;font-size:15px;line-height:1.7;color:rgba(0,0,0,0.56);max-width:900px;">{{ role.description }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { open: {}, hoveredNode: null };
+
+  toggle = (id) => () => this.setState((s) => ({ open: { ...s.open, [id]: !s.open[id] } }));
+  hoverNode = (name) => () => this.setState({ hoveredNode: name });
+  unhoverNode = () => this.setState({ hoveredNode: null });
+  hoverEdge = (key) => () => this.setState({ hoveredEdge: key });
+  unhoverEdge = () => this.setState({ hoveredEdge: null });
+
+  renderVals() {
+    const accentColor = '#D96614';
+    const edges = {
+      brainWips: ['brain', 'wips'], brainWorld: ['brain', 'world'], brainDump: ['brain', 'dump'],
+      wipsWorld: ['wips', 'world'], worldDump: ['world', 'dump'], wipsDump: ['wips', 'dump'],
+    };
+    const edgeColor = {};
+    for (const key in edges) {
+      edgeColor[key] = edges[key].includes(this.state.hoveredNode) ? accentColor : '#000000';
+    }
+    const edgeGlow = {};
+    const edgeWidth = {};
+    for (const key in edges) {
+      const active = edges[key].includes(this.state.hoveredNode) || this.state.hoveredEdge === key;
+      edgeGlow[key] = 'none';
+      edgeWidth[key] = active ? 2 : 1;
+    }
+    const navHover = { brain: this.hoverNode('brain'), dump: this.hoverNode('dump'), wips: this.hoverNode('wips'), world: this.hoverNode('world') };
+    const edgeHover = {};
+    for (const key in edges) { edgeHover[key] = this.hoverEdge(key); }
+    const navColor = { brain: '#000000', dump: '#000000', wips: '#000000', world: '#000000' };
+    if (this.state.hoveredNode) navColor[this.state.hoveredNode] = accentColor;
+
+    const data = [
+      {
+        id: 'swe',
+        title: 'Software Engineer Intern (Data Analytics focus) @ Shanghai Winner-Solution Technology Co. Ltd.',
+        description: "Worked on data analytics and internal software tools, fixing discrepancies between Python pipelines and the company's testing system while improving data accuracy and debugging efficiency. I also built an interactive dashboard and refined internal tooling to make reporting and day-to-day workflows smoother.",
+      },
+      {
+        id: 'research',
+        title: "Researcher/ Research Assistant\n@ School of Artificial Intelligence and Advanced Computing, Xi'an Jiaotong-Liverpool University",
+        description: "Worked on YOLOv7-based multi-object tracking for illegal parking detection through XJTLU's Summer Undergraduate Research Fellowship, improving model accuracy by 18%. Published work on Random Forest-based predictive risk analytics for Industry 4.0.",
+      },
+      {
+        id: 'content',
+        title: "Content Creator (Videographer + Video Editor)\n@ University Marketing and Communications, Xi'an Jiaotong-Liverpool University",
+        description: "Led videography for XJTLU's 2024 graduation video, coordinating production under tight deadlines and limited resources. My work spans filming, editing, and visual storytelling, with tools including Final Cut Pro X and DaVinci Resolve.",
+      },
+    ];
+
+    const roles = data.map((r) => ({
+      ...r,
+      open: !!this.state.open[r.id],
+      rotation: this.state.open[r.id] ? 90 : 0,
+      onClick: this.toggle(r.id),
+      descMaxHeight: this.state.open[r.id] ? '160px' : '0px',
+      descOpacity: this.state.open[r.id] ? 1 : 0,
+    }));
+
+    return { roles, edgeGlow, edgeWidth, edgeColor, navColor, hoverNode: this.hoverNode, unhoverNode: this.unhoverNode };
+  }
+}
+
+</script>
+</body>
+</html>

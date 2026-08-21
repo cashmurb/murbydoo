@@ -1,0 +1,31 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Kode Mono', monospace; background: #FFFFFF; color: #000000; }
+
+a { color: #D96614; text-decoration: none; }
+a:hover { color: #D96614; opacity: 0.8; }
+
+@keyframes fadeInPage {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes letterBounce {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(-12px); }
+  55% { transform: translateY(3px); }
+  78% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+.murb-letter:hover { animation: letterBounce 0.55s ease; }
+
+.glyph-hover {
+  fill: #000000;
+  fill-opacity: 0.17;
+  transition: fill .2s, fill-opacity .2s;
+  pointer-events: auto;
+  cursor: default;
+}
+.glyph-hover:hover {
+  fill: #D96614;
+  fill-opacity: 0.55;
+}

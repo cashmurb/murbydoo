@@ -7,24 +7,35 @@
 </head>
 <body>
 <x-dc>
-
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   body { margin: 0; }
-  @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
-
   a { color: #D96614; }
   a:hover { color: #D96614; opacity: 0.8; }
 </style>
 <script>
-function __scaleFit(){var s=Math.min(window.innerWidth/1440,window.innerHeight/1024);document.documentElement.style.setProperty('--s',s);}
-window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContentLoaded',__scaleFit);__scaleFit();
+function __scaleFit(){
+  var s=Math.min(window.innerWidth/1440,1);
+  var wrap=document.getElementById('scale-wrap');
+  var inner=document.getElementById('scale-inner');
+  if(!wrap||!inner) return;
+  var t='scale('+s+')';
+  var h=Math.round(inner.scrollHeight*s)+'px';
+  if(inner.style.transform!==t) inner.style.transform=t;
+  if(wrap.style.height!==h) wrap.style.height=h;
+}
+window.addEventListener('resize',__scaleFit);
+new MutationObserver(__scaleFit).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['style']});
+(function poll(n){
+  __scaleFit();
+  if(n<120) requestAnimationFrame(function(){poll(n+1);});
+})(0);
 </script>
 </helmet>
-<div style="width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#FFFFFF;">
-<div style="width:1440px;height:1024px;background:#FFFFFF;position:relative;overflow:hidden;font-family:'Kode Mono',monospace;color:#000000;flex-shrink:0;transform:scale(var(--s,1));animation:fadeInPage .5s ease both;">
+<div id="scale-wrap" style="width:100%;overflow:hidden;position:relative;">
+<div id="scale-inner" style="width:1440px;min-height:1024px;background:#FFFFFF;position:relative;font-family:'Kode Mono',monospace;color:#000000;padding-bottom:120px;transform-origin:top left;">
 
   <a href="home.html" style="position:absolute;top:44px;left:50%;transform:translateX(-50%);font-size:15px;color:#000000;text-decoration:none;z-index:10;">Cashmere Blanche Alin</a>
 
@@ -43,31 +54,28 @@ window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContent
     <a href="world.html" onmouseenter="{{ navHover.world }}" onmouseleave="{{ unhoverNode }}" style="position:absolute;left:158px;top:52px;font-size:15px;text-decoration:none;color:{{ navColor.world }};transition:color .2s;">World</a>
   </div>
 
-  <div style="position:absolute;left:880px;top:282px;width:370px;height:459px;border:1px solid #000000;border-radius:14.5px;overflow:hidden;">
-    <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#000000;text-align:center;padding:20px;box-sizing:border-box;">[ photo of my self ]</div>
+  <div style="position:absolute;top:160px;left:0;width:100%;text-align:center;font-size:32px;font-weight:600;">Introduction to Neural Networks</div>
+
+  <div style="position:absolute;top:290px;left:136px;width:1172px;display:flex;flex-direction:column;gap:44px;">
+    <sc-for list="{{ sections }}" as="section" hint-placeholder-count="5">
+      <div>
+        <div onclick="{{ section.onClick }}" style="display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;">
+          <svg width="14" height="14" viewBox="0 0 14 14" style="flex-shrink:0;margin-top:4px;transform:rotate({{ section.rotation }}deg);transition:transform .25s ease;"><path d="M14 7L0 14V0L14 7Z" fill="#D96614"></path></svg>
+          <div style="font-size:20px;">{{ section.heading }}</div>
+        </div>
+        <div style="max-height:{{ section.maxHeight }};opacity:{{ section.opacity }};overflow:hidden;transition:max-height .4s cubic-bezier(0.4,0,0.2,1), opacity .3s ease;">
+          <div style="margin-top:14px;margin-left:28px;font-size:15px;line-height:1.8;color:{{ mutedTextColor }};max-width:1050px;">{{ section.body }}</div>
+        </div>
+      </div>
+    </sc-for>
+
+    <sc-if value="{{ hasLink }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <svg width="14" height="14" viewBox="0 0 14 14" style="flex-shrink:0;"><path d="M7 0 L13.06 10.5 L0.94 10.5 Z" fill="#D96614"></path></svg>
+        <a href="{{ linkUrl }}" target="_blank" rel="noopener" style="font-size:20px;text-decoration:none;">{{ linkText }}</a>
+      </div>
+    </sc-if>
   </div>
-
-  <div style="position:absolute;left:190px;top:230px;font-size:40px;">about me</div>
-
-  <div style="position:absolute;left:190px;top:302px;width:560px;font-size:15px;line-height:1.7;color:#000000;">I build systems that teach computers to see, and spend a lot of time thinking about how they might one day help us understand the brain. My background is in data science, computer vision, and medical imaging, with a growing focus on BCI and neurotech.</div>
-
-  <div style="position:absolute;left:190px;top:474px;font-size:15px;color:#000000;">Some of the tools I work with:</div>
-
-  <sc-for list="{{ toolsLeft }}" as="tool" hint-placeholder-count="3">
-    <div>
-      <svg width="6" height="7" viewBox="0 0 6 7" style="position:absolute;left:190px;top:{{ tool.top }}px;"><path d="M6 3.5L0 7V0L6 3.5Z" fill="#D96614"></path></svg>
-      <div style="position:absolute;left:206px;top:{{ tool.top }}px;font-size:15px;color:{{ tool.color }};">{{ tool.name }}</div>
-    </div>
-  </sc-for>
-
-  <sc-for list="{{ toolsRight }}" as="tool" hint-placeholder-count="3">
-    <div>
-      <svg width="6" height="7" viewBox="0 0 6 7" style="position:absolute;left:397px;top:{{ tool.top }}px;"><path d="M6 3.5L0 7V0L6 3.5Z" fill="#D96614"></path></svg>
-      <div style="position:absolute;left:413px;top:{{ tool.top }}px;font-size:15px;color:{{ tool.color }};">{{ tool.name }}</div>
-    </div>
-  </sc-for>
-
-  <div style="position:absolute;left:190px;top:636px;width:560px;font-size:15px;line-height:1.7;color:#000000;">Outside of tech, I take photos, make films, sing, dance a little, and read books - usually with a cat somewhere nearby.</div>
 
 </div>
 </div>
@@ -75,51 +83,61 @@ window.addEventListener('resize',__scaleFit);window.addEventListener('DOMContent
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { hoveredNode: null , hoveredEdge: null };
+  state = { hoveredNode: null, hoveredEdge: null, open: {} };
   hoverNode = (name) => () => this.setState({ hoveredNode: name });
   unhoverNode = () => this.setState({ hoveredNode: null });
+  toggle = (i) => () => this.setState((s) => ({ open: { ...s.open, [i]: !s.open[i] } }));
   hoverEdge = (key) => () => this.setState({ hoveredEdge: key });
   unhoverEdge = () => this.setState({ hoveredEdge: null });
 
+  sections = [];
+  linkText = '';
+  linkUrl = '';
+
+  componentDidMount() {
+    import('./content/topics/neural-networks.js').then((m) => { this.sections = m.sections; this.forceUpdate(); }).catch(() => {});
+  }
+
   renderVals() {
     const accentColor = '#D96614';
+    const mutedTextColor = '#B4B4B4';
     const edges = {
       brainWips: ['brain', 'wips'], brainWorld: ['brain', 'world'], brainDump: ['brain', 'dump'],
       wipsWorld: ['wips', 'world'], worldDump: ['world', 'dump'], wipsDump: ['wips', 'dump'],
     };
     const edgeColor = {};
-    for (const key in edges) {
-      edgeColor[key] = edges[key].includes(this.state.hoveredNode) ? accentColor : '#000000';
-    }
-    const edgeGlow = {};
+    for (const key in edges) edgeColor[key] = edges[key].includes(this.state.hoveredNode) ? accentColor : '#000000';
     const edgeWidth = {};
-    for (const key in edges) {
-      const active = edges[key].includes(this.state.hoveredNode) || this.state.hoveredEdge === key;
-      edgeGlow[key] = 'none';
-      edgeWidth[key] = active ? 2 : 1;
-    }
+    for (const key in edges) edgeWidth[key] = (edges[key].includes(this.state.hoveredNode) || this.state.hoveredEdge === key) ? 2 : 1;
     const navHover = { brain: this.hoverNode('brain'), dump: this.hoverNode('dump'), wips: this.hoverNode('wips'), world: this.hoverNode('world') };
     const edgeHover = {};
-    for (const key in edges) { edgeHover[key] = this.hoverEdge(key); }
-    const navColor = { brain: '#000000', dump: '#000000', wips: '#000000', world: '#000000' };
+    for (const key in edges) edgeHover[key] = this.hoverEdge(key);
+    const navColor = { brain: accentColor, dump: '#000000', wips: '#000000', world: '#000000' };
     if (this.state.hoveredNode) navColor[this.state.hoveredNode] = accentColor;
 
+    const sections = (this.sections ?? []).map((s, i) => {
+      const isOpen = this.state.open[i] !== false;
+      return {
+        heading: s.heading,
+        body: s.body ?? 'Coming soon.',
+        onClick: this.toggle(i),
+        rotation: isOpen ? 90 : 0,
+        maxHeight: isOpen ? '400px' : '0px',
+        opacity: isOpen ? 1 : 0,
+      };
+    });
+
     return {
-      edgeGlow, edgeWidth, edgeColor, navColor, navHover, edgeHover, hoverNode: this.hoverNode, unhoverNode: this.unhoverNode,
-      toolsLeft: [
-        { name: 'Python', top: 510, color: '#000000' },
-        { name: 'MATLAB', top: 552, color: '#000000' },
-        { name: 'C++', top: 594, color: '#000000' },
-      ],
-      toolsRight: [
-        { name: 'R', top: 510, color: '#000000' },
-        { name: 'OpenCV', top: 552, color: '#000000' },
-        { name: 'MONAI', top: 594, color: '#000000' },
-      ],
+      title: "Introduction to Neural Networks",
+      mutedTextColor, sections,
+      hasLink: !!this.linkText,
+      linkText: this.linkText ?? '',
+      linkUrl: this.linkUrl ?? '#',
+      edgeColor, edgeWidth, navColor, navHover, edgeHover,
+      hoverNode: this.hoverNode, unhoverNode: this.unhoverNode,
     };
   }
 }
-
 </script>
 </body>
 </html>

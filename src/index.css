@@ -18,6 +18,15 @@ a:hover { color: #D96614; opacity: 0.8; }
 }
 .murb-letter:hover { animation: letterBounce 0.55s ease; }
 
+@keyframes avatarBounce {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(-9px); }
+  55% { transform: translateY(0); }
+  75% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+.avatar-figure:hover { animation: avatarBounce 0.65s ease-in-out; }
+
 .glyph-hover {
   fill: #000000;
   fill-opacity: 0.17;

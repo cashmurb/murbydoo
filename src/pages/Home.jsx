@@ -159,7 +159,7 @@ export default function Home() {
             alignItems: "center",
             gap: 16,
             whiteSpace: "nowrap",
-            transition: `transform ${PAN_DURATION}s cubic-bezier(0.22,1,0.36,1), opacity ${PAN_DURATION}s cubic-bezier(0.22,1,0.36,1)`,
+            transition: `top ${PAN_DURATION}s cubic-bezier(0.22,1,0.36,1), transform ${PAN_DURATION}s cubic-bezier(0.22,1,0.36,1), opacity ${PAN_DURATION}s cubic-bezier(0.22,1,0.36,1)`,
           }}
         >
           <span style={{ width: 129, height: 1, background: "#000000" }}></span>

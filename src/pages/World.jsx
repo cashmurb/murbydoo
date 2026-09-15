@@ -13,14 +13,16 @@ export default function World() {
   const [index, setIndex] = useState(0);
   const projects = defaultProjects;
 
-  const currentProject = projects[category][index];
+  const currentList = projects[category];
+  const total = currentList.length;
+  const currentProject = currentList[index];
 
   const setCategoryAndReset = (name) => {
     setCategory(name);
     setIndex(0);
   };
-  const nextProject = () => setIndex((i) => (i + 1) % 3);
-  const prevProject = () => setIndex((i) => (i + 2) % 3);
+  const nextProject = () => setIndex((i) => (i + 1) % total);
+  const prevProject = () => setIndex((i) => (i + total - 1) % total);
 
   return (
     <ScaleWrap variant="fixed">
@@ -100,7 +102,7 @@ export default function World() {
       </div>
 
       <div style={{ position: "absolute", top: 770, left: 0, width: "100%", display: "flex", justifyContent: "center", gap: 29 }}>
-        {[0, 1, 2].map((i) => (
+        {currentList.map((_, i) => (
           <div
             key={i}
             onClick={() => setIndex(i)}

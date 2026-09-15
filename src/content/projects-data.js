@@ -12,7 +12,7 @@ export const projects = {
       subtitle: 'A desktop music player app widget inspired by the classif iPod design.', 
       tag: 'JavaScript - Electron - CSS - HTML', 
       github: 'https://github.com/cashmurb/ipod-music-player' },
-    { title: 'BnB booking and management Web Platform', 
+    { title: 'BnB Booking and Management Platform', 
       subtitle: 'A web platform for booking and managing BnB properties.', 
       tag: 'Next.js 16 - Supabase - Vercel - Resend - Google Gemini API', 
       github: 'https://github.com/cashmurb/bnb-booking-platform' },

@@ -9,7 +9,7 @@ export const projects = {
       tag: 'Python 3.x - PyTorch - Numpy - Gymnasium + ALE-Py - OpenCV', 
       github: 'https://github.com/cashmurb/rainbow-lite-ms-pacman' },
     { title: 'iPod Music Player', 
-      subtitle: 'A desktop music player app widget inspired by the classif iPod design.', 
+      subtitle: 'A desktop music player app widget inspired by the classic iPod design.', 
       tag: 'JavaScript - Electron - CSS - HTML', 
       github: 'https://github.com/cashmurb/ipod-music-player' },
     { title: 'BnB Booking and Management Platform', 

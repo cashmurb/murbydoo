@@ -15,27 +15,29 @@ import Ml from "./pages/Ml.jsx";
 import Rl from "./pages/Rl.jsx";
 import Avatar from "./pages/Avatar.jsx";
 import Topic from "./pages/Topic.jsx";
+import Portal from "./pages/Portal.jsx";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/world" element={<World />} />
-        <Route path="/brain" element={<Brain />} />
-        <Route path="/dump" element={<Dump />} />
-        <Route path="/wips" element={<Wips />} />
-        <Route path="/wyd" element={<Wyd />} />
-        <Route path="/socials" element={<Socials />} />
-        <Route path="/nn" element={<NeuralNetworks />} />
-        <Route path="/dsa" element={<Dsa />} />
-        <Route path="/numerical" element={<Numerical />} />
-        <Route path="/cv" element={<Cv />} />
-        <Route path="/ml" element={<Ml />} />
-        <Route path="/rl" element={<Rl />} />
-        <Route path="/avatar" element={<Avatar />} />
-        <Route path="/topic" element={<Topic />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/world" element={<World />} />
+      <Route path="/brain" element={<Brain />} />
+      <Route path="/dump" element={<Dump />} />
+      <Route path="/wips" element={<Wips />} />
+      <Route path="/wyd" element={<Wyd />} />
+      <Route path="/socials" element={<Socials />} />
+      <Route path="/nn" element={<NeuralNetworks />} />
+      <Route path="/dsa" element={<Dsa />} />
+      <Route path="/numerical" element={<Numerical />} />
+      <Route path="/cv" element={<Cv />} />
+      <Route path="/ml" element={<Ml />} />
+      <Route path="/rl" element={<Rl />} />
+      <Route path="/avatar" element={<Avatar />} />
+      <Route path="/topic" element={<Topic />} />
+      <Route path="/portal" element={<Portal />} />
     </Routes>
   );
 }

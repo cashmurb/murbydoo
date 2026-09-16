@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase.js';
 import AboutTab from '../components/portal/AboutTab.jsx';
 import ProjectsTab from '../components/portal/ProjectsTab.jsx';
 import ArticlesTab from '../components/portal/ArticlesTab.jsx';
@@ -7,8 +8,6 @@ import WipsTab from '../components/portal/WipsTab.jsx';
 import SocialsTab from '../components/portal/SocialsTab.jsx';
 import ExperienceTab from '../components/portal/ExperienceTab.jsx';
 import TopicsTab from '../components/portal/TopicsTab.jsx';
-
-const PORTAL_PASSWORD = 'murbyportal';
 
 const TABS = [
   { id: 'about',      label: 'About' },
@@ -30,35 +29,60 @@ const S = {
   logoutBtn: { padding: '6px 16px', background: 'transparent', border: '1px solid #E0E0E0', borderRadius: 8, fontSize: 13, fontFamily: 'Kode Mono, monospace', cursor: 'pointer', color: '#666' },
   sidebar: { width: 200, background: '#fff', borderRight: '1px solid #E0E0E0', minHeight: 'calc(100vh - 60px)', padding: '24px 0', flexShrink: 0 },
   sideItem: (active) => ({ display: 'block', width: '100%', padding: '10px 28px', border: 'none', background: active ? '#fff8f4' : 'transparent', color: active ? ACCENT : '#333', fontSize: 14, fontFamily: 'Kode Mono, monospace', cursor: 'pointer', textAlign: 'left', borderRight: active ? `2px solid ${ACCENT}` : '2px solid transparent' }),
-  content: { flex: 1, padding: '40px 48px', minWidth: 0 },
+  content: { flex: 1, padding: '40px 48px' },
   loginWrap: { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAFAFA', fontFamily: 'Kode Mono, monospace' },
-  loginBox: { background: '#fff', border: '1px solid #E0E0E0', borderRadius: 16, padding: 48, width: 360, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 },
+  loginBox: { background: '#fff', border: '1px solid #E0E0E0', borderRadius: 16, padding: 48, width: 360, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 },
   loginTitle: { fontSize: 20, fontWeight: 600, marginBottom: 4 },
   loginSub: { fontSize: 13, color: '#B4B4B4', marginBottom: 8 },
-  loginInput: { width: '100%', padding: '12px 16px', border: '1px solid #E0E0E0', borderRadius: 10, fontSize: 15, fontFamily: 'Kode Mono, monospace', outline: 'none', boxSizing: 'border-box', textAlign: 'center', letterSpacing: 2 },
+  loginInput: { width: '100%', padding: '12px 16px', border: '1px solid #E0E0E0', borderRadius: 10, fontSize: 15, fontFamily: 'Kode Mono, monospace', outline: 'none', boxSizing: 'border-box' },
   loginBtn: { width: '100%', padding: '12px', background: ACCENT, color: '#fff', border: 'none', borderRadius: 10, fontSize: 15, fontFamily: 'Kode Mono, monospace', cursor: 'pointer' },
   loginErr: { color: '#cc3333', fontSize: 13 },
+  loading: { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Kode Mono, monospace', color: '#B4B4B4', fontSize: 14 },
 };
 
-function LoginScreen({ onLogin }) {
+function LoginScreen() {
+  const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [err, setErr] = useState('');
-  const attempt = () => {
-    if (pw === PORTAL_PASSWORD) { onLogin(); }
-    else { setErr('Wrong password.'); setPw(''); }
+  const [loading, setLoading] = useState(false);
+
+  const attempt = async () => {
+    if (!email || !pw) { setErr('Enter your email and password.'); return; }
+    setLoading(true);
+    setErr('');
+    const { error } = await supabase.auth.signInWithPassword({ email, password: pw });
+    if (error) { setErr('Wrong email or password.'); }
+    setLoading(false);
   };
+
   return (
     <div style={S.loginWrap}>
       <div style={S.loginBox}>
-        <div>
+        <div style={{ textAlign: 'center' }}>
           <div style={S.loginTitle}>murby portal</div>
           <div style={S.loginSub}>content management</div>
         </div>
-        <input style={S.loginInput} type="password" placeholder="password" value={pw}
+        <input
+          style={S.loginInput}
+          type="email"
+          placeholder="email"
+          value={email}
+          onChange={e => { setEmail(e.target.value); setErr(''); }}
+          onKeyDown={e => e.key === 'Enter' && attempt()}
+          autoFocus
+        />
+        <input
+          style={S.loginInput}
+          type="password"
+          placeholder="password"
+          value={pw}
           onChange={e => { setPw(e.target.value); setErr(''); }}
-          onKeyDown={e => e.key === 'Enter' && attempt()} autoFocus />
+          onKeyDown={e => e.key === 'Enter' && attempt()}
+        />
         {err && <div style={S.loginErr}>{err}</div>}
-        <button style={S.loginBtn} onClick={attempt}>Enter</button>
+        <button style={S.loginBtn} onClick={attempt} disabled={loading}>
+          {loading ? 'Logging in…' : 'Enter'}
+        </button>
       </div>
     </div>
   );
@@ -79,11 +103,30 @@ function TabContent({ tab }) {
 }
 
 export default function Portal() {
-  const [authed, setAuthed] = useState(() => sessionStorage.getItem('portal_auth') === 'true');
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('about');
-  const login = () => { sessionStorage.setItem('portal_auth', 'true'); setAuthed(true); };
-  const logout = () => { sessionStorage.removeItem('portal_auth'); setAuthed(false); };
-  if (!authed) return <LoginScreen onLogin={login} />;
+
+  useEffect(() => {
+    // Check existing session on load
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+    // Listen for auth changes (login/logout)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+  };
+
+  if (loading) return <div style={S.loading}>loading…</div>;
+  if (!session) return <LoginScreen />;
+
   return (
     <div style={S.page}>
       <div style={S.header}>
@@ -93,6 +136,7 @@ export default function Portal() {
           <button style={S.logoutBtn} onClick={logout}>Log out</button>
         </div>
       </div>
+
       <div style={{ display: 'flex' }}>
         <nav style={S.sidebar}>
           {TABS.map(t => (

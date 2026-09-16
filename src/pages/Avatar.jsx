@@ -46,7 +46,6 @@ function Hotspot({
   box,
   onClick,
   title,
-  selected = false,
 }) {
   const [left, top, width, height] = box;
 

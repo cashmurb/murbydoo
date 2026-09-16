@@ -98,8 +98,9 @@ export default function TakeawaysTab() {
     const { data } = await supabase.from('takeaways').select('*').order('sort_order');
     setEntries(data || []);
   };
-  useEffect(() => { load(); }, []);
-
+useEffect(() => {
+  supabase.from('takeaways').select('*').order('sort_order').then(({ data }) => setEntries(data || []));
+}, []);
   return (
     <div>
       <h2 style={{ fontSize: 22, marginBottom: 8, fontWeight: 600 }}>Brain / Takeaways</h2>

@@ -87,7 +87,9 @@ export default function WipsTab() {
     const { data } = await supabase.from('wips').select('*').order('sort_order');
     setWips(data || []);
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    supabase.from('wips').select('*').order('sort_order').then(({ data }) => setWips(data || []));
+}, []);
 
   return (
     <div>

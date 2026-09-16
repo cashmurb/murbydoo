@@ -317,7 +317,6 @@ function DefaultGlasses() {
 
 function ItemLayers({
   items,
-  bodySelection,
 }) {
   const jewelry =
     items.find(

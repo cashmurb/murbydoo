@@ -43,7 +43,9 @@ export default function SocialsTab() {
     const { data } = await supabase.from('socials').select('*').order('sort_order');
     setSocials(data || []);
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    supabase.from('socials').select('*').order('sort_order').then(({ data }) => setSocials(data || []));
+}, []);
 
   return (
     <div>

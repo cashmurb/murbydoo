@@ -170,7 +170,9 @@ export default function TopicsTab() {
     setSections(data || []);
   };
 
-  useEffect(() => { load(); }, [course]);
+  useEffect(() => {
+    supabase.from('topic_sections').select('*').eq('topic', course).order('sort_order').then(({ data }) => setSections(data || []));
+}, [course]);
 
   const nextOrder = sections.length > 0 ? Math.max(...sections.map(s => s.sort_order)) + 1 : 0;
 

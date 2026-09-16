@@ -1,13 +1,6 @@
-// Simple markdown renderer — supports:
-// # H1, ## H2, ### H3
-// **bold**, *italic*
-// - bullet lists
-// blank lines = paragraph breaks
-
 const MUTED = "#B4B4B4";
 
-function parseLine(line, key) {
-  // Replace **bold** and *italic* inline
+function parseLine(line) {
   const parts = [];
   const regex = /(\*\*(.+?)\*\*|\*(.+?)\*)/g;
   let last = 0;

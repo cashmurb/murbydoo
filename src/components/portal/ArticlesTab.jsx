@@ -89,7 +89,9 @@ export default function ArticlesTab() {
     const { data } = await supabase.from('articles').select('*').order('sort_order');
     setArticles(data || []);
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    supabase.from('articles').select('*').order('sort_order').then(({ data }) => setArticles(data || []));
+}, []);
 
   return (
     <div>

@@ -94,7 +94,9 @@ export default function ExperienceTab() {
     const { data } = await supabase.from('experience').select('*').order('sort_order');
     setRoles(data || []);
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    supabase.from('experience').select('*').order('sort_order').then(({ data }) => setRoles(data || []));
+}, []);
 
   return (
     <div>

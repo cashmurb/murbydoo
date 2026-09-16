@@ -15,7 +15,6 @@ import Ml from "./pages/Ml.jsx";
 import Rl from "./pages/Rl.jsx";
 import Avatar from "./pages/Avatar.jsx";
 import Topic from "./pages/Topic.jsx";
-import Portal from "./pages/Portal.jsx";
 
 function App() {
   return (
@@ -37,7 +36,6 @@ function App() {
       <Route path="/rl" element={<Rl />} />
       <Route path="/avatar" element={<Avatar />} />
       <Route path="/topic" element={<Topic />} />
-      <Route path="/portal" element={<Portal />} />
     </Routes>
   );
 }

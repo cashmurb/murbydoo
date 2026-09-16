@@ -79,7 +79,7 @@ function AddProjectForm({ category, nextSlot, onAdd, onCancel }) {
         <div><label style={S.label}>Title</label><input style={S.input} value={form.title} onChange={e => set('title', e.target.value)} placeholder="Project name" autoFocus /></div>
         <div><label style={S.label}>Subtitle</label><input style={S.input} value={form.subtitle} onChange={e => set('subtitle', e.target.value)} placeholder="Short description" /></div>
         <div><label style={S.label}>Tag</label><input style={S.input} value={form.tag} onChange={e => set('tag', e.target.value)} placeholder="e.g. Python - PyTorch" /></div>
-        <div><label style={S.label}>GitHub URL</label><input style={S.input} value={form.github} onChange={e => set('github', e.target.value)} placeholder="https://github.com/..." /></div>
+        <div><label style={S.label}>URL</label><input style={S.input} value={form.github} onChange={e => set('github', e.target.value)} placeholder="https://github.com/..." /></div>
         <div style={{ display: 'flex', gap: 10 }}>
           <button style={S.btn} onClick={add} disabled={saving}>{saving ? 'Adding…' : 'Add project'}</button>
           <button style={{ ...S.btn, background: '#aaa' }} onClick={onCancel}>Cancel</button>

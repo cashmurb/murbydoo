@@ -303,11 +303,11 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
       return;
     }
 
-    alphaRef.current *= 0.97;
+    alphaRef.current *= 0.985;
     const alpha = alphaRef.current;
     const p = posRef.current;
     const cx = width / 2, cy = height / 2;
-    const rx = width * 0.36, ry = height * 0.36;
+    const rx = width * 0.46, ry = height * 0.46;
 
     for (let i = 0; i < nList.length; i++) {
       const pa = p[nList[i].id];
@@ -318,7 +318,7 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
         const dx = pa.x - pb.x, dy = pa.y - pb.y;
         const d2 = dx * dx + dy * dy || 1;
         const d = Math.sqrt(d2);
-        const f = (3200 / d2) * alpha;
+        const f = (25000 / d2) * alpha;
         pa.vx += (dx / d) * f; pa.vy += (dy / d) * f;
         pb.vx -= (dx / d) * f; pb.vy -= (dy / d) * f;
       }
@@ -329,7 +329,7 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
       if (!pa || !pb) continue;
       const dx = pb.x - pa.x, dy = pb.y - pa.y;
       const d = Math.sqrt(dx * dx + dy * dy) || 1;
-      const f = (d - 115) * 0.033 * alpha;
+      const f = (d - 180) * 0.014 * alpha;
       pa.vx += (dx / d) * f; pa.vy += (dy / d) * f;
       pb.vx -= (dx / d) * f; pb.vy -= (dy / d) * f;
     }
@@ -347,8 +347,8 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
       const pp = p[n.id];
       const c = centroids[n.group_id];
       if (!pp || !c) continue;
-      pp.vx += (c.x - pp.x) * 0.022 * alpha;
-      pp.vy += (c.y - pp.y) * 0.022 * alpha;
+      pp.vx += (c.x - pp.x) * 0.004 * alpha;
+      pp.vy += (c.y - pp.y) * 0.004 * alpha;
     }
 
     for (const n of nList) {
@@ -357,8 +357,8 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
       const dx = pp.x - cx, dy = pp.y - cy;
       const dist = Math.sqrt((dx / rx) ** 2 + (dy / ry) ** 2);
       if (dist > 1) {
-        pp.vx -= dx * (dist - 1) * 0.28 * alpha;
-        pp.vy -= dy * (dist - 1) * 0.28 * alpha;
+        pp.vx -= dx * (dist - 1) * 0.20 * alpha;
+        pp.vy -= dy * (dist - 1) * 0.20 * alpha;
       }
     }
 
@@ -398,13 +398,13 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
   useEffect(() => {
     if (!nodes.length || !size.w || !size.h) return;
     const cx = size.w / 2, cy = size.h / 2;
-    const rx = size.w * 0.36, ry = size.h * 0.36;
+    const rx = size.w * 0.46, ry = size.h * 0.46;
     const pos = {};
     nodes.forEach((n, i) => {
       const angle = (i / nodes.length) * 2 * Math.PI;
       pos[n.id] = {
-        x: cx + rx * Math.cos(angle) * (0.4 + Math.random() * 0.5),
-        y: cy + ry * Math.sin(angle) * (0.4 + Math.random() * 0.5),
+        x: cx + rx * Math.cos(angle) * (0.55 + Math.random() * 0.5),
+        y: cy + ry * Math.sin(angle) * (0.55 + Math.random() * 0.5),
         vx: 0, vy: 0, pinned: false,
       };
     });

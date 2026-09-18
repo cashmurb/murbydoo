@@ -724,7 +724,6 @@ export default function Home() {
   return (
     <>
       <style>{TERM_CSS}</style>
-      <NavHeader />
 
       {showIntro && (
         <div
@@ -765,23 +764,33 @@ export default function Home() {
         </div>
       )}
 
-      {showFrame && (
-        <div style={{
-          maxWidth: 800,
-          margin: "0 auto",
-          padding: "140px 40px 80px",
-          opacity: showFrame ? 1 : 0,
-          transition: `opacity ${PAN_DURATION}s ${PAN_EASE}`,
-        }}>
-          <TerminalFrame title="cashmere@blanche — ~ — zsh">
-            <InteractiveTerminal
-              showMurbText
-              visibleTyped={MURB_FINAL}
-              showCursorOnMurb={false}
-            />
-          </TerminalFrame>
-        </div>
-      )}
+      <div style={{
+        position: "relative",
+        width: 1440,
+        maxWidth: "100%",
+        margin: "0 auto",
+        minHeight: "100vh",
+        opacity: showFrame ? 1 : 0,
+        transition: `opacity ${PAN_DURATION}s ${PAN_EASE}`,
+      }}>
+        <NavHeader />
+
+        {showFrame && (
+          <div style={{
+            maxWidth: 800,
+            margin: "0 auto",
+            padding: "140px 40px 80px",
+          }}>
+            <TerminalFrame title="cashmere@blanche — ~ — zsh">
+              <InteractiveTerminal
+                showMurbText
+                visibleTyped={MURB_FINAL}
+                showCursorOnMurb={false}
+              />
+            </TerminalFrame>
+          </div>
+        )}
+      </div>
     </>
   );
 }

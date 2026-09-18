@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase.js';
+import { useIsMobile } from '../hooks/useIsMobile.js';
 import AboutTab from '../components/portal/AboutTab.jsx';
 import ProjectsTab from '../components/portal/ProjectsTab.jsx';
 import ArticlesTab from '../components/portal/ArticlesTab.jsx';
@@ -35,8 +36,8 @@ const S = {
   sidebar: { width: 200, background: '#fff', borderRight: '1px solid #E0E0E0', minHeight: 'calc(100vh - 60px)', padding: '24px 0', flexShrink: 0 },
   sideItem: (active) => ({ display: 'block', width: '100%', padding: '10px 28px', border: 'none', background: active ? '#fff8f4' : 'transparent', color: active ? ACCENT : '#333', fontSize: 14, fontFamily: 'Kode Mono, monospace', cursor: 'pointer', textAlign: 'left', borderRight: active ? `2px solid ${ACCENT}` : '2px solid transparent' }),
   content: { flex: 1, padding: '40px 48px' },
-  loginWrap: { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAFAFA', fontFamily: 'Kode Mono, monospace' },
-  loginBox: { background: '#fff', border: '1px solid #E0E0E0', borderRadius: 16, padding: 48, width: 360, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 },
+  loginWrap: { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAFAFA', fontFamily: 'Kode Mono, monospace', padding: 20 },
+  loginBox: { background: '#fff', border: '1px solid #E0E0E0', borderRadius: 16, padding: 48, width: '100%', maxWidth: 360, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, boxSizing: 'border-box' },
   loginTitle: { fontSize: 20, fontWeight: 600, marginBottom: 4 },
   loginSub: { fontSize: 13, color: '#B4B4B4', marginBottom: 8 },
   loginInput: { width: '100%', padding: '12px 16px', border: '1px solid #E0E0E0', borderRadius: 10, fontSize: 15, fontFamily: 'Kode Mono, monospace', outline: 'none', boxSizing: 'border-box' },
@@ -100,7 +101,70 @@ function TabContent({ tab }) {
   }
 }
 
+function MobilePortal({ tab, setTab, logout }) {
+  return (
+    <div style={{ minHeight: '100vh', background: '#FAFAFA', fontFamily: 'Kode Mono, monospace' }}>
+      <div style={{
+        background: '#fff', borderBottom: '1px solid #E0E0E0',
+        padding: '0 16px', display: 'flex', alignItems: 'center',
+        justifyContent: 'space-between', height: 52,
+        position: 'sticky', top: 0, zIndex: 20,
+      }}>
+        <div style={{ fontSize: 14, fontWeight: 600, color: '#000' }}>murby portal</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <a href="/home" style={{ fontSize: 12, color: '#B4B4B4', textDecoration: 'none' }}>← site</a>
+          <button
+            onClick={logout}
+            style={{ padding: '5px 12px', background: 'transparent', border: '1px solid #E0E0E0', borderRadius: 6, fontSize: 12, fontFamily: 'Kode Mono, monospace', cursor: 'pointer', color: '#666' }}
+          >
+            Log out
+          </button>
+        </div>
+      </div>
+
+      <div style={{
+        background: '#fff', borderBottom: '1px solid #E0E0E0',
+        display: 'flex', overflowX: 'auto', padding: '0 8px',
+        position: 'sticky', top: 52, zIndex: 19,
+        WebkitOverflowScrolling: 'touch',
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
+      }}>
+        {TABS.map(t => {
+          const active = tab === t.id;
+          return (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              style={{
+                flexShrink: 0,
+                padding: '12px 14px',
+                border: 'none',
+                background: 'transparent',
+                color: active ? ACCENT : '#666',
+                fontSize: 13,
+                fontFamily: 'Kode Mono, monospace',
+                cursor: 'pointer',
+                borderBottom: active ? `2px solid ${ACCENT}` : '2px solid transparent',
+                marginBottom: -1,
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {t.label}
+            </button>
+          );
+        })}
+      </div>
+
+      <main style={{ padding: '20px 16px' }}>
+        <TabContent tab={tab} />
+      </main>
+    </div>
+  );
+}
+
 export default function Portal() {
+  const isMobile = useIsMobile();
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('about');
@@ -120,6 +184,8 @@ export default function Portal() {
 
   if (loading) return <div style={S.loading}>loading…</div>;
   if (!session) return <LoginScreen />;
+
+  if (isMobile) return <MobilePortal tab={tab} setTab={setTab} logout={logout} />;
 
   return (
     <div style={S.page}>

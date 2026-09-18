@@ -17,6 +17,9 @@ const CATEGORIES = {
   hobbies: { label: "Hobbies", color: "#27AE8F" },
 };
 
+const CATEGORY_ORDER = ["notes", "books", "anime", "music", "hobbies"];
+const FILTER_CATEGORIES = ["notes", "music"];
+
 function nodeColor(node) {
   return CATEGORIES[node.category]?.color || "#999";
 }
@@ -571,6 +574,17 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
         </button>
       </div>
 
+      <div style={{ position: "absolute", top: 64, right: 8, zIndex: 10, display: "flex", flexDirection: "row", gap: 16, alignItems: "center" }}>
+        {["notes", "anime", "music", "hobbies", "books"].map(cat => (
+          <div key={cat} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{ width: 10, height: 10, borderRadius: "50%", background: CATEGORIES[cat].color, flexShrink: 0 }} />
+            <span style={{ fontSize: 10, color: MUTED, textTransform: "uppercase", letterSpacing: 1, fontFamily: "Kode Mono, monospace" }}>
+              {CATEGORIES[cat].label}
+            </span>
+          </div>
+        ))}
+      </div>
+
       <svg width={size.w} height={size.h} style={{ display: "block", userSelect: "none" }}>
         <g ref={gRef}>
           {links.map(l => (
@@ -605,30 +619,162 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
 }
 
 function MobileBrain({ nodes }) {
-  const [selected, setSelected] = useState(null);
+  const [filter, setFilter] = useState(null);
+
+  const grouped = {};
+  for (const n of nodes) {
+    const cat = n.category || 'notes';
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(n);
+  }
+
+  const counts = Object.fromEntries(
+    Object.entries(grouped).map(([k, v]) => [k, v.length])
+  );
+
+  const visibleCategories = filter
+    ? [filter]
+    : CATEGORY_ORDER.filter(c => grouped[c]?.length > 0);
+
+  const sourceNode = grouped.source?.[0];
+  const totalNodes = nodes.length;
+
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div style={{ minHeight: "100vh", background: "#fff" }}>
       <NavHeader active="brain" />
-      <div style={{ padding: "32px 24px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 400, marginBottom: 8 }}>brain</h1>
-        <p style={{ fontSize: 13, color: MUTED, marginBottom: 24 }}>A compilation of what I've learned throughout the years.</p>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {nodes.map(n => {
-            const color = nodeColor(n);
-            const isSel = selected?.id === n.id;
+      <div style={{ padding: "32px 24px 64px" }}>
+        <h1 style={{ fontSize: 32, fontWeight: 400, margin: 0, marginBottom: 24 }}>brain</h1>
+
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
+          <button
+            onClick={() => setFilter(null)}
+            style={{
+              padding: "6px 14px", borderRadius: 20, cursor: "pointer",
+              border: "1px solid " + (filter === null ? "#000" : "#E0E0E0"),
+              background: filter === null ? "#000" : "transparent",
+              color: filter === null ? "#fff" : "#666",
+              fontFamily: "Kode Mono, monospace", fontSize: 12,
+            }}
+          >
+            All · {totalNodes}
+          </button>
+          {FILTER_CATEGORIES.filter(c => grouped[c]?.length > 0).map(cat => {
+            const active = filter === cat;
+            const color = CATEGORIES[cat]?.color || "#999";
             return (
-              <div key={n.id} onClick={() => setSelected(isSel ? null : n)}
-                style={{ padding: "14px 16px", border: `1px solid ${isSel ? color : "#E0E0E0"}`, borderRadius: 8, cursor: "pointer" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <div style={{ fontSize: 15, fontWeight: 500 }}>{n.label}</div>
-                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0 }} />
-                </div>
-                {isSel && n.description && <div style={{ fontSize: 13, color: "#555", lineHeight: 1.7, marginTop: 10 }}>{n.description}</div>}
-                {isSel && n.url && n.url !== '#' && <Link to={n.url} style={{ display: "block", fontSize: 13, color: ACCENT, textDecoration: "none", marginTop: 8 }}>View notes →</Link>}
-              </div>
+              <button
+                key={cat}
+                onClick={() => setFilter(active ? null : cat)}
+                style={{
+                  padding: "6px 14px", borderRadius: 20, cursor: "pointer",
+                  border: "1px solid " + (active ? color : "#E0E0E0"),
+                  background: active ? color : "transparent",
+                  color: active ? "#fff" : "#666",
+                  fontFamily: "Kode Mono, monospace", fontSize: 12,
+                  display: "flex", alignItems: "center", gap: 6,
+                }}
+              >
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: active ? "#fff" : color, flexShrink: 0 }} />
+                {CATEGORIES[cat]?.label} · {counts[cat]}
+              </button>
             );
           })}
         </div>
+
+        {visibleCategories.map(cat => {
+          const color = CATEGORIES[cat]?.color || "#999";
+          const items = grouped[cat] || [];
+          return (
+            <div key={cat} style={{ marginBottom: 28 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0 }} />
+                <span style={{ fontSize: 11, color: "#666", textTransform: "uppercase", letterSpacing: 1.5, fontFamily: "Kode Mono, monospace" }}>
+                  {CATEGORIES[cat]?.label || cat}
+                </span>
+                <span style={{ fontSize: 11, color: MUTED, fontFamily: "Kode Mono, monospace" }}>
+                  {items.length}
+                </span>
+                <div style={{ flex: 1, height: 1, background: "#EEE" }} />
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {items.map(n => {
+                  const meta = n.meta || {};
+                  const metaParts = [];
+                  if (meta.author) metaParts.push(meta.author);
+                  if (meta.artist) metaParts.push(meta.artist);
+                  if (meta.genre) metaParts.push(meta.genre);
+                  if (meta.status) metaParts.push(String(meta.status).toUpperCase());
+                  const metaLine = metaParts.slice(0, 2).join(" · ");
+
+                  return (
+                    <div
+                      key={n.id}
+                      style={{
+                        border: "1px solid #E0E0E0",
+                        borderLeft: `3px solid ${color}`,
+                        borderRadius: 8,
+                        padding: "12px 14px",
+                      }}
+                    >
+                      <div style={{ fontSize: 15, fontWeight: 500, marginBottom: metaLine || n.description ? 4 : 0 }}>
+                        {n.label}
+                      </div>
+                      {metaLine && (
+                        <div style={{ fontSize: 11, color: MUTED, fontFamily: "Kode Mono, monospace", marginBottom: n.description ? 8 : 0 }}>
+                          {metaLine}
+                        </div>
+                      )}
+                      {n.description && (
+                        <p style={{ fontSize: 13, color: "#555", lineHeight: 1.7, margin: 0, marginTop: metaLine ? 0 : 4 }}>
+                          {n.description}
+                        </p>
+                      )}
+                      {n.category === 'notes' && n.url && n.url !== '#' && (
+                        <Link
+                          to={n.url}
+                          style={{ display: "inline-block", fontSize: 13, color: ACCENT, textDecoration: "none", fontFamily: "Kode Mono, monospace", marginTop: 8 }}
+                        >
+                          View notes →
+                        </Link>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+
+        {!filter && sourceNode && (
+          <div style={{ marginTop: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#000", flexShrink: 0 }} />
+              <span style={{ fontSize: 11, color: "#666", textTransform: "uppercase", letterSpacing: 1.5, fontFamily: "Kode Mono, monospace" }}>
+                About
+              </span>
+              <div style={{ flex: 1, height: 1, background: "#EEE" }} />
+            </div>
+            <div
+              style={{
+                border: "1px solid #E0E0E0",
+                borderLeft: "3px solid #000",
+                borderRadius: 8,
+                padding: "12px 14px",
+              }}
+            >
+              <div style={{ fontSize: 14, color: "#555", lineHeight: 1.7, marginBottom: 10 }}>
+                {sourceNode.description || "Who I am, what I do, what I'm into."}
+              </div>
+              <Link
+                to="/about"
+                style={{ fontSize: 13, color: ACCENT, textDecoration: "none", fontFamily: "Kode Mono, monospace" }}
+              >
+                View about me →
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

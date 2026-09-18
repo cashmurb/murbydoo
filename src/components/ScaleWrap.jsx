@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 
 export default function ScaleWrap({ children, variant = "fixed" }) {
@@ -51,7 +51,7 @@ export default function ScaleWrap({ children, variant = "fixed" }) {
 
   return (
     <div style={{ width: "100vw", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: "#FFFFFF" }}>
-      <div style={{ width: 1440, height: 1024, background: "#FFFFFF", position: "relative", overflow: "hidden", fontFamily: "'Kode Mono', monospace", color: "#000000", flexShrink: 0, transform: `scale(${scale})`, animation: "fadeInPage .2s ease both" }}>
+      <div style={{ width: 1440, height: 1024, background: "#FFFFFF", position: "relative", overflow: "hidden", fontFamily: "'Kode Mono', monospace", color: "#000000", flexShrink: 0, transform: `scale(${scale})`, animation: "fadeInPage .5s ease both" }}>
         {children}
       </div>
     </div>

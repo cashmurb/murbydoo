@@ -22,6 +22,7 @@ function useForceGraph(nodes, links, width, height) {
   const frameRef = useRef(null);
   const posRef = useRef({});
   const alphaRef = useRef(1);
+  const lastRender = useRef(0);
   const nodeIds = nodes.map(n => n.id).join(',');
 
   useEffect(() => {
@@ -110,7 +111,10 @@ function useForceGraph(nodes, links, width, height) {
         pp.y = Math.max(30, Math.min(height - 30, pp.y + pp.vy));
       });
 
-      setPositions({ ...posRef.current });
+      if (Date.now() - lastRender.current > 32) {
+        lastRender.current = Date.now();
+        setPositions({ ...posRef.current });
+      }
       frameRef.current = requestAnimationFrame(tick);
     };
 
@@ -145,7 +149,7 @@ function NodePanel({ node, nodes, links, onClose, onNavigate }) {
 
   return (
     <div style={{
-      position: "absolute", right: 200, top: 180, width: 280,
+      position: "absolute", right: 200, top: 185, width: 280,
       background: "#fff", border: "1px solid #000",
       zIndex: 30, display: "flex", flexDirection: "column",
       maxHeight: 680, overflow: "hidden",
@@ -442,6 +446,7 @@ export default function Brain() {
   return (
     <ScaleWrap variant="fixed">
       <NavHeader active="brain" />
+
 
       <GraphCanvas
         nodes={nodes}

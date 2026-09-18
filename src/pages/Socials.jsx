@@ -57,13 +57,16 @@ function Envelope({ social }) {
 export default function Socials() {
   const isMobile = useIsMobile();
   const [socials, setSocials] = useState([]);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     supabase.from('socials').select('*').order('sort_order').then(({ data }) => {
       if (data?.length) setSocials(data);
+      setReady(true);
     });
   }, []);
 
+  if (!ready) return null;
   if (isMobile) return <ScaleWrap><MobileSocials socials={socials} /></ScaleWrap>;
 
   return (

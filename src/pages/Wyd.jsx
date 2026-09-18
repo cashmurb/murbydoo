@@ -8,12 +8,17 @@ const ACCENT = "#D96614";
 export default function Wyd() {
   const [roles, setRoles] = useState([]);
   const [open, setOpen] = useState({});
+  const [ready, setReady] = useState(false);
+
 
   useEffect(() => {
     supabase.from('experience').select('*').order('sort_order').then(({ data }) => {
       if (data?.length) setRoles(data);
+      setReady(true);
     });
   }, []);
+
+  if (!ready) return null;
 
   const toggle = (id) => setOpen((s) => ({ ...s, [id]: !s[id] }));
 

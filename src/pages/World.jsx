@@ -194,6 +194,7 @@ export default function World() {
   const [category, setCategory] = useState("Code");
   const [index, setIndex] = useState(0);
   const [projects, setProjects] = useState({ Code: [], Film: [], Photo: [] });
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     supabase
@@ -207,9 +208,11 @@ export default function World() {
           if (grouped[p.category] && p.title) grouped[p.category].push(p);
         });
         setProjects(grouped);
+        setReady(true);
       });
   }, []);
 
+  if (!ready) return null;
   if (isMobile) return <ScaleWrap><MobileWorld projects={projects} /></ScaleWrap>;
 
   const currentList = projects[category];

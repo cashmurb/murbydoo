@@ -9,13 +9,16 @@ const MUTED = "#B4B4B4";
 export default function Dump() {
   const [index, setIndex] = useState(0);
   const [articles, setArticles] = useState([]);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     supabase.from('articles').select('*').order('sort_order').then(({ data }) => {
       if (data?.length) setArticles(data);
+      setReady(true);
     });
   }, []);
 
+  if (!ready) return null;
   if (!articles.length) return <ScaleWrap variant="fixed"><NavHeader active="dump" /></ScaleWrap>;
 
   const currentArticle = articles[index];

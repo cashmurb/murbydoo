@@ -9,13 +9,16 @@ const MUTED = "#B4B4B4";
 export default function Wips() {
   const [index, setIndex] = useState(0);
   const [items, setItems] = useState([]);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     supabase.from('wips').select('*').order('sort_order').then(({ data }) => {
       if (data?.length) setItems(data);
+      setReady(true);
     });
   }, []);
-
+  
+  if (!ready) return null;
   if (!items.length) return <ScaleWrap variant="fixed"><NavHeader active="wips" /></ScaleWrap>;
 
   const currentItem = items[index];

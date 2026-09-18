@@ -149,7 +149,7 @@ function NodePanel({ node, nodes, links, onClose, onNavigate }) {
 
   return (
     <div style={{
-      position: "absolute", right: 200, top: 185, width: 280,
+      position: "absolute", right: 200, top: 190, width: 280,
       background: "#fff", border: "1px solid #000",
       zIndex: 30, display: "flex", flexDirection: "column",
       maxHeight: 680, overflow: "hidden",
@@ -424,29 +424,35 @@ export default function Brain() {
   const [links, setLinks] = useState([]);
   const [selected, setSelected] = useState(null);
   const [canvasScale, setCanvasScale] = useState(1);
+  const [ready, setReady] = useState(false);
+  const loadedRef = useRef({ nodes: false, links: false });
 
   useEffect(() => {
-    supabase.from('brain_nodes').select('*').order('sort_order').then(({ data }) => setNodes(data || []));
+    supabase.from('brain_nodes').select('*').order('sort_order').then(({ data }) => {
+      setNodes(data || []);
+      loadedRef.current.nodes = true;
+      if (loadedRef.current.links) setReady(true);
+    });
     supabase.from('brain_links').select('*').then(({ data }) => {
       setLinks((data || []).map(l => ({ id: l.id, source: l.source_id, target: l.target_id })));
+      loadedRef.current.links = true;
+      if (loadedRef.current.nodes) setReady(true);
     });
   }, []);
 
   useEffect(() => {
-    const update = () => {
-      setCanvasScale(Math.min(window.innerWidth / 1440, window.innerHeight / 1024));
-    };
+    const update = () => setCanvasScale(Math.min(window.innerWidth / 1440, window.innerHeight / 1024));
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   }, []);
 
+  if (!ready) return null;
   if (isMobile) return <ScaleWrap><MobileBrain nodes={nodes} /></ScaleWrap>;
 
   return (
     <ScaleWrap variant="fixed">
       <NavHeader active="brain" />
-
 
       <GraphCanvas
         nodes={nodes}

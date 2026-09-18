@@ -558,7 +558,7 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
       onClick={onClick}
     >
       <style>{GRAPH_CSS}</style>
-      <div style={{ position: "absolute", top: 8, right: 8, zIndex: 10, display: "flex", gap: 6, alignItems: "center" }}>
+      <div style={{ position: "absolute", top: 30, right: 8, zIndex: 10, display: "flex", gap: 6, alignItems: "center" }}>
         <button onClick={e => { e.stopPropagation(); zoomBy(1.25); }}
           style={{ width: 26, height: 26, border: "1px solid #E0E0E0", background: "#fff", cursor: "pointer", fontSize: 16, lineHeight: 1, fontFamily: "monospace" }}>+</button>
         <button onClick={e => { e.stopPropagation(); zoomBy(0.8); }}

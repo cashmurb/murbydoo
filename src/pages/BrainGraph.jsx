@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import ScaleWrap from "../components/ScaleWrap.jsx";
 import NavHeader from "../components/NavHeader.jsx";
@@ -26,27 +26,115 @@ function nodeLabel(node) {
   return node.abbreviation || node.label?.slice(0, 4) || '?';
 }
 
-const GRAPH_CSS = `
-.bn-node text { display: none; }
-[data-labels="1"] .bn-node text,
-.bn-node[data-hl="1"] text,
-.bn-node[data-sel="1"] text { display: block; }
+function useForceGraph(nodes, links, width, height) {
+  const [positions, setPositions] = useState({});
+  const frameRef = useRef(null);
+  const posRef = useRef({});
+  const alphaRef = useRef(1);
+  const lastRender = useRef(0);
 
-.bn-node .bn-dot { r: 7; }
-.bn-node:hover .bn-dot { r: 9; }
-.bn-node[data-sel="1"] .bn-dot { r: 10; }
+  useEffect(() => {
+    if (!nodes.length || !width || !height) return;
+    if (frameRef.current) { cancelAnimationFrame(frameRef.current); frameRef.current = null; }
 
-[data-hl-active="1"] .bn-node { opacity: 0.22; }
-[data-hl-active="1"] .bn-node[data-hl="1"] { opacity: 1; }
-[data-hl-active="1"] .bn-node text { fill: #ccc; }
-[data-hl-active="1"] .bn-node[data-hl="1"] text { fill: #000; }
+    const cx = width / 2, cy = height / 2;
+    const rx = width * 0.36, ry = height * 0.36;
+    const pos = {};
+    nodes.forEach((n, i) => {
+      const angle = (i / nodes.length) * 2 * Math.PI;
+      pos[n.id] = {
+        x: cx + rx * Math.cos(angle) * (0.4 + Math.random() * 0.5),
+        y: cy + ry * Math.sin(angle) * (0.4 + Math.random() * 0.5),
+        vx: 0, vy: 0, pinned: false,
+      };
+    });
+    posRef.current = pos;
+    alphaRef.current = 1;
 
-.bn-link { stroke: #ddd; stroke-width: 1; }
-[data-hl-active="1"] .bn-link { stroke: #f0f0f0; }
-[data-hl-active="1"] .bn-link[data-hl="1"] { stroke: ${ACCENT}; stroke-width: 2; }
-`;
+    const tick = () => {
+      if (alphaRef.current < 0.002) {
+        setPositions({ ...posRef.current });
+        frameRef.current = null;
+        return;
+      }
+      alphaRef.current *= 0.97;
+      const alpha = alphaRef.current;
+      const p = posRef.current;
 
-function NodePanel({ node, nodes, links, onClose, onNavigate }) {
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const pa = p[nodes[i].id], pb = p[nodes[j].id];
+          if (!pa || !pb) continue;
+          const dx = pa.x - pb.x, dy = pa.y - pb.y;
+          const d = Math.sqrt(dx * dx + dy * dy) || 1;
+          const f = (3200 / (d * d)) * alpha;
+          pa.vx += (dx / d) * f; pa.vy += (dy / d) * f;
+          pb.vx -= (dx / d) * f; pb.vy -= (dy / d) * f;
+        }
+      }
+
+      links.forEach(l => {
+        const pa = p[l.source], pb = p[l.target];
+        if (!pa || !pb) return;
+        const dx = pb.x - pa.x, dy = pb.y - pa.y;
+        const d = Math.sqrt(dx * dx + dy * dy) || 1;
+        const f = (d - 115) * 0.033 * alpha;
+        pa.vx += (dx / d) * f; pa.vy += (dy / d) * f;
+        pb.vx -= (dx / d) * f; pb.vy -= (dy / d) * f;
+      });
+
+      const centroids = {};
+      nodes.forEach(n => {
+        const pp = p[n.id];
+        if (!pp) return;
+        if (!centroids[n.group_id]) centroids[n.group_id] = { x: 0, y: 0, count: 0 };
+        centroids[n.group_id].x += pp.x;
+        centroids[n.group_id].y += pp.y;
+        centroids[n.group_id].count++;
+      });
+      Object.values(centroids).forEach(c => { c.x /= c.count; c.y /= c.count; });
+      nodes.forEach(n => {
+        const pp = p[n.id], c = centroids[n.group_id];
+        if (!pp || !c) return;
+        pp.vx += (c.x - pp.x) * 0.022 * alpha;
+        pp.vy += (c.y - pp.y) * 0.022 * alpha;
+      });
+
+      nodes.forEach(n => {
+        const pp = p[n.id];
+        if (!pp || pp.pinned) return;
+        const dx = pp.x - cx, dy = pp.y - cy;
+        const dist = Math.sqrt((dx / rx) ** 2 + (dy / ry) ** 2);
+        if (dist > 1) {
+          pp.vx -= dx * (dist - 1) * 0.28 * alpha;
+          pp.vy -= dy * (dist - 1) * 0.28 * alpha;
+        }
+      });
+
+      nodes.forEach(n => {
+        const pp = p[n.id];
+        if (!pp || pp.pinned) return;
+        pp.vx *= 0.65; pp.vy *= 0.65;
+        pp.x = Math.max(30, Math.min(width - 30, pp.x + pp.vx));
+        pp.y = Math.max(30, Math.min(height - 30, pp.y + pp.vy));
+      });
+
+      if (Date.now() - lastRender.current > 32) {
+        lastRender.current = Date.now();
+        setPositions({ ...posRef.current });
+      }
+      frameRef.current = requestAnimationFrame(tick);
+    };
+
+    frameRef.current = requestAnimationFrame(tick);
+    return () => { if (frameRef.current) { cancelAnimationFrame(frameRef.current); frameRef.current = null; } };
+  }, [nodes, links, width, height]);
+
+  const reheat = useCallback(() => { alphaRef.current = 0.5; }, []);
+  return { positions, posRef, reheat };
+}
+
+function NodePanel({ node, onClose }) {
   const [subtopics, setSubtopics] = useState([]);
   const color = nodeColor(node);
   const cat = node.category || 'notes';
@@ -62,15 +150,10 @@ function NodePanel({ node, nodes, links, onClose, onNavigate }) {
   if (!node) return null;
 
   const visibleSubtopics = cat === 'notes' ? subtopics : [];
-
-  const connectedIds = links
-    .filter(l => l.source === node.id || l.target === node.id)
-    .map(l => l.source === node.id ? l.target : l.source);
-  const connected = nodes.filter(n => connectedIds.includes(n.id) && n.category !== 'source');
   const meta = node.meta || {};
 
   const panelStyle = {
-    position: "absolute", right: 200, top: 165, width: 280,
+    position: "absolute", right: 200, top: 195, width: 280,
     background: "#fff", border: "1px solid #000",
     zIndex: 30, display: "flex", flexDirection: "column",
     maxHeight: 680, overflow: "hidden",
@@ -87,27 +170,12 @@ function NodePanel({ node, nodes, links, onClose, onNavigate }) {
     </div>
   );
 
-  const connectedChips = connected.length > 0 && (
-    <div style={{ marginBottom: 12 }}>
-      <div style={{ fontSize: 10, color: MUTED, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Connected to</div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-        {connected.map(n => (
-          <span key={n.id} onClick={() => onNavigate(n)}
-            style={{ padding: "2px 8px", border: `1px solid ${nodeColor(n)}`, fontSize: 11, cursor: "pointer", color: nodeColor(n) }}>
-            {n.label}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-
   if (cat === 'source') return (
     <div style={panelStyle}>
       {header}
       <div style={{ padding: "12px 14px", overflowY: "auto", flex: 1 }}>
         {node.description && <p style={{ fontSize: 12, lineHeight: 1.7, color: "#555", marginBottom: 12 }}>{node.description}</p>}
         <Link to="/about" style={{ display: "block", fontSize: 12, color: ACCENT, textDecoration: "none", marginBottom: 12 }}>View about me →</Link>
-        {connectedChips}
       </div>
     </div>
   );
@@ -126,7 +194,6 @@ function NodePanel({ node, nodes, links, onClose, onNavigate }) {
           </div>
         )}
         <Link to={`/topic/${node.id}`} style={{ display: "block", fontSize: 12, color: ACCENT, textDecoration: "none", marginBottom: 12 }}>View all subtopics →</Link>
-        {connectedChips}
       </div>
     </div>
   );
@@ -140,7 +207,6 @@ function NodePanel({ node, nodes, links, onClose, onNavigate }) {
         {meta.genre && <div style={{ fontSize: 11, color: MUTED, marginBottom: 4 }}>Genre: {meta.genre}</div>}
         {meta.episodes && <div style={{ fontSize: 11, color: MUTED, marginBottom: 4 }}>Episodes: {meta.episodes}</div>}
         {meta.status && <div style={{ fontSize: 11, color: MUTED, marginBottom: 12 }}>Status: {meta.status}</div>}
-        {connectedChips}
       </div>
     </div>
   );
@@ -155,7 +221,6 @@ function NodePanel({ node, nodes, links, onClose, onNavigate }) {
         {meta.genre && <div style={{ fontSize: 11, color: MUTED, marginBottom: 4 }}>Genre: {meta.genre}</div>}
         {meta.status && <div style={{ fontSize: 11, color: MUTED, marginBottom: 12 }}>Status: {meta.status}</div>}
         <div style={{ clear: "both" }} />
-        {connectedChips}
       </div>
     </div>
   );
@@ -175,7 +240,6 @@ function NodePanel({ node, nodes, links, onClose, onNavigate }) {
             Listen on Spotify
           </a>
         )}
-        {connectedChips}
       </div>
     </div>
   );
@@ -192,7 +256,6 @@ function NodePanel({ node, nodes, links, onClose, onNavigate }) {
             {meta.link_label || "Learn more"} →
           </a>
         )}
-        {connectedChips}
       </div>
     </div>
   );
@@ -200,302 +263,64 @@ function NodePanel({ node, nodes, links, onClose, onNavigate }) {
   return null;
 }
 
-
 function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle, canvasScale }) {
   const containerRef = useRef(null);
-  const gRef = useRef(null);
-  const nodeGroupsRef = useRef({});
-  const linkElsRef = useRef({});
-  const posRef = useRef({});
-  const alphaRef = useRef(1);
-  const frameRef = useRef(null);
-  const transformRef = useRef({ x: 0, y: 0, scale: 1 });
+  const [size, setSize] = useState({ w: 0, h: 0 });
+  const [hovered, setHovered] = useState(null);
+  const [showLabels, setShowLabels] = useState(true);
+  const [transform, setTransform] = useState({ x: 0, y: 0, scale: 1 });
+  const [cursorStyle, setCursorStyle] = useState("default");
+
   const isPanning = useRef(false);
   const lastPan = useRef({ x: 0, y: 0 });
   const draggingNode = useRef(null);
-  const downPos = useRef(null);
-  const wasDrag = useRef(false);
-  const hoveredRef = useRef(null);
+  const transformRef = useRef(transform);
 
-  const nodesRef = useRef(nodes);
-  const linksRef = useRef(links);
-  const sizeRef = useRef({ w: 0, h: 0 });
-  const canvasScaleRef = useRef(canvasScale);
-  const selectedIdRef = useRef(selectedNode?.id);
-
-  nodesRef.current = nodes;
-  linksRef.current = links;
-  canvasScaleRef.current = canvasScale;
-  selectedIdRef.current = selectedNode?.id;
-
-  const [size, setSize] = useState({ w: 0, h: 0 });
-  const [showLabels, setShowLabels] = useState(true);
+  useEffect(() => { transformRef.current = transform; }, [transform]);
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const update = () => {
-      const w = el.clientWidth;
-      const h = el.clientHeight;
-      setSize(prev => {
-        if (Math.abs(prev.w - w) < 2 && Math.abs(prev.h - h) < 2) return prev;
-        return { w, h };
-      });
-    };
+    const update = () => setSize({ w: el.clientWidth, h: el.clientHeight });
     update();
     const ro = new ResizeObserver(update);
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
-  sizeRef.current = size;
-
-  useLayoutEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    const nmap = {};
-    container.querySelectorAll('[data-node-id]').forEach(el => {
-      nmap[el.getAttribute('data-node-id')] = el;
-    });
-    nodeGroupsRef.current = nmap;
-    const lmap = {};
-    container.querySelectorAll('[data-link-id]').forEach(el => {
-      lmap[el.getAttribute('data-link-id')] = el;
-    });
-    linkElsRef.current = lmap;
-  }, [nodes, links]);
-
-  useLayoutEffect(() => {
-    if (gRef.current) {
-      const t = transformRef.current;
-      gRef.current.setAttribute('transform', `translate(${t.x},${t.y}) scale(${t.scale})`);
-    }
-    if (containerRef.current) {
-      containerRef.current.style.cursor = "default";
-    }
-  }, []);
-
-  const applyHighlight = useCallback(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    const active = hoveredRef.current || selectedIdRef.current;
-    const nList = nodesRef.current;
-    const lList = linksRef.current;
-
-    if (!active) {
-      container.removeAttribute('data-hl-active');
-      for (const n of nList) {
-        const el = nodeGroupsRef.current[n.id];
-        if (el) el.removeAttribute('data-hl');
-      }
-      for (const l of lList) {
-        const el = linkElsRef.current[l.id];
-        if (el) el.removeAttribute('data-hl');
-      }
-      return;
-    }
-
-    container.setAttribute('data-hl-active', '1');
-    const hlNodes = new Set([active]);
-    const hlLinks = new Set();
-    for (const l of lList) {
-      if (l.source === active) { hlNodes.add(l.target); hlLinks.add(l.id); }
-      else if (l.target === active) { hlNodes.add(l.source); hlLinks.add(l.id); }
-    }
-    for (const n of nList) {
-      const el = nodeGroupsRef.current[n.id];
-      if (!el) continue;
-      if (hlNodes.has(n.id)) el.setAttribute('data-hl', '1');
-      else el.removeAttribute('data-hl');
-    }
-    for (const l of lList) {
-      const el = linkElsRef.current[l.id];
-      if (!el) continue;
-      if (hlLinks.has(l.id)) el.setAttribute('data-hl', '1');
-      else el.removeAttribute('data-hl');
-    }
-  }, []);
-
-  useEffect(() => {
-    applyHighlight();
-  }, [selectedNode, nodes, links, applyHighlight]);
-
-  const stepSim = useCallback(function step() {
-    const nList = nodesRef.current;
-    const lList = linksRef.current;
-    const { w: width, h: height } = sizeRef.current;
-    if (!nList.length || !width || !height) {
-      frameRef.current = null;
-      return;
-    }
-
-    alphaRef.current *= 0.97;
-    const alpha = alphaRef.current;
-    const p = posRef.current;
-    const cx = width / 2, cy = height / 2;
-    const rx = width * 0.36, ry = height * 0.36;
-
-    for (let i = 0; i < nList.length; i++) {
-      const pa = p[nList[i].id];
-      if (!pa) continue;
-      for (let j = i + 1; j < nList.length; j++) {
-        const pb = p[nList[j].id];
-        if (!pb) continue;
-        const dx = pa.x - pb.x, dy = pa.y - pb.y;
-        const d2 = dx * dx + dy * dy || 1;
-        const d = Math.sqrt(d2);
-        const f = (3200 / d2) * alpha;
-        pa.vx += (dx / d) * f; pa.vy += (dy / d) * f;
-        pb.vx -= (dx / d) * f; pb.vy -= (dy / d) * f;
-      }
-    }
-
-    for (const l of lList) {
-      const pa = p[l.source], pb = p[l.target];
-      if (!pa || !pb) continue;
-      const dx = pb.x - pa.x, dy = pb.y - pa.y;
-      const d = Math.sqrt(dx * dx + dy * dy) || 1;
-      const f = (d - 115) * 0.033 * alpha;
-      pa.vx += (dx / d) * f; pa.vy += (dy / d) * f;
-      pb.vx -= (dx / d) * f; pb.vy -= (dy / d) * f;
-    }
-
-    const centroids = {};
-    for (const n of nList) {
-      const pp = p[n.id];
-      if (!pp) continue;
-      let c = centroids[n.group_id];
-      if (!c) c = centroids[n.group_id] = { x: 0, y: 0, count: 0 };
-      c.x += pp.x; c.y += pp.y; c.count++;
-    }
-    for (const c of Object.values(centroids)) { c.x /= c.count; c.y /= c.count; }
-    for (const n of nList) {
-      const pp = p[n.id];
-      const c = centroids[n.group_id];
-      if (!pp || !c) continue;
-      pp.vx += (c.x - pp.x) * 0.022 * alpha;
-      pp.vy += (c.y - pp.y) * 0.022 * alpha;
-    }
-
-    for (const n of nList) {
-      const pp = p[n.id];
-      if (!pp || pp.pinned) continue;
-      const dx = pp.x - cx, dy = pp.y - cy;
-      const dist = Math.sqrt((dx / rx) ** 2 + (dy / ry) ** 2);
-      if (dist > 1) {
-        pp.vx -= dx * (dist - 1) * 0.28 * alpha;
-        pp.vy -= dy * (dist - 1) * 0.28 * alpha;
-      }
-    }
-
-    for (const n of nList) {
-      const pp = p[n.id];
-      if (!pp || pp.pinned) continue;
-      pp.vx *= 0.65; pp.vy *= 0.65;
-      pp.x = Math.max(30, Math.min(width - 30, pp.x + pp.vx));
-      pp.y = Math.max(30, Math.min(height - 30, pp.y + pp.vy));
-    }
-
-    for (const n of nList) {
-      const pp = p[n.id];
-      if (!pp) continue;
-      const g = nodeGroupsRef.current[n.id];
-      if (g) g.setAttribute('transform', `translate(${pp.x},${pp.y})`);
-    }
-    for (const l of lList) {
-      const pa = p[l.source], pb = p[l.target];
-      if (!pa || !pb) continue;
-      const el = linkElsRef.current[l.id];
-      if (el) {
-        el.setAttribute('x1', pa.x);
-        el.setAttribute('y1', pa.y);
-        el.setAttribute('x2', pb.x);
-        el.setAttribute('y2', pb.y);
-      }
-    }
-
-    if (alphaRef.current < 0.002) {
-      frameRef.current = null;
-      return;
-    }
-    frameRef.current = requestAnimationFrame(step);
-  }, []);
-
-  useEffect(() => {
-    if (!nodes.length || !size.w || !size.h) return;
-    const cx = size.w / 2, cy = size.h / 2;
-    const rx = size.w * 0.36, ry = size.h * 0.36;
-    const pos = {};
-    nodes.forEach((n, i) => {
-      const angle = (i / nodes.length) * 2 * Math.PI;
-      pos[n.id] = {
-        x: cx + rx * Math.cos(angle) * (0.4 + Math.random() * 0.5),
-        y: cy + ry * Math.sin(angle) * (0.4 + Math.random() * 0.5),
-        vx: 0, vy: 0, pinned: false,
-      };
-    });
-    posRef.current = pos;
-    alphaRef.current = 1;
-    if (frameRef.current) cancelAnimationFrame(frameRef.current);
-    frameRef.current = requestAnimationFrame(stepSim);
-    return () => {
-      if (frameRef.current) {
-        cancelAnimationFrame(frameRef.current);
-        frameRef.current = null;
-      }
-    };
-  }, [nodes, size.w, size.h, stepSim]);
-
-  const reheat = useCallback(() => {
-    alphaRef.current = Math.max(alphaRef.current, 0.5);
-    if (!frameRef.current) {
-      frameRef.current = requestAnimationFrame(stepSim);
-    }
-  }, [stepSim]);
-
-  const handleHover = useCallback((id) => {
-    if (hoveredRef.current === id) return;
-    hoveredRef.current = id;
-    applyHighlight();
-  }, [applyHighlight]);
+  const { positions, posRef, reheat } = useForceGraph(nodes, links, size.w, size.h);
 
   const svgPoint = useCallback((e) => {
     const rect = containerRef.current.getBoundingClientRect();
     const t = transformRef.current;
-    const cs = canvasScaleRef.current || 1;
+    const cs = canvasScale || 1;
     return {
       x: ((e.clientX - rect.left) / cs - t.x) / t.scale,
       y: ((e.clientY - rect.top) / cs - t.y) / t.scale,
     };
-  }, []);
+  }, [canvasScale]);
 
   const onMouseDown = useCallback((e) => {
     const pt = svgPoint(e);
     let hit = null;
-    for (const n of nodesRef.current) {
+    for (const n of nodes) {
       const p = posRef.current[n.id];
       if (!p) continue;
       const dx = pt.x - p.x, dy = pt.y - p.y;
-      if (dx * dx + dy * dy < 256) { hit = n.id; break; }
+      if (Math.sqrt(dx * dx + dy * dy) < 16) { hit = n.id; break; }
     }
-    downPos.current = { x: e.clientX, y: e.clientY };
-    wasDrag.current = false;
     if (hit) {
       draggingNode.current = hit;
       if (posRef.current[hit]) posRef.current[hit].pinned = true;
+      setCursorStyle("grabbing");
     } else {
       isPanning.current = true;
       lastPan.current = { x: e.clientX, y: e.clientY };
+      setCursorStyle("grabbing");
     }
-    if (containerRef.current) containerRef.current.style.cursor = "grabbing";
-  }, [svgPoint]);
+  }, [nodes, svgPoint, posRef]);
 
   const onMouseMove = useCallback((e) => {
-    if (downPos.current) {
-      const dx = e.clientX - downPos.current.x;
-      const dy = e.clientY - downPos.current.y;
-      if (dx * dx + dy * dy > 16) wasDrag.current = true;
-    }
     if (draggingNode.current) {
       const pt = svgPoint(e);
       const p = posRef.current[draggingNode.current];
@@ -504,16 +329,13 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
       return;
     }
     if (isPanning.current) {
-      const cs = canvasScaleRef.current || 1;
+      const cs = canvasScale || 1;
       const dx = (e.clientX - lastPan.current.x) / cs;
       const dy = (e.clientY - lastPan.current.y) / cs;
       lastPan.current = { x: e.clientX, y: e.clientY };
-      const t = transformRef.current;
-      t.x += dx;
-      t.y += dy;
-      if (gRef.current) gRef.current.setAttribute('transform', `translate(${t.x},${t.y}) scale(${t.scale})`);
+      setTransform(t => ({ ...t, x: t.x + dx, y: t.y + dy }));
     }
-  }, [svgPoint, reheat]);
+  }, [svgPoint, posRef, reheat, canvasScale]);
 
   const onMouseUp = useCallback(() => {
     if (draggingNode.current) {
@@ -523,36 +345,32 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
       reheat();
     }
     isPanning.current = false;
-    downPos.current = null;
-    if (containerRef.current) containerRef.current.style.cursor = "default";
-  }, [reheat]);
+    setCursorStyle("default");
+  }, [posRef, reheat]);
 
   const onClick = useCallback((e) => {
-    if (wasDrag.current) { wasDrag.current = false; return; }
     const pt = svgPoint(e);
-    for (const n of nodesRef.current) {
+    for (const n of nodes) {
       const p = posRef.current[n.id];
       if (!p) continue;
       const dx = pt.x - p.x, dy = pt.y - p.y;
-      if (dx * dx + dy * dy < 256) { onSelectNode(n); return; }
+      if (Math.sqrt(dx * dx + dy * dy) < 16) { onSelectNode(n); return; }
     }
     onSelectNode(null);
-  }, [svgPoint, onSelectNode]);
+  }, [nodes, svgPoint, posRef, onSelectNode]);
 
   const onWheel = useCallback((e) => {
     e.preventDefault();
-    const cs = canvasScaleRef.current || 1;
+    const cs = canvasScale || 1;
     const delta = e.deltaY > 0 ? 0.9 : 1.1;
-    const t = transformRef.current;
-    const newScale = Math.min(Math.max(t.scale * delta, 0.2), 5);
-    const rect = containerRef.current.getBoundingClientRect();
-    const mx = (e.clientX - rect.left) / cs;
-    const my = (e.clientY - rect.top) / cs;
-    t.x = mx - (mx - t.x) * (newScale / t.scale);
-    t.y = my - (my - t.y) * (newScale / t.scale);
-    t.scale = newScale;
-    if (gRef.current) gRef.current.setAttribute('transform', `translate(${t.x},${t.y}) scale(${t.scale})`);
-  }, []);
+    setTransform(t => {
+      const newScale = Math.min(Math.max(t.scale * delta, 0.2), 5);
+      const rect = containerRef.current.getBoundingClientRect();
+      const mx = (e.clientX - rect.left) / cs;
+      const my = (e.clientY - rect.top) / cs;
+      return { scale: newScale, x: mx - (mx - t.x) * (newScale / t.scale), y: my - (my - t.y) * (newScale / t.scale) };
+    });
+  }, [canvasScale]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -561,35 +379,38 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
     return () => el.removeEventListener('wheel', onWheel);
   }, [onWheel]);
 
-  const zoomBy = useCallback((factor) => {
-    const t = transformRef.current;
-    t.scale = Math.min(Math.max(t.scale * factor, 0.2), 5);
-    if (gRef.current) gRef.current.setAttribute('transform', `translate(${t.x},${t.y}) scale(${t.scale})`);
-  }, []);
+  const getHighlighted = (nodeId) => {
+    if (!nodeId) return { nodes: new Set(), links: new Set() };
+    const hn = new Set([nodeId]);
+    const hl = new Set();
+    links.forEach(l => {
+      if (l.source === nodeId) { hn.add(l.target); hl.add(l.id); }
+      if (l.target === nodeId) { hn.add(l.source); hl.add(l.id); }
+    });
+    return { nodes: hn, links: hl };
+  };
 
-  const resetView = useCallback(() => {
-    transformRef.current = { x: 0, y: 0, scale: 1 };
-    if (gRef.current) gRef.current.setAttribute('transform', `translate(0,0) scale(1)`);
-  }, []);
+  const activeId = hovered || selectedNode?.id;
+  const { nodes: hlNodes, links: hlLinks } = getHighlighted(activeId);
+  const hasHL = !!activeId;
+  const pos = Object.keys(positions).length ? positions : posRef.current;
 
   return (
     <div
       ref={containerRef}
-      data-labels={showLabels ? "1" : "0"}
-      style={{ ...containerStyle, position: "absolute" }}
+      style={{ ...containerStyle, position: "absolute", cursor: cursorStyle }}
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseUp}
       onClick={onClick}
     >
-      <style>{GRAPH_CSS}</style>
       <div style={{ position: "absolute", top: 8, right: 8, zIndex: 10, display: "flex", gap: 6, alignItems: "center" }}>
-        <button onClick={e => { e.stopPropagation(); zoomBy(1.25); }}
+        <button onClick={e => { e.stopPropagation(); setTransform(t => ({ ...t, scale: Math.min(t.scale * 1.25, 5) })); }}
           style={{ width: 26, height: 26, border: "1px solid #E0E0E0", background: "#fff", cursor: "pointer", fontSize: 16, lineHeight: 1, fontFamily: "monospace" }}>+</button>
-        <button onClick={e => { e.stopPropagation(); zoomBy(0.8); }}
+        <button onClick={e => { e.stopPropagation(); setTransform(t => ({ ...t, scale: Math.max(t.scale * 0.8, 0.2) })); }}
           style={{ width: 26, height: 26, border: "1px solid #E0E0E0", background: "#fff", cursor: "pointer", fontSize: 16, lineHeight: 1, fontFamily: "monospace" }}>−</button>
-        <button onClick={e => { e.stopPropagation(); resetView(); }}
+        <button onClick={e => { e.stopPropagation(); setTransform({ x: 0, y: 0, scale: 1 }); }}
           style={{ height: 26, padding: "0 10px", border: "1px solid #E0E0E0", background: "#fff", cursor: "pointer", fontSize: 11, fontFamily: "Kode Mono, monospace" }}>reset</button>
         <button onClick={e => { e.stopPropagation(); setShowLabels(v => !v); }}
           style={{ height: 26, padding: "0 10px", border: "1px solid #E0E0E0", background: "#fff", cursor: "pointer", fontSize: 11, fontFamily: "Kode Mono, monospace", color: showLabels ? ACCENT : "#888" }}>
@@ -597,30 +418,41 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
         </button>
       </div>
 
+
+
       <svg width={size.w} height={size.h} style={{ display: "block", userSelect: "none" }}>
-        <g ref={gRef}>
-          {links.map(l => (
-            <line key={l.id} data-link-id={l.id} className="bn-link" />
-          ))}
+        <g transform={`translate(${transform.x},${transform.y}) scale(${transform.scale})`}>
+          {links.map(l => {
+            const pa = pos[l.source], pb = pos[l.target];
+            if (!pa || !pb) return null;
+            const isHL = hlLinks.has(l.id);
+            return (
+              <line key={l.id} x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y}
+                stroke={isHL ? ACCENT : (hasHL ? "#f0f0f0" : "#ddd")}
+                strokeWidth={isHL ? 2 : 1}
+                style={{ transition: "stroke .2s" }} />
+            );
+          })}
           {nodes.map(n => {
+            const p = pos[n.id];
+            if (!p) return null;
+            const isHL = !hasHL || hlNodes.has(n.id);
+            const isSel = selectedNode?.id === n.id;
+            const isHov = hovered === n.id;
             const color = nodeColor(n);
             const abbr = nodeLabel(n);
-            const isSel = selectedNode?.id === n.id;
+            const r = isSel ? 10 : isHov ? 9 : 7;
             return (
-              <g
-                key={n.id}
-                data-node-id={n.id}
-                data-sel={isSel ? "1" : undefined}
-                className="bn-node"
-                style={{ cursor: "grab" }}
-                onMouseEnter={() => handleHover(n.id)}
-                onMouseLeave={() => handleHover(null)}
-              >
-                {isSel && <circle r={16} fill="none" stroke={color} strokeWidth={1.5} opacity={0.25} />}
-                <circle className="bn-dot" r={7} fill={color} />
-                <text y={20} textAnchor="middle" fontSize={11} fill="#000" fontFamily="Kode Mono, monospace" style={{ pointerEvents: "none", userSelect: "none" }}>
-                  {abbr}
-                </text>
+              <g key={n.id} onMouseEnter={() => setHovered(n.id)} onMouseLeave={() => setHovered(null)} style={{ cursor: "grab" }}>
+                {isSel && <circle cx={p.x} cy={p.y} r={r + 6} fill="none" stroke={color} strokeWidth={1.5} opacity={0.25} />}
+                <circle cx={p.x} cy={p.y} r={r} fill={isHL ? color : "#e8e8e8"} style={{ transition: "fill .2s" }} />
+                {(showLabels || isSel || isHov) && (
+                  <text x={p.x} y={p.y + r + 13} textAnchor="middle" fontSize={11}
+                    fill={isHL ? "#000" : "#ccc"} fontFamily="Kode Mono, monospace"
+                    style={{ pointerEvents: "none", userSelect: "none" }}>
+                    {abbr}
+                  </text>
+                )}
               </g>
             );
           })}
@@ -713,10 +545,7 @@ export default function Brain() {
       {selected && (
         <NodePanel
           node={selected}
-          nodes={nodes}
-          links={links}
           onClose={() => setSelected(null)}
-          onNavigate={n => setSelected(n)}
         />
       )}
     </ScaleWrap>

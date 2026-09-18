@@ -2,19 +2,14 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import World from "./pages/World.jsx";
-import Brain from "./pages/Brain.jsx";
+import Brain from "./pages/BrainGraph.jsx";
 import Dump from "./pages/Dump.jsx";
 import Wips from "./pages/Wips.jsx";
 import Wyd from "./pages/Wyd.jsx";
 import Socials from "./pages/Socials.jsx";
-import NeuralNetworks from "./pages/NeuralNetworks.jsx";
-import Dsa from "./pages/Dsa.jsx";
-import Numerical from "./pages/Numerical.jsx";
-import Cv from "./pages/Cv.jsx";
-import Ml from "./pages/Ml.jsx";
-import Rl from "./pages/Rl.jsx";
 import Avatar from "./pages/Avatar.jsx";
-import Topic from "./pages/Topic.jsx";
+import TopicPageRoute from "./pages/TopicPageRoute.jsx";
+import NotesPage from "./pages/NotesPage.jsx";
 import Portal from "./pages/Portal.jsx";
 
 function App() {
@@ -29,14 +24,9 @@ function App() {
       <Route path="/wips" element={<Wips />} />
       <Route path="/wyd" element={<Wyd />} />
       <Route path="/socials" element={<Socials />} />
-      <Route path="/nn" element={<NeuralNetworks />} />
-      <Route path="/dsa" element={<Dsa />} />
-      <Route path="/numerical" element={<Numerical />} />
-      <Route path="/cv" element={<Cv />} />
-      <Route path="/ml" element={<Ml />} />
-      <Route path="/rl" element={<Rl />} />
       <Route path="/avatar" element={<Avatar />} />
-      <Route path="/topic" element={<Topic />} />
+      <Route path="/topic/:nodeId" element={<TopicPageRoute />} />
+      <Route path="/notes/:subtopicId" element={<NotesPage />} />
       <Route path="/portal" element={<Portal />} />
     </Routes>
   );

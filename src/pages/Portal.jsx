@@ -3,11 +3,11 @@ import { supabase } from '../lib/supabase.js';
 import AboutTab from '../components/portal/AboutTab.jsx';
 import ProjectsTab from '../components/portal/ProjectsTab.jsx';
 import ArticlesTab from '../components/portal/ArticlesTab.jsx';
-import TakeawaysTab from '../components/portal/TakeawaysTab.jsx';
+import BrainTab from '../components/portal/BrainTab.jsx';
+import TopicsTab from '../components/portal/TopicsTab.jsx';
 import WipsTab from '../components/portal/WipsTab.jsx';
 import SocialsTab from '../components/portal/SocialsTab.jsx';
 import ExperienceTab from '../components/portal/ExperienceTab.jsx';
-import TopicsTab from '../components/portal/TopicsTab.jsx';
 
 const TABS = [
   { id: 'about',      label: 'About' },
@@ -62,23 +62,12 @@ function LoginScreen() {
           <div style={S.loginTitle}>murby portal</div>
           <div style={S.loginSub}>content management</div>
         </div>
-        <input
-          style={S.loginInput}
-          type="email"
-          placeholder="email"
-          value={email}
+        <input style={S.loginInput} type="email" placeholder="email" value={email}
           onChange={e => { setEmail(e.target.value); setErr(''); }}
-          onKeyDown={e => e.key === 'Enter' && attempt()}
-          autoFocus
-        />
-        <input
-          style={S.loginInput}
-          type="password"
-          placeholder="password"
-          value={pw}
+          onKeyDown={e => e.key === 'Enter' && attempt()} autoFocus />
+        <input style={S.loginInput} type="password" placeholder="password" value={pw}
           onChange={e => { setPw(e.target.value); setErr(''); }}
-          onKeyDown={e => e.key === 'Enter' && attempt()}
-        />
+          onKeyDown={e => e.key === 'Enter' && attempt()} />
         {err && <div style={S.loginErr}>{err}</div>}
         <button style={S.loginBtn} onClick={attempt} disabled={loading}>
           {loading ? 'Logging in…' : 'Enter'}
@@ -92,7 +81,7 @@ function TabContent({ tab }) {
   switch (tab) {
     case 'about':      return <AboutTab />;
     case 'projects':   return <ProjectsTab />;
-    case 'brain':      return <TakeawaysTab />;
+    case 'brain':      return <BrainTab />;
     case 'topics':     return <TopicsTab />;
     case 'dump':       return <ArticlesTab />;
     case 'wips':       return <WipsTab />;
@@ -108,21 +97,17 @@ export default function Portal() {
   const [tab, setTab] = useState('about');
 
   useEffect(() => {
-    // Check existing session on load
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setLoading(false);
     });
-    // Listen for auth changes (login/logout)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
     return () => subscription.unsubscribe();
   }, []);
 
-  const logout = async () => {
-    await supabase.auth.signOut();
-  };
+  const logout = async () => { await supabase.auth.signOut(); };
 
   if (loading) return <div style={S.loading}>loading…</div>;
   if (!session) return <LoginScreen />;
@@ -136,7 +121,6 @@ export default function Portal() {
           <button style={S.logoutBtn} onClick={logout}>Log out</button>
         </div>
       </div>
-
       <div style={{ display: 'flex' }}>
         <nav style={S.sidebar}>
           {TABS.map(t => (

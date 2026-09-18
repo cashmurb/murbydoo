@@ -5,6 +5,7 @@ import ProjectsTab from '../components/portal/ProjectsTab.jsx';
 import ArticlesTab from '../components/portal/ArticlesTab.jsx';
 import BrainTab from '../components/portal/BrainTab.jsx';
 import TopicsTab from '../components/portal/TopicsTab.jsx';
+import MediaTab from '../components/portal/MediaTab.jsx';
 import WipsTab from '../components/portal/WipsTab.jsx';
 import SocialsTab from '../components/portal/SocialsTab.jsx';
 import ExperienceTab from '../components/portal/ExperienceTab.jsx';
@@ -18,6 +19,10 @@ const TABS = [
   { id: 'wips',       label: 'WIPs' },
   { id: 'socials',    label: 'Socials' },
   { id: 'experience', label: 'Experience' },
+  { id: 'anime',      label: 'Anime' },
+  { id: 'books',      label: 'Books' },
+  { id: 'music',      label: 'Music' },
+  { id: 'hobbies',    label: 'Hobbies' },
 ];
 
 const ACCENT = '#D96614';
@@ -87,6 +92,10 @@ function TabContent({ tab }) {
     case 'wips':       return <WipsTab />;
     case 'socials':    return <SocialsTab />;
     case 'experience': return <ExperienceTab />;
+    case 'anime':      return <MediaTab category='anime'   title='Anime' />;
+    case 'books':      return <MediaTab category='books'   title='Books' />;
+    case 'music':      return <MediaTab category='music'   title='Music' />;
+    case 'hobbies':    return <MediaTab category='hobbies' title='Hobbies' />;
     default:           return null;
   }
 }

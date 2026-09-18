@@ -8,87 +8,198 @@ import { supabase } from "../lib/supabase.js";
 const ACCENT = "#D96614";
 const MUTED = "#B4B4B4";
 
-const GROUPS = {
-  ml:    { label: "ML",    full: "Machine Learning",  color: "#D96614" },
-  cs:    { label: "CS",    full: "Computer Science",  color: "#4A90D9" },
-  math:  { label: "Math",  full: "Mathematics",       color: "#7B68EE" },
-  neuro: { label: "Neuro", full: "Neurotech",         color: "#50C878" },
-  other: { label: "Other", full: "Other",             color: "#999999" },
+const CATEGORIES = {
+  notes:   { label: "Notes",   color: "#D96614" },
+  source:  { label: "Me",      color: "#000000" },
+  anime:   { label: "Anime",   color: "#E85D75" },
+  books:   { label: "Books",   color: "#4A90D9" },
+  music:   { label: "Music",   color: "#9B59B6" },
+  hobbies: { label: "Hobbies", color: "#27AE8F" },
 };
+
+function nodeColor(node) {
+  return CATEGORIES[node.category]?.color || "#999";
+}
+
+function nodeLabel(node) {
+  if (node.category === 'source') return 'Me';
+  return node.abbreviation || node.label?.slice(0, 4) || '?';
+}
 
 const GRAPH_CSS = `
 .bn-node text { display: none; }
 [data-labels="1"] .bn-node text,
-.bn-node[data-hl="1"] text { display: block; }
-[data-hl-active="1"] .bn-node { opacity: 0.25; }
+.bn-node[data-hl="1"] text,
+.bn-node[data-sel="1"] text { display: block; }
+
+.bn-node .bn-dot { r: 7; }
+.bn-node:hover .bn-dot { r: 9; }
+.bn-node[data-sel="1"] .bn-dot { r: 10; }
+
+[data-hl-active="1"] .bn-node { opacity: 0.22; }
 [data-hl-active="1"] .bn-node[data-hl="1"] { opacity: 1; }
+[data-hl-active="1"] .bn-node text { fill: #ccc; }
+[data-hl-active="1"] .bn-node[data-hl="1"] text { fill: #000; }
+
 .bn-link { stroke: #ddd; stroke-width: 1; }
 [data-hl-active="1"] .bn-link { stroke: #f0f0f0; }
 [data-hl-active="1"] .bn-link[data-hl="1"] { stroke: ${ACCENT}; stroke-width: 2; }
 `;
 
 function NodePanel({ node, nodes, links, onClose, onNavigate }) {
-  const [sections, setSections] = useState([]);
+  const [subtopics, setSubtopics] = useState([]);
+  const color = nodeColor(node);
+  const cat = node.category || 'notes';
 
   useEffect(() => {
-    const slug = node?.url?.replace('/', '');
-    if (slug && slug !== '#') {
-      supabase.from('topic_sections').select('heading').eq('topic', slug).order('sort_order')
-        .then(({ data }) => setSections(data || []));
-      return;
-    }
-    Promise.resolve().then(() => setSections([]));
-  }, [node?.id, node?.url]);
+    if (cat !== 'notes') return;
+    let cancelled = false;
+    supabase.from('subtopics').select('id, title').eq('node_id', node.id).order('sort_order')
+      .then(({ data }) => { if (!cancelled) setSubtopics(data || []); });
+    return () => { cancelled = true; };
+  }, [node.id, cat]);
 
   if (!node) return null;
+
+  const visibleSubtopics = cat === 'notes' ? subtopics : [];
 
   const connectedIds = links
     .filter(l => l.source === node.id || l.target === node.id)
     .map(l => l.source === node.id ? l.target : l.source);
-  const connected = nodes.filter(n => connectedIds.includes(n.id));
-  const color = GROUPS[node.group_id]?.color || ACCENT;
+  const connected = nodes.filter(n => connectedIds.includes(n.id) && n.category !== 'source');
+  const meta = node.meta || {};
 
-  return (
-    <div style={{
-      position: "absolute", right: 200, top: 190, width: 280,
-      background: "#fff", border: "1px solid #000",
-      zIndex: 30, display: "flex", flexDirection: "column",
-      maxHeight: 680, overflow: "hidden",
-      boxShadow: "2px 2px 0 rgba(0,0,0,0.15)",
-    }}>
-      <div style={{ padding: "14px 14px 10px", borderBottom: "1px solid #E0E0E0", display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexShrink: 0 }}>
-        <div style={{ flex: 1, paddingRight: 8 }}>
-          <div style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.2, marginBottom: 3 }}>{node.label}</div>
-          <div style={{ fontSize: 10, color, textTransform: "uppercase", letterSpacing: 1 }}>{GROUPS[node.group_id]?.full || node.group_id}</div>
-        </div>
-        <button onClick={onClose} style={{ background: "none", border: "1px solid #E0E0E0", width: 22, height: 22, cursor: "pointer", fontSize: 11, flexShrink: 0, lineHeight: 1 }}>✕</button>
+  const panelStyle = {
+    position: "absolute", right: 200, top: 165, width: 280,
+    background: "#fff", border: "1px solid #000",
+    zIndex: 30, display: "flex", flexDirection: "column",
+    maxHeight: 680, overflow: "hidden",
+    boxShadow: "2px 2px 0 rgba(0,0,0,0.15)",
+  };
+
+  const header = (
+    <div style={{ padding: "14px 14px 10px", borderBottom: "1px solid #E0E0E0", display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexShrink: 0 }}>
+      <div style={{ flex: 1, paddingRight: 8 }}>
+        <div style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.2, marginBottom: 3 }}>{node.label}</div>
+        <div style={{ fontSize: 10, color, textTransform: "uppercase", letterSpacing: 1 }}>{CATEGORIES[cat]?.label || cat}</div>
       </div>
-      <div style={{ padding: "12px 14px", overflowY: "auto", flex: 1 }}>
-        {node.description && <p style={{ fontSize: 12, lineHeight: 1.7, color: "#555", marginBottom: 12 }}>{node.description}</p>}
-        {sections.length > 0 && (
-          <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 10, color: MUTED, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Topics</div>
-            {sections.map(s => <div key={s.id} style={{ padding: "4px 0", borderBottom: "1px solid #F5F5F5", fontSize: 12 }}>{s.heading}</div>)}
-          </div>
-        )}
-        {connected.length > 0 && (
-          <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 10, color: MUTED, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Connected to</div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-              {connected.map(n => (
-                <span key={n.id} onClick={() => onNavigate(n)}
-                  style={{ padding: "2px 8px", border: `1px solid ${GROUPS[n.group_id]?.color || "#E0E0E0"}`, fontSize: 11, cursor: "pointer", color: GROUPS[n.group_id]?.color || "#000" }}>
-                  {n.label}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-        <Link to={`/topic/${node.id}`} style={{ display: "block", fontSize: 12, color: ACCENT, textDecoration: "none", marginTop: 4 }}>View subtopics →</Link>
+      <button onClick={onClose} style={{ background: "none", border: "1px solid #E0E0E0", width: 22, height: 22, cursor: "pointer", fontSize: 11, flexShrink: 0, lineHeight: 1 }}>✕</button>
+    </div>
+  );
+
+  const connectedChips = connected.length > 0 && (
+    <div style={{ marginBottom: 12 }}>
+      <div style={{ fontSize: 10, color: MUTED, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Connected to</div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+        {connected.map(n => (
+          <span key={n.id} onClick={() => onNavigate(n)}
+            style={{ padding: "2px 8px", border: `1px solid ${nodeColor(n)}`, fontSize: 11, cursor: "pointer", color: nodeColor(n) }}>
+            {n.label}
+          </span>
+        ))}
       </div>
     </div>
   );
+
+  if (cat === 'source') return (
+    <div style={panelStyle}>
+      {header}
+      <div style={{ padding: "12px 14px", overflowY: "auto", flex: 1 }}>
+        {node.description && <p style={{ fontSize: 12, lineHeight: 1.7, color: "#555", marginBottom: 12 }}>{node.description}</p>}
+        <Link to="/about" style={{ display: "block", fontSize: 12, color: ACCENT, textDecoration: "none", marginBottom: 12 }}>View about me →</Link>
+        {connectedChips}
+      </div>
+    </div>
+  );
+
+  if (cat === 'notes') return (
+    <div style={panelStyle}>
+      {header}
+      <div style={{ padding: "12px 14px", overflowY: "auto", flex: 1 }}>
+        {node.description && <p style={{ fontSize: 12, lineHeight: 1.7, color: "#555", marginBottom: 12 }}>{node.description}</p>}
+        {visibleSubtopics.length > 0 && (
+          <div style={{ marginBottom: 12 }}>
+            <div style={{ fontSize: 10, color: MUTED, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Subtopics</div>
+            {visibleSubtopics.map(s => (
+              <Link key={s.id} to={`/notes/${s.id}`} style={{ display: "block", padding: "4px 0", borderBottom: "1px solid #F5F5F5", fontSize: 12, color: "#000", textDecoration: "none" }}>{s.title}</Link>
+            ))}
+          </div>
+        )}
+        <Link to={`/topic/${node.id}`} style={{ display: "block", fontSize: 12, color: ACCENT, textDecoration: "none", marginBottom: 12 }}>View all subtopics →</Link>
+        {connectedChips}
+      </div>
+    </div>
+  );
+
+  if (cat === 'anime') return (
+    <div style={panelStyle}>
+      {header}
+      <div style={{ padding: "12px 14px", overflowY: "auto", flex: 1 }}>
+        {node.image_url && <img src={node.image_url} alt={node.label} style={{ width: "100%", borderRadius: 6, marginBottom: 12, objectFit: "cover", maxHeight: 180 }} />}
+        {node.description && <p style={{ fontSize: 12, lineHeight: 1.7, color: "#555", marginBottom: 12 }}>{node.description}</p>}
+        {meta.genre && <div style={{ fontSize: 11, color: MUTED, marginBottom: 4 }}>Genre: {meta.genre}</div>}
+        {meta.episodes && <div style={{ fontSize: 11, color: MUTED, marginBottom: 4 }}>Episodes: {meta.episodes}</div>}
+        {meta.status && <div style={{ fontSize: 11, color: MUTED, marginBottom: 12 }}>Status: {meta.status}</div>}
+        {connectedChips}
+      </div>
+    </div>
+  );
+
+  if (cat === 'books') return (
+    <div style={panelStyle}>
+      {header}
+      <div style={{ padding: "12px 14px", overflowY: "auto", flex: 1 }}>
+        {node.image_url && <img src={node.image_url} alt={node.label} style={{ width: 100, borderRadius: 4, marginBottom: 12, objectFit: "cover", float: "right", marginLeft: 12 }} />}
+        {node.description && <p style={{ fontSize: 12, lineHeight: 1.7, color: "#555", marginBottom: 12 }}>{node.description}</p>}
+        {meta.author && <div style={{ fontSize: 11, color: MUTED, marginBottom: 4 }}>Author: {meta.author}</div>}
+        {meta.genre && <div style={{ fontSize: 11, color: MUTED, marginBottom: 4 }}>Genre: {meta.genre}</div>}
+        {meta.status && <div style={{ fontSize: 11, color: MUTED, marginBottom: 12 }}>Status: {meta.status}</div>}
+        <div style={{ clear: "both" }} />
+        {connectedChips}
+      </div>
+    </div>
+  );
+
+  if (cat === 'music') return (
+    <div style={panelStyle}>
+      {header}
+      <div style={{ padding: "12px 14px", overflowY: "auto", flex: 1 }}>
+        {node.image_url && <img src={node.image_url} alt={node.label} style={{ width: "100%", borderRadius: 6, marginBottom: 12, objectFit: "cover", maxHeight: 160 }} />}
+        {node.description && <p style={{ fontSize: 12, lineHeight: 1.7, color: "#555", marginBottom: 12 }}>{node.description}</p>}
+        {meta.artist && <div style={{ fontSize: 11, color: MUTED, marginBottom: 4 }}>Artist: {meta.artist}</div>}
+        {meta.type && <div style={{ fontSize: 11, color: MUTED, marginBottom: 12 }}>Type: {meta.type}</div>}
+        {meta.spotify_url && (
+          <a href={meta.spotify_url} target="_blank" rel="noopener"
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, color: "#1DB954", textDecoration: "none", marginBottom: 12 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            Listen on Spotify
+          </a>
+        )}
+        {connectedChips}
+      </div>
+    </div>
+  );
+
+  if (cat === 'hobbies') return (
+    <div style={panelStyle}>
+      {header}
+      <div style={{ padding: "12px 14px", overflowY: "auto", flex: 1 }}>
+        {node.image_url && <img src={node.image_url} alt={node.label} style={{ width: "100%", borderRadius: 6, marginBottom: 12, objectFit: "cover", maxHeight: 160 }} />}
+        {node.description && <p style={{ fontSize: 12, lineHeight: 1.7, color: "#555", marginBottom: 12 }}>{node.description}</p>}
+        {meta.link && (
+          <a href={meta.link} target="_blank" rel="noopener"
+            style={{ display: "block", fontSize: 12, color: ACCENT, textDecoration: "none", marginBottom: 12 }}>
+            {meta.link_label || "Learn more"} →
+          </a>
+        )}
+        {connectedChips}
+      </div>
+    </div>
+  );
+
+  return null;
 }
+
 
 function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle, canvasScale }) {
   const containerRef = useRef(null);
@@ -492,22 +603,22 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
             <line key={l.id} data-link-id={l.id} className="bn-link" />
           ))}
           {nodes.map(n => {
-            const color = GROUPS[n.group_id]?.color || "#999";
-            const abbr = n.abbreviation || GROUPS[n.group_id]?.label || n.group_id;
+            const color = nodeColor(n);
+            const abbr = nodeLabel(n);
             const isSel = selectedNode?.id === n.id;
-            const r = isSel ? 10 : 7;
             return (
               <g
                 key={n.id}
                 data-node-id={n.id}
+                data-sel={isSel ? "1" : undefined}
                 className="bn-node"
                 style={{ cursor: "grab" }}
                 onMouseEnter={() => handleHover(n.id)}
                 onMouseLeave={() => handleHover(null)}
               >
-                {isSel && <circle r={r + 6} fill="none" stroke={color} strokeWidth={1.5} opacity={0.25} />}
-                <circle r={r} fill={color} />
-                <text y={r + 13} textAnchor="middle" fontSize={11} fill="#000" fontFamily="Kode Mono, monospace" style={{ pointerEvents: "none", userSelect: "none" }}>
+                {isSel && <circle r={16} fill="none" stroke={color} strokeWidth={1.5} opacity={0.25} />}
+                <circle className="bn-dot" r={7} fill={color} />
+                <text y={20} textAnchor="middle" fontSize={11} fill="#000" fontFamily="Kode Mono, monospace" style={{ pointerEvents: "none", userSelect: "none" }}>
                   {abbr}
                 </text>
               </g>
@@ -529,7 +640,7 @@ function MobileBrain({ nodes }) {
         <p style={{ fontSize: 13, color: MUTED, marginBottom: 24 }}>A compilation of what I've learned throughout the years.</p>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {nodes.map(n => {
-            const color = GROUPS[n.group_id]?.color || "#999";
+            const color = nodeColor(n);
             const isSel = selected?.id === n.id;
             return (
               <div key={n.id} onClick={() => setSelected(isSel ? null : n)}

@@ -172,10 +172,21 @@ function AddForm({ category, onAdd, onCancel }) {
       category, group_id: 'other', sort_order,
     }).select().single();
     if (error) { setStatus({ ok: false, msg: error.message }); setSaving(false); return; }
+
+    // Connect to Me/source node
     const { data: source } = await supabase.from('brain_nodes').select('id').eq('category', 'source').single();
     if (source && newNode) {
       await supabase.from('brain_links').insert({ source_id: source.id, target_id: newNode.id });
     }
+
+    // Connect to all existing nodes of the same category
+    const { data: siblings } = await supabase.from('brain_nodes').select('id').eq('category', category).neq('id', newNode.id);
+    if (siblings?.length) {
+      await supabase.from('brain_links').insert(
+        siblings.map(s => ({ source_id: newNode.id, target_id: s.id }))
+      );
+    }
+
     onAdd();
   };
 

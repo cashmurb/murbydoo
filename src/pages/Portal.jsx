@@ -10,6 +10,7 @@ import MediaTab from '../components/portal/MediaTab.jsx';
 import WipsTab from '../components/portal/WipsTab.jsx';
 import SocialsTab from '../components/portal/SocialsTab.jsx';
 import ExperienceTab from '../components/portal/ExperienceTab.jsx';
+import GuestbookTab from '../components/portal/GuestbookTab.jsx';
 
 const TABS = [
   { id: 'about',      label: 'About' },
@@ -24,6 +25,7 @@ const TABS = [
   { id: 'books',      label: 'Books' },
   { id: 'music',      label: 'Music' },
   { id: 'hobbies',    label: 'Hobbies' },
+  { id: 'guestbook', label: 'Guestbook' }
 ];
 
 const ACCENT = '#D96614';
@@ -97,6 +99,7 @@ function TabContent({ tab }) {
     case 'books':      return <MediaTab category='books'   title='Books' />;
     case 'music':      return <MediaTab category='music'   title='Music' />;
     case 'hobbies':    return <MediaTab category='hobbies' title='Hobbies' />;
+    case 'guestbook': return <GuestbookTab />;
     default:           return null;
   }
 }

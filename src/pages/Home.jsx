@@ -214,7 +214,7 @@ function buildLsOutput() {
         <br />
         <span style={{ color: "#000", fontWeight: 600 }}>reset</span>
         <span style={{ color: DIM }}>{"    "}→ </span>
-        <span style={{ color: "#555" }}>forget my name</span>
+        <span style={{ color: "#555" }}>forget my name and avatar</span>
         <br />
         <span style={{ color: "#000", fontWeight: 600 }}>bye</span>
         <span style={{ color: DIM }}>{"      "}→ </span>
@@ -241,7 +241,7 @@ function processCommand(raw, conv) {
       return { outputs, nextConv: conv };
     }
     nextConv = { awaitingName: false, name };
-    try { localStorage.setItem("murb_visitor_name", name); } catch {}
+    try { localStorage.setItem("murb_visitor_name", name); } catch (e) { void e; }
 
     outputs.push({
       kind: "output",
@@ -356,31 +356,41 @@ function processCommand(raw, conv) {
     return { outputs, nextConv };
   }
 
-  if (cmd === "reset" || cmd === "reset name" || cmd === "forget" || cmd === "forget me") {
-    if (!conv.name) {
+  if (cmd === "reset" || cmd === "reset name" || cmd === "reset avatar" ||
+      cmd === "forget" || cmd === "forget me" || cmd === "clear avatar") {
+    let hasName = !!conv.name;
+    let hasAvatar = false;
+    try { hasAvatar = !!localStorage.getItem("murb_avatar"); } catch (e) { void e; }
+
+    if (!hasName && !hasAvatar) {
       outputs.push({
         kind: "output",
         content: (
           <OutputLine style={{ color: DIM }}>
-            nothing to forget. i don't know your name yet.
+            nothing to forget. i don't know your name or avatar yet.
           </OutputLine>
         ),
       });
       return { outputs, nextConv };
     }
-    const oldName = conv.name;
+
+    const cleared = [];
+    if (hasName) cleared.push(conv.name);
+    if (hasAvatar) cleared.push("your avatar");
+
     outputs.push({
       kind: "output",
       content: (
         <OutputLine>
-          forgotten, <span style={{ color: ACCENT }}>{oldName}</span>. say <span style={{ color: "#000", fontWeight: 600 }}>hello</span> to start over.
+          forgotten: <span style={{ color: ACCENT }}>{cleared.join(" and ")}</span>. say <span style={{ color: "#000", fontWeight: 600 }}>hello</span> to start over.
         </OutputLine>
       ),
     });
     return {
       outputs,
       nextConv: { awaitingName: false, name: null },
-      resetName: true,
+      resetName: hasName,
+      resetAvatar: hasAvatar,
     };
   }
 
@@ -455,17 +465,22 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
       return;
     }
 
-    const { outputs, nextConv, quit, resetName } = processCommand(raw, conv);
+    const { outputs, nextConv, quit, resetName, resetAvatar } = processCommand(raw, conv);
     setConv(nextConv);
     setHistory(h => [...h, { kind: "input", text: raw }, ...outputs]);
 
     if (resetName) {
-      try { localStorage.removeItem("murb_visitor_name"); } catch {}
+      try { localStorage.removeItem("murb_visitor_name"); } catch (e) { void e; }
+    }
+
+    if (resetAvatar) {
+      try { localStorage.removeItem("murb_avatar"); } catch (e) { void e; }
+      window.dispatchEvent(new CustomEvent("murb-avatar-reset"));
     }
 
     if (quit) {
       setTimeout(() => {
-        try { window.close(); } catch {}
+        try { window.close(); } catch (e) { void e; }
         setTimeout(() => {
           if (!window.closed) setClosed(true);
         }, 300);
@@ -495,7 +510,7 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
     : "welcome, strangers!";
 
   const farewellName = conv.name || "friend";
-  const showHint = history.length === 0 && !conv.awaitingName && !conv.name;
+  const showHint = history.length === 0 && !conv.awaitingName;
 
   return (
     <>
@@ -681,6 +696,14 @@ export default function Home() {
   const [typedCount, setTypedCount] = useState(0);
 
   useEffect(() => {
+    const active = phase === "idle" || phase === "erasing";
+    window.dispatchEvent(new CustomEvent("murb-intro-state", { detail: { active } }));
+    return () => {
+      window.dispatchEvent(new CustomEvent("murb-intro-state", { detail: { active: false } }));
+    };
+  }, [phase]);
+
+  useEffect(() => {
     if (phase === "idle") return;
 
     if (phase === "erasing") {
@@ -716,8 +739,6 @@ export default function Home() {
   if (isMobile) return <MobileHome />;
 
   const visibleIntro = MURB_INTRO.slice(0, Math.max(0, MURB_INTRO.length - eraseIndex));
-  const visibleTyped = MURB_FINAL.slice(0, typedCount);
-
   const showIntro = phase === "idle" || phase === "erasing";
   const showFrame = phase === "panning" || phase === "typing" || phase === "done";
 

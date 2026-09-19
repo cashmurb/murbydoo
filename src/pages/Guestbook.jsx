@@ -188,14 +188,9 @@ function GuestCard({ entry, pinColor, delay, layout, onLayoutChange }) {
           marginBottom: 8,
           color: "#333",
           wordBreak: "break-word",
-          position: "relative",
           pointerEvents: "none",
         }}>
           "{message}"
-          <span style={{ position: "absolute", bottom: -5, left: 16, display: "flex", gap: 2 }}>
-            <span style={{ width: 4, height: 4, borderRadius: "50%", background: "#fff", border: "1px solid #E8E3D8", display: "block" }} />
-            <span style={{ width: 3, height: 3, borderRadius: "50%", background: "#fff", border: "1px solid #E8E3D8", display: "block", marginTop: 3 }} />
-          </span>
         </div>
       )}
 

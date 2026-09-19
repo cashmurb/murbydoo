@@ -27,6 +27,41 @@ const CAT_ASCII = `    /\\_____/\\
  ( (  )   (  ) )
 (__(__)___(__)__)'`;
 
+const SURPRISE_CATS = [
+  `   /\\_/\\
+  ( o.o )
+   > ^ <
+  /     \\
+ (       )
+  \\__|__/`,
+
+  `  /\\_/\\    /\\_/\\
+ ( o.o )  ( -.- )
+  > ^ <    > ^ <
+ /     \\  /     \\
+(       )(       )`,
+
+  `     _____
+    |_____|
+   _|_____|_
+  /  o   o  \\
+ ( ==  ^  == )
+  )         (
+ (           )
+( (  )   (  ) )
+(__(__)___(__)__)'`,
+
+  `    /\\_____/\\
+   /  o   o  \\
+  ( ==  ^  == )
+   )  \\___/  (
+  (  =\\   /=  )
+ ( (  )   (  ) )
+(__(__)___(__)__)'`,
+];
+
+let lastSurpriseCatIndex = -1;
+
 const TERM_CSS = `
 @keyframes blink {
   0%, 49% { opacity: 1; }
@@ -179,6 +214,16 @@ function extractName(raw) {
   s = s.trim();
   if (!s) return null;
   return s.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+}
+
+function pickSurpriseCat() {
+  if (SURPRISE_CATS.length <= 1) return SURPRISE_CATS[0];
+  let idx = Math.floor(Math.random() * SURPRISE_CATS.length);
+  if (idx === lastSurpriseCatIndex) {
+    idx = (idx + 1) % SURPRISE_CATS.length;
+  }
+  lastSurpriseCatIndex = idx;
+  return SURPRISE_CATS[idx];
 }
 
 function buildLsOutput() {
@@ -345,11 +390,12 @@ function processCommand(raw, conv) {
   }
 
   if (cmd === "cat" || cmd === "meow") {
+    const pick = pickSurpriseCat();
     outputs.push({
       kind: "output",
       content: (
         <OutputLine>
-          <pre className="cat-ascii" style={{ margin: 0 }}>{CAT_ASCII}</pre>
+          <pre className="cat-ascii" style={{ margin: 0 }}>{pick}</pre>
         </OutputLine>
       ),
     });

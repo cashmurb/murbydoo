@@ -384,13 +384,20 @@ export default function Guestbook() {
   return (
     <>
       <style>{GUESTBOOK_CSS}</style>
+
+      <div style={{
+        position: "fixed",
+        inset: 0,
+        background: "#FAFAFA",
+        zIndex: -1,
+      }} />
+
       <div style={{
         position: "relative",
         width: 1440,
         maxWidth: "100%",
         margin: "0 auto",
         minHeight: "100vh",
-        background: "#FAFAFA",
         fontFamily: "Kode Mono, monospace",
       }}>
         <NavHeader />

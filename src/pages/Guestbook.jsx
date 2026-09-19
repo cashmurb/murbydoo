@@ -343,33 +343,74 @@ export default function Guestbook() {
 
   const pins = entries.map((_, i) => PIN_COLORS[i % PIN_COLORS.length]);
 
+  if (isMobile) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#FAFAFA", fontFamily: "Kode Mono, monospace" }}>
+        <style>{GUESTBOOK_CSS}</style>
+        <NavHeader />
+        <div style={{ padding: "140px 20px 80px" }}>
+          <div style={{ marginBottom: 32 }}>
+            <h1 style={{ fontSize: 28, fontWeight: 400, margin: 0, marginBottom: 8 }}>guestbook</h1>
+            <p style={{ fontSize: 13, color: MUTED, margin: 0 }}>{entries.length} visitor{entries.length !== 1 ? "s" : ""} left a mark</p>
+          </div>
+
+          <div style={{ marginBottom: 32 }}>
+            <SubmitPanel onSubmit={load} />
+          </div>
+
+          {entries.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "80px 0", color: MUTED, fontSize: 14 }}>
+              no entries yet. be the first to leave a mark!
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 28, paddingTop: 20 }}>
+              {entries.map((entry, i) => (
+                <GuestCard
+                  key={entry.id}
+                  entry={entry}
+                  pinColor={pins[i]}
+                  delay={i * 60}
+                  layout={layout[entry.id]}
+                  onLayoutChange={handleLayoutChange}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <style>{GUESTBOOK_CSS}</style>
       <div style={{
+        position: "relative",
+        width: 1440,
+        maxWidth: "100%",
+        margin: "0 auto",
         minHeight: "100vh",
         background: "#FAFAFA",
         fontFamily: "Kode Mono, monospace",
       }}>
         <NavHeader />
         <div style={{
-          maxWidth: isMobile ? "100%" : 1100,
+          maxWidth: 1100,
           margin: "0 auto",
-          padding: isMobile ? "140px 20px 80px" : "170px 40px 120px",
+          padding: "170px 40px 120px",
         }}>
           <div style={{
             display: "flex",
-            flexDirection: isMobile ? "column" : "row",
             justifyContent: "space-between",
             alignItems: "flex-start",
             marginBottom: 48,
             gap: 24,
           }}>
             <div>
-              <h1 style={{ fontSize: isMobile ? 28 : 40, fontWeight: 400, margin: 0, marginBottom: 8 }}>guestbook</h1>
+              <h1 style={{ fontSize: 40, fontWeight: 400, margin: 0, marginBottom: 8 }}>guestbook</h1>
               <p style={{ fontSize: 13, color: MUTED, margin: 0 }}>{entries.length} visitor{entries.length !== 1 ? "s" : ""} left a mark</p>
             </div>
-            <div style={{ width: isMobile ? "100%" : 320 }}>
+            <div style={{ width: 320 }}>
               <SubmitPanel onSubmit={load} />
             </div>
           </div>
@@ -397,7 +438,7 @@ export default function Guestbook() {
                   reset layout
                 </button>
               </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: isMobile ? 28 : 36, paddingTop: 20 }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 36, paddingTop: 20 }}>
                 {entries.map((entry, i) => (
                   <GuestCard
                     key={entry.id}

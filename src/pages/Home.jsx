@@ -248,7 +248,7 @@ function processCommand(raw, conv) {
       content: (
         <OutputLine>
           nice to meet you, <span style={{ color: ACCENT, fontWeight: 600 }}>{name}</span>.
-          to find out more about me, type <span style={{ color: "#000", fontWeight: 600 }}>ls</span> to view the commands.
+          to find out more about murb, type <span style={{ color: "#000", fontWeight: 600 }}>ls</span> to view the commands.
         </OutputLine>
       ),
     });
@@ -289,7 +289,7 @@ function processCommand(raw, conv) {
       kind: "output",
       content: (
         <OutputLine>
-          She's an AI researcher by day and an artist by night. She teaches machines to see and spend an unreasonable amount of time thinking about the brain. She also takes photos, makes films and music, and do strange little projects in between.
+          murb is an AI researcher by day and an artist by night. She teaches machines to see and spend an unreasonable amount of time thinking about the brain. She also takes photos, makes films and music, and do strange little projects in between.
         </OutputLine>
       ),
     });
@@ -301,7 +301,7 @@ function processCommand(raw, conv) {
       kind: "output",
       content: (
         <OutputLine>
-          <Link to="/about" className="term-link">→ who am i</Link>
+          <Link to="/about" className="term-link">→ who is she</Link>
         </OutputLine>
       ),
     });
@@ -313,7 +313,7 @@ function processCommand(raw, conv) {
       kind: "output",
       content: (
         <OutputLine>
-          <Link to="/wyd" className="term-link">→ what i'm doing</Link>
+          <Link to="/wyd" className="term-link">→ what is she doing</Link>
         </OutputLine>
       ),
     });
@@ -325,7 +325,7 @@ function processCommand(raw, conv) {
       kind: "output",
       content: (
         <OutputLine>
-          <Link to="/socials" className="term-link">→ where to find me</Link>
+          <Link to="/socials" className="term-link">→ where to find her</Link>
         </OutputLine>
       ),
     });
@@ -423,7 +423,7 @@ function processCommand(raw, conv) {
     content: (
       <OutputLine>
         <span style={{ color: "#A0A0A0" }}>
-          command not found: {cmd}. type 'ls' to see what i can do.
+          command not found: {cmd}. type 'ls' to see what you can do.
         </span>
       </OutputLine>
     ),

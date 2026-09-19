@@ -194,15 +194,15 @@ function buildLsOutput() {
         <br />
         <span style={{ color: "#000", fontWeight: 600 }}>who</span>
         <span style={{ color: DIM }}>{"      "}→ </span>
-        <span style={{ color: "#555" }}>who am i</span>
+        <span style={{ color: "#555" }}>who is she</span>
         <br />
         <span style={{ color: "#000", fontWeight: 600 }}>wyd</span>
         <span style={{ color: DIM }}>{"      "}→ </span>
-        <span style={{ color: "#555" }}>what i'm doing</span>
+        <span style={{ color: "#555" }}>what is she doing</span>
         <br />
         <span style={{ color: "#000", fontWeight: 600 }}>wya</span>
         <span style={{ color: DIM }}>{"      "}→ </span>
-        <span style={{ color: "#555" }}>where to find me</span>
+        <span style={{ color: "#555" }}>where to find her</span>
         <br />
         <span style={{ color: "#000", fontWeight: 600 }}>avatar</span>
         <span style={{ color: DIM }}>{"   "}→ </span>

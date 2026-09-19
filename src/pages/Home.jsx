@@ -289,7 +289,7 @@ function processCommand(raw, conv) {
       kind: "output",
       content: (
         <OutputLine>
-          AI researcher by day, artist by night. I teach machines to see, spend an unreasonable amount of time thinking about the brain, take photos, make films and music, and strange little projects in between.
+          She's an AI researcher by day and an artist by night. She teaches machines to see and spend an unreasonable amount of time thinking about the brain. She also takes photos, makes films and music, and do strange little projects in between.
         </OutputLine>
       ),
     });

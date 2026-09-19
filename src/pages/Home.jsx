@@ -253,6 +253,10 @@ function buildLsOutput() {
         <span style={{ color: DIM }}>{"   "}→ </span>
         <span style={{ color: "#555" }}>make your avatar</span>
         <br />
+        <span style={{ color: "#000", fontWeight: 600 }}>guestbook</span>
+        <span style={{ color: DIM }}>{" "}→ </span>
+        <span style={{ color: "#555" }}>see who's visited</span>
+        <br />
         <span style={{ color: "#000", fontWeight: 600 }}>cat</span>
         <span style={{ color: DIM }}>{"      "}→ </span>
         <span style={{ color: "#555" }}>a small surprise</span>
@@ -383,6 +387,18 @@ function processCommand(raw, conv) {
       content: (
         <OutputLine>
           let's make your avatar. <Link to="/avatar" className="term-link term-link-accent">→ start</Link>
+        </OutputLine>
+      ),
+    });
+    return { outputs, nextConv };
+  }
+
+  if (cmd === "guests" || cmd === "guestbook") {
+    outputs.push({
+      kind: "output",
+      content: (
+        <OutputLine>
+          <Link to="/guestbook" className="term-link">→ visit the guestbook</Link>
         </OutputLine>
       ),
     });

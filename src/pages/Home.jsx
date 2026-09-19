@@ -185,7 +185,7 @@ function buildLsOutput() {
   return (
     <>
       <OutputLine style={{ marginBottom: 10 }}>
-        here are the commands to find out more about me!
+        here are the commands to find out more about murb!
       </OutputLine>
       <OutputLine style={{ lineHeight: 2.1 }}>
         <span style={{ color: "#000", fontWeight: 600 }}>bio</span>

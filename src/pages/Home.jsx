@@ -757,12 +757,32 @@ export default function Home() {
   const [eraseIndex, setEraseIndex] = useState(0);
   const [typedCount, setTypedCount] = useState(0);
 
+  const startErase = () => {
+    if (phase !== "idle") return;
+    setPhase("erasing");
+    setEraseIndex(0);
+  };
+
   useEffect(() => {
     const active = phase === "idle" || phase === "erasing";
     window.dispatchEvent(new CustomEvent("murb-intro-state", { detail: { active } }));
     return () => {
       window.dispatchEvent(new CustomEvent("murb-intro-state", { detail: { active: false } }));
     };
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== "idle") return;
+
+    const onKey = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        startErase();
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [phase]);
 
   useEffect(() => {
@@ -791,12 +811,6 @@ export default function Home() {
       return () => clearTimeout(t);
     }
   }, [phase, eraseIndex, typedCount]);
-
-  const startErase = () => {
-    if (phase !== "idle") return;
-    setPhase("erasing");
-    setEraseIndex(0);
-  };
 
   if (isMobile) return <MobileHome />;
 
@@ -841,7 +855,7 @@ export default function Home() {
           </div>
           {phase === "idle" && (
             <div style={{ fontSize: 13, color: DIM, letterSpacing: 0.5 }}>
-              [ click to run ]
+              [ click or press enter to run ]
             </div>
           )}
         </div>

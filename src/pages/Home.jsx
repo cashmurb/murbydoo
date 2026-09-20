@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import NavHeader from "../components/NavHeader.jsx";
@@ -290,7 +290,7 @@ function processCommand(raw, conv) {
       return { outputs, nextConv: conv };
     }
     nextConv = { awaitingName: false, name };
-    try { localStorage.setItem("murb_visitor_name", name); } catch (e) { void e; }
+    try { localStorage.setItem("murb_visitor_name", name); } catch { /* ignore */ }
 
     outputs.push({
       kind: "output",
@@ -422,7 +422,7 @@ function processCommand(raw, conv) {
       cmd === "forget" || cmd === "forget me" || cmd === "clear avatar") {
     let hasName = !!conv.name;
     let hasAvatar = false;
-    try { hasAvatar = !!localStorage.getItem("murb_avatar"); } catch (e) { void e; }
+    try { hasAvatar = !!localStorage.getItem("murb_avatar"); } catch { /* ignore */ }
 
     if (!hasName && !hasAvatar) {
       outputs.push({
@@ -532,17 +532,17 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
     setHistory(h => [...h, { kind: "input", text: raw }, ...outputs]);
 
     if (resetName) {
-      try { localStorage.removeItem("murb_visitor_name"); } catch (e) { void e; }
+      try { localStorage.removeItem("murb_visitor_name"); } catch { /* ignore */ }
     }
 
     if (resetAvatar) {
-      try { localStorage.removeItem("murb_avatar"); } catch (e) { void e; }
+      try { localStorage.removeItem("murb_avatar"); } catch { /* ignore */ }
       window.dispatchEvent(new CustomEvent("murb-avatar-reset"));
     }
 
     if (quit) {
       setTimeout(() => {
-        try { window.close(); } catch (e) { void e; }
+        try { window.close(); } catch { /* ignore */ }
         setTimeout(() => {
           if (!window.closed) setClosed(true);
         }, 300);
@@ -757,11 +757,11 @@ export default function Home() {
   const [eraseIndex, setEraseIndex] = useState(0);
   const [typedCount, setTypedCount] = useState(0);
 
-  const startErase = () => {
+  const startErase = useCallback(() => {
     if (phase !== "idle") return;
     setPhase("erasing");
     setEraseIndex(0);
-  };
+  }, [phase]);
 
   useEffect(() => {
     const active = phase === "idle" || phase === "erasing";
@@ -783,7 +783,7 @@ export default function Home() {
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [phase]);
+  }, [phase, startErase]);
 
   useEffect(() => {
     if (phase === "idle") return;
@@ -867,26 +867,30 @@ export default function Home() {
         maxWidth: "100%",
         margin: "0 auto",
         minHeight: "100vh",
-        opacity: showFrame ? 1 : 0,
-        transition: `opacity ${PAN_DURATION}s ${PAN_EASE}`,
       }}>
         <NavHeader />
 
-        {showFrame && (
-          <div style={{
-            maxWidth: 800,
-            margin: "0 auto",
-            padding: "140px 40px 80px",
-          }}>
-            <TerminalFrame title="cashmere@blanche — ~ — zsh">
-              <InteractiveTerminal
-                showMurbText
-                visibleTyped={MURB_FINAL}
-                showCursorOnMurb={false}
-              />
-            </TerminalFrame>
-          </div>
-        )}
+        <div style={{
+          opacity: showFrame ? 1 : 0,
+          transition: `opacity ${PAN_DURATION}s ${PAN_EASE}`,
+          pointerEvents: showFrame ? "auto" : "none",
+        }}>
+          {showFrame && (
+            <div style={{
+              maxWidth: 800,
+              margin: "0 auto",
+              padding: "140px 40px 80px",
+            }}>
+              <TerminalFrame title="cashmere@blanche — ~ — zsh">
+                <InteractiveTerminal
+                  showMurbText
+                  visibleTyped={MURB_FINAL}
+                  showCursorOnMurb={false}
+                />
+              </TerminalFrame>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

@@ -34,11 +34,11 @@ function loadLayout() {
     const raw = localStorage.getItem(LAYOUT_KEY);
     if (!raw) return {};
     return JSON.parse(raw);
-  } catch (e) { return {}; }
+  } catch { return {}; }
 }
 
 function saveLayout(layout) {
-  try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout)); } catch (e) { void e; }
+  try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout)); } catch { /* ignore */ }
 }
 
 function Pushpin({ color }) {
@@ -80,7 +80,7 @@ function GuestCard({ entry, pinColor, delay, layout, onLayoutChange }) {
     };
 
     setDragging(true);
-    try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) { void err; }
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* ignore */ }
   };
 
   const onPointerMove = (e) => {
@@ -98,7 +98,7 @@ function GuestCard({ entry, pinColor, delay, layout, onLayoutChange }) {
     if (dragRef.current?.mode === "drag") {
       dragRef.current = null;
       setDragging(false);
-      try { e.currentTarget.releasePointerCapture(e.pointerId); } catch (err) { void err; }
+      try { e.currentTarget.releasePointerCapture(e.pointerId); } catch { /* ignore */ }
     }
   };
 
@@ -114,7 +114,7 @@ function GuestCard({ entry, pinColor, delay, layout, onLayoutChange }) {
     };
 
     setResizing(true);
-    try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) { void err; }
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* ignore */ }
   };
 
   const onResizePointerMove = (e) => {
@@ -129,7 +129,7 @@ function GuestCard({ entry, pinColor, delay, layout, onLayoutChange }) {
     if (dragRef.current?.mode === "resize") {
       dragRef.current = null;
       setResizing(false);
-      try { e.currentTarget.releasePointerCapture(e.pointerId); } catch (err) { void err; }
+      try { e.currentTarget.releasePointerCapture(e.pointerId); } catch { /* ignore */ }
     }
   };
 
@@ -246,7 +246,7 @@ function SubmitPanel({ onSubmit }) {
         }
         const visitorName = localStorage.getItem("murb_visitor_name");
         if (visitorName) setName(visitorName);
-      } catch (e) { void e; }
+      } catch { /* ignore */ }
     });
   }, []);
 

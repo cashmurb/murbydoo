@@ -43,7 +43,7 @@ export default function Wips() {
 
   useEffect(() => {
     supabase.from('wips').select('*').order('sort_order').then(({ data }) => {
-      if (data?.length) setItems(data);
+      setItems(data || []);
       setReady(true);
     });
   }, []);

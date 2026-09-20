@@ -90,7 +90,7 @@ function NodePanel({ node, onClose }) {
       {header}
       <div style={{ padding: "12px 14px", overflowY: "auto", flex: 1 }}>
         {node.description && <p style={{ fontSize: 12, lineHeight: 1.7, color: "#555", marginBottom: 12 }}>{node.description}</p>}
-        <Link to="/about" style={{ display: "block", fontSize: 12, color: ACCENT, textDecoration: "none", marginBottom: 12 }}>View about me →</Link>
+        <Link to="/about" style={{ display: "block", fontSize: 12, color: ACCENT, textDecoration: "none", marginBottom: 12 }}>forgot about me already? →</Link>
       </div>
     </div>
   );

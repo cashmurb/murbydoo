@@ -569,7 +569,7 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
 
   const welcomeMsg = conv.name
     ? `welcome back, ${conv.name}!`
-    : "welcome, strangers!";
+    : "welcome, stranger!";
 
   const farewellName = conv.name || "friend";
   const showHint = history.length === 0 && !conv.awaitingName;

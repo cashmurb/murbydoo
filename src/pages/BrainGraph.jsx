@@ -759,7 +759,7 @@ function MobileBrain({ nodes }) {
                 to="/about"
                 style={{ fontSize: 13, color: ACCENT, textDecoration: "none", fontFamily: "Kode Mono, monospace" }}
               >
-                View about me →
+                forgot about me already? →
               </Link>
             </div>
           </div>

@@ -321,37 +321,26 @@ function GraphCanvas({ nodes, links, selectedNode, onSelectNode, containerStyle,
         const dx = pa.x - pb.x, dy = pa.y - pb.y;
         const d2 = dx * dx + dy * dy || 1;
         const d = Math.sqrt(d2);
-        const f = (25000 / d2) * alpha;
+        const f = (70000 / d2) * alpha;
         pa.vx += (dx / d) * f; pa.vy += (dy / d) * f;
         pb.vx -= (dx / d) * f; pb.vy -= (dy / d) * f;
       }
     }
 
+    const catOf = {};
+    for (const n of nList) catOf[n.id] = n.category;
+
     for (const l of lList) {
       const pa = p[l.source], pb = p[l.target];
       if (!pa || !pb) continue;
+      const sameCat = catOf[l.source] && catOf[l.source] === catOf[l.target];
+      const strength = sameCat ? 0 : 0.012;
+      const rest = sameCat ? 100 : 130;
       const dx = pb.x - pa.x, dy = pb.y - pa.y;
       const d = Math.sqrt(dx * dx + dy * dy) || 1;
-      const f = (d - 180) * 0.014 * alpha;
+      const f = (d - rest) * strength * alpha;
       pa.vx += (dx / d) * f; pa.vy += (dy / d) * f;
       pb.vx -= (dx / d) * f; pb.vy -= (dy / d) * f;
-    }
-
-    const centroids = {};
-    for (const n of nList) {
-      const pp = p[n.id];
-      if (!pp) continue;
-      let c = centroids[n.group_id];
-      if (!c) c = centroids[n.group_id] = { x: 0, y: 0, count: 0 };
-      c.x += pp.x; c.y += pp.y; c.count++;
-    }
-    for (const c of Object.values(centroids)) { c.x /= c.count; c.y /= c.count; }
-    for (const n of nList) {
-      const pp = p[n.id];
-      const c = centroids[n.group_id];
-      if (!pp || !c) continue;
-      pp.vx += (c.x - pp.x) * 0.004 * alpha;
-      pp.vy += (c.y - pp.y) * 0.004 * alpha;
     }
 
     for (const n of nList) {

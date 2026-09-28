@@ -63,73 +63,81 @@ export default function About() {
   const photo = data?.photo_url || aboutMeImageFallback;
 
   return (
-    <ScaleWrap variant="fixed">
+    <div style={{
+      position: "relative",
+      width: 1440,
+      maxWidth: "100%",
+      margin: "0 auto",
+      minHeight: "100vh",
+      paddingTop: 230,
+      paddingBottom: 120,
+      boxSizing: "border-box",
+    }}>
       <NavHeader />
 
       <div style={{
-        position: "absolute",
-        left: 880,
-        top: 282,
-        width: 370,
-        height: 459,
-        border: "1px solid #000000",
-        borderRadius: 14.5,
-        overflow: "hidden",
-      }}>
-        <img
-          src={photo}
-          alt="Portrait"
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-        />
-      </div>
-
-      <div style={{
-        position: "absolute",
-        left: 190,
-        top: 230,
-        width: 560,
         display: "flex",
-        flexDirection: "column",
-        gap: 28,
+        gap: 130,
+        paddingLeft: 190,
+        paddingRight: 190,
       }}>
-        <div style={{ fontSize: 40, lineHeight: 1.2 }}>about me</div>
+        <div style={{ flex: 1, maxWidth: 560 }}>
+          <div style={{ fontSize: 40, lineHeight: 1.2, marginBottom: 28 }}>about me</div>
 
-        <p style={{ fontSize: 15, lineHeight: 1.7, margin: 0, whiteSpace: "pre-wrap" }}>
-          {bio}
-        </p>
-
-        <div>
-          <p style={{ fontSize: 15, margin: 0, marginBottom: 16 }}>
-            Some of the tools I work with:
+          <p style={{ fontSize: 15, lineHeight: 1.7, margin: 0, marginBottom: 28, whiteSpace: "pre-wrap" }}>
+            {bio}
           </p>
-          <div style={{ display: "flex", gap: 56 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {toolsLeft.map((name, i) => name && (
-                <div key={`l${i}`} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 15 }}>
-                  <svg width="6" height="7" viewBox="0 0 6 7">
-                    <path d="M6 3.5L0 7V0L6 3.5Z" fill={ACCENT} />
-                  </svg>
-                  {name}
-                </div>
-              ))}
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {toolsRight.map((name, i) => name && (
-                <div key={`r${i}`} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 15 }}>
-                  <svg width="6" height="7" viewBox="0 0 6 7">
-                    <path d="M6 3.5L0 7V0L6 3.5Z" fill={ACCENT} />
-                  </svg>
-                  {name}
-                </div>
-              ))}
+
+          <div style={{ marginBottom: 28 }}>
+            <p style={{ fontSize: 15, margin: 0, marginBottom: 16 }}>
+              Some of the tools I work with:
+            </p>
+            <div style={{ display: "flex", gap: 56 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {toolsLeft.map((name, i) => name && (
+                  <div key={`l${i}`} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 15 }}>
+                    <svg width="6" height="7" viewBox="0 0 6 7">
+                      <path d="M6 3.5L0 7V0L6 3.5Z" fill={ACCENT} />
+                    </svg>
+                    {name}
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {toolsRight.map((name, i) => name && (
+                  <div key={`r${i}`} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 15 }}>
+                    <svg width="6" height="7" viewBox="0 0 6 7">
+                      <path d="M6 3.5L0 7V0L6 3.5Z" fill={ACCENT} />
+                    </svg>
+                    {name}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+
+          <p style={{ fontSize: 15, lineHeight: 1.7, margin: 0, whiteSpace: "pre-wrap" }}>
+            Outside of tech, I take photos, make films, sing, dance a little, and read books — usually with a cat somewhere nearby.
+          </p>
         </div>
 
-        <p style={{ fontSize: 15, lineHeight: 1.7, margin: 0, whiteSpace: "pre-wrap" }}>
-          Outside of tech, I take photos, make films, sing, dance a little, and read books — usually with a cat somewhere nearby.
-        </p>
+        <div style={{
+          width: 370,
+          height: 459,
+          border: "1px solid #000000",
+          borderRadius: 14.5,
+          overflow: "hidden",
+          flexShrink: 0,
+          alignSelf: "flex-start",
+          marginTop: 52,
+        }}>
+          <img
+            src={photo}
+            alt="Portrait"
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </div>
       </div>
-    </ScaleWrap>
+    </div>
   );
 }

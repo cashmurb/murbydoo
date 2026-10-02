@@ -73,15 +73,17 @@ function SubtopicsPanel({ node, onBack }) {
   const [newTitle, setNewTitle] = useState('');
   const [addStatus, setAddStatus] = useState(null);
 
-  const load = () => {
+  useEffect(() => {
+    let cancelled = false;
+    supabase.from('subtopics').select('*').eq('node_id', node.id).order('sort_order')
+      .then(({ data }) => { if (!cancelled) setSubtopics(data || []); });
+    return () => { cancelled = true; };
+  }, [node.id]);
+
+  const reload = () => {
     supabase.from('subtopics').select('*').eq('node_id', node.id).order('sort_order')
       .then(({ data }) => setSubtopics(data || []));
   };
-
-  useEffect(() => {
-    supabase.from('subtopics').select('*').eq('node_id', node.id).order('sort_order')
-      .then(({ data }) => setSubtopics(data || []));
-  }, [node.id]);
 
   if (editing) return <NotesEditor subtopic={editing} onBack={() => setEditing(null)} />;
 
@@ -94,13 +96,13 @@ function SubtopicsPanel({ node, onBack }) {
     setNewTitle('');
     setShowAdd(false);
     setAddStatus(null);
-    load();
+    reload();
   };
 
   const deleteSubtopic = async (id) => {
     if (!confirm('Delete this subtopic and its notes?')) return;
     await supabase.from('subtopics').delete().eq('id', id);
-    load();
+    reload();
   };
 
   return (
@@ -161,6 +163,15 @@ export default function TopicsTab() {
   const [editingNode, setEditingNode] = useState(null);
   const [nodeStatus, setNodeStatus] = useState(null);
 
+  useEffect(() => {
+    let cancelled = false;
+    supabase.from('brain_nodes').select('*')
+      .eq(CATEGORY_FIELD, NOTES_CATEGORY)
+      .order('sort_order')
+      .then(({ data }) => { if (!cancelled) setNodes(data || []); });
+    return () => { cancelled = true; };
+  }, []);
+
   const loadNodes = () => {
     supabase.from('brain_nodes').select('*')
       .eq(CATEGORY_FIELD, NOTES_CATEGORY)
@@ -168,14 +179,13 @@ export default function TopicsTab() {
       .then(({ data }) => setNodes(data || []));
   };
 
-  useEffect(() => { loadNodes(); }, []);
-
   const saveNode = async (node, form) => {
     setNodeStatus(null);
     const { error } = await supabase.from('brain_nodes').update({
       label: form.label,
       abbreviation: form.abbreviation,
       description: form.description,
+      url: form.url || null,
     }).eq('id', node.id);
     setNodeStatus(error ? { ok: false, msg: error.message } : { ok: true, msg: 'Saved!' });
     if (!error) { loadNodes(); setEditingNode(null); }
@@ -187,7 +197,7 @@ export default function TopicsTab() {
     <div>
       <h2 style={{ fontSize: 22, marginBottom: 8, fontWeight: 600 }}>Topics</h2>
       <p style={{ fontSize: 13, color: '#B4B4B4', marginBottom: 28 }}>
-        Click a topic to manage its subtopics and notes. Edit the label, abbreviation, and description inline.
+        Click a topic to manage its subtopics and notes. Edit the label, abbreviation, description, and link inline.
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -205,6 +215,7 @@ export default function TopicsTab() {
                       {node.abbreviation && <div style={{ fontSize: 12, color: '#B4B4B4' }}>{node.abbreviation}</div>}
                     </div>
                     {node.description && <div style={{ fontSize: 13, color: '#888', marginTop: 4, maxWidth: 500 }}>{node.description.slice(0, 80)}…</div>}
+                    {node.url && <div style={{ fontSize: 11, color: '#B4B4B4', marginTop: 4, fontFamily: 'Kode Mono, monospace' }}>{node.url}</div>}
                   </div>
                   <div style={{ display: 'flex', gap: 8, flexShrink: 0, marginLeft: 16 }}>
                     <button style={S.btnGhost} onClick={() => setEditingNode(node)}>Edit</button>
@@ -221,7 +232,12 @@ export default function TopicsTab() {
 }
 
 function EditNodeForm({ node, onSave, onCancel, status }) {
-  const [form, setForm] = useState({ label: node.label, abbreviation: node.abbreviation || '', description: node.description || '' });
+  const [form, setForm] = useState({
+    label: node.label,
+    abbreviation: node.abbreviation || '',
+    description: node.description || '',
+    url: node.url || '',
+  });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -238,6 +254,10 @@ function EditNodeForm({ node, onSave, onCancel, status }) {
       <div>
         <label style={S.label}>Description</label>
         <input style={S.input} value={form.description} onChange={e => set('description', e.target.value)} placeholder="Short description of this topic" />
+      </div>
+      <div>
+        <label style={S.label}>Link to page</label>
+        <input style={S.input} value={form.url} onChange={e => set('url', e.target.value)} placeholder={`e.g. /topic/${node.id}`} />
       </div>
       <div style={{ display: 'flex', gap: 10 }}>
         <button style={S.btn} onClick={() => onSave(form)}>Save</button>

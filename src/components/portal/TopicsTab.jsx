@@ -3,6 +3,13 @@ import { supabase } from '../../lib/supabase.js';
 
 const ACCENT = '#D96614';
 
+// Field on brain_nodes that stores the category value.
+// Flip to 'group_id' if the live column wasn't renamed.
+const CATEGORY_FIELD = 'category';
+
+// Only nodes in this category get subtopics + notes.
+const NOTES_CATEGORY = 'notes';
+
 const S = {
   label: { fontSize: 12, color: '#B4B4B4', marginBottom: 6, display: 'block', textTransform: 'uppercase', letterSpacing: 1 },
   input: { width: '100%', padding: '10px 14px', border: '1px solid #E0E0E0', borderRadius: 8, fontSize: 14, fontFamily: 'Kode Mono, monospace', outline: 'none', boxSizing: 'border-box' },
@@ -17,7 +24,7 @@ const S = {
   tab: (active) => ({ padding: '6px 14px', borderRadius: 16, border: 'none', cursor: 'pointer', fontFamily: 'Kode Mono, monospace', fontSize: 13, background: active ? ACCENT : '#f0f0f0', color: active ? '#fff' : '#333' }),
 };
 
-// Notes editor for a subtopic 
+// Notes editor for a subtopic
 function NotesEditor({ subtopic, onBack }) {
   const [body, setBody] = useState('');
   const [status, setStatus] = useState(null);
@@ -58,7 +65,7 @@ function NotesEditor({ subtopic, onBack }) {
   );
 }
 
-// Subtopic list for a node 
+// Subtopic list for a node
 function SubtopicsPanel({ node, onBack }) {
   const [subtopics, setSubtopics] = useState([]);
   const [editing, setEditing] = useState(null);
@@ -147,7 +154,7 @@ function SubtopicsPanel({ node, onBack }) {
   );
 }
 
-// Main Topics tab 
+// Main Topics tab
 export default function TopicsTab() {
   const [nodes, setNodes] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -155,7 +162,10 @@ export default function TopicsTab() {
   const [nodeStatus, setNodeStatus] = useState(null);
 
   const loadNodes = () => {
-    supabase.from('brain_nodes').select('*').order('sort_order').then(({ data }) => setNodes(data || []));
+    supabase.from('brain_nodes').select('*')
+      .eq(CATEGORY_FIELD, NOTES_CATEGORY)
+      .order('sort_order')
+      .then(({ data }) => setNodes(data || []));
   };
 
   useEffect(() => { loadNodes(); }, []);

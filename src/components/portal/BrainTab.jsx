@@ -3,16 +3,26 @@ import { supabase } from '../../lib/supabase.js';
 
 const ACCENT = '#D96614';
 
-const GROUPS = [
-  { value: 'ml',    label: 'Machine Learning' },
-  { value: 'cs',    label: 'Computer Science' },
-  { value: 'math',  label: 'Mathematics' },
-  { value: 'neuro', label: 'Neurotech' },
-  { value: 'other', label: 'Other' },
+// Field on brain_nodes that stores the category value.
+// Flip to 'group_id' if the live column wasn't renamed.
+const CATEGORY_FIELD = 'category';
+
+const CATEGORIES = [
+  { value: 'notes',   label: 'Notes' },
+  { value: 'anime',   label: 'Anime' },
+  { value: 'books',   label: 'Books' },
+  { value: 'music',   label: 'Music' },
+  { value: 'hobbies', label: 'Hobbies' },
+  { value: 'source',  label: 'Source' },
 ];
 
-const GROUP_COLORS = {
-  ml: '#D96614', cs: '#4A90D9', math: '#7B68EE', neuro: '#50C878', other: '#999',
+const CATEGORY_COLORS = {
+  notes:   '#D96614',
+  anime:   '#E85D8A',
+  books:   '#7B68EE',
+  music:   '#4A90D9',
+  hobbies: '#50C878',
+  source:  '#999999',
 };
 
 const S = {
@@ -26,13 +36,18 @@ const S = {
   card: { border: '1px solid #E0E0E0', borderRadius: 12, padding: 24, marginBottom: 14, background: '#fafafa' },
   addCard: { border: '1px dashed #D96614', borderRadius: 12, padding: 24, marginBottom: 14, background: '#fff8f4' },
   status: (ok) => ({ marginTop: 8, fontSize: 13, color: ok ? '#2a9d2a' : '#cc3333' }),
-  dot: (group) => ({ width: 10, height: 10, borderRadius: '50%', background: GROUP_COLORS[group] || '#999', flexShrink: 0 }),
+  dot: (cat) => ({ width: 10, height: 10, borderRadius: '50%', background: CATEGORY_COLORS[cat] || '#999', flexShrink: 0 }),
   sectionTitle: { fontSize: 16, fontWeight: 600, marginBottom: 16, marginTop: 32, paddingBottom: 8, borderBottom: '1px solid #E0E0E0' },
 };
 
 // Node card
 function NodeCard({ node, allNodes, links, onSave, onDelete }) {
-  const [form, setForm] = useState({ label: node.label, group_id: node.group_id, description: node.description || '', url: node.url || '' });
+  const [form, setForm] = useState({
+    label: node.label,
+    [CATEGORY_FIELD]: node[CATEGORY_FIELD],
+    description: node.description || '',
+    url: node.url || '',
+  });
   const [status, setStatus] = useState(null);
   const [expanded, setExpanded] = useState(false);
   const [linkStatus, setLinkStatus] = useState(null);
@@ -55,7 +70,6 @@ function NodeCard({ node, allNodes, links, onSave, onDelete }) {
   const addLink = async () => {
     if (!linkTarget) return;
     setLinkStatus(null);
-    // Prevent duplicate in either direction
     const { data: existing } = await supabase.from('brain_links').select('id')
       .or(`and(source_id.eq.${node.id},target_id.eq.${linkTarget}),and(source_id.eq.${linkTarget},target_id.eq.${node.id})`);
     if (existing?.length) { setLinkStatus({ ok: false, msg: 'Already connected.' }); return; }
@@ -69,19 +83,17 @@ function NodeCard({ node, allNodes, links, onSave, onDelete }) {
     onSave();
   };
 
-  // Current connections for this node
   const nodeLinks = links.filter(l => l.source_id === node.id || l.target_id === node.id);
   const connectedIds = nodeLinks.map(l => l.source_id === node.id ? l.target_id : l.source_id);
   const connected = allNodes.filter(n => connectedIds.includes(n.id));
-
-  // Available nodes to link to (not already connected, not self)
   const available = allNodes.filter(n => n.id !== node.id && !connectedIds.includes(n.id));
+  const category = node[CATEGORY_FIELD];
 
   return (
     <div style={S.card}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: expanded ? 16 : 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, cursor: 'pointer' }} onClick={() => setExpanded(e => !e)}>
-          <div style={S.dot(node.group_id)} />
+          <div style={S.dot(category)} />
           <div style={{ fontSize: 15, fontWeight: 500 }}>{node.label}</div>
           <div style={{ fontSize: 11, color: '#B4B4B4', marginLeft: 4 }}>
             {connected.length} connection{connected.length !== 1 ? 's' : ''}
@@ -101,9 +113,9 @@ function NodeCard({ node, allNodes, links, onSave, onDelete }) {
               <input style={S.input} value={form.label} onChange={e => set('label', e.target.value)} />
             </div>
             <div style={{ flex: 1 }}>
-              <label style={S.label}>Group</label>
-              <select style={S.select} value={form.group_id} onChange={e => set('group_id', e.target.value)}>
-                {GROUPS.map(g => <option key={g.value} value={g.value}>{g.label}</option>)}
+              <label style={S.label}>Category</label>
+              <select style={S.select} value={form[CATEGORY_FIELD]} onChange={e => set(CATEGORY_FIELD, e.target.value)}>
+                {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
               </select>
             </div>
           </div>
@@ -126,8 +138,8 @@ function NodeCard({ node, allNodes, links, onSave, onDelete }) {
                 {connected.map(n => {
                   const link = nodeLinks.find(l => l.source_id === n.id || l.target_id === n.id);
                   return (
-                    <div key={n.id} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 10px', border: `1px solid ${GROUP_COLORS[n.group_id] || '#E0E0E0'}`, borderRadius: 20 }}>
-                      <div style={{ ...S.dot(n.group_id), width: 6, height: 6 }} />
+                    <div key={n.id} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 10px', border: `1px solid ${CATEGORY_COLORS[n[CATEGORY_FIELD]] || '#E0E0E0'}`, borderRadius: 20 }}>
+                      <div style={{ ...S.dot(n[CATEGORY_FIELD]), width: 6, height: 6 }} />
                       <span style={{ fontSize: 12 }}>{n.label}</span>
                       <span onClick={() => removeLink(link?.id)} style={{ fontSize: 12, color: '#cc3333', cursor: 'pointer', marginLeft: 2 }}>✕</span>
                     </div>
@@ -153,9 +165,9 @@ function NodeCard({ node, allNodes, links, onSave, onDelete }) {
   );
 }
 
-// Add node form 
+// Add node form
 function AddNodeForm({ onAdd, onCancel }) {
-  const [form, setForm] = useState({ label: '', group_id: 'ml', description: '', url: '' });
+  const [form, setForm] = useState({ label: '', [CATEGORY_FIELD]: 'notes', description: '', url: '' });
   const [status, setStatus] = useState(null);
   const [saving, setSaving] = useState(false);
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
@@ -180,9 +192,9 @@ function AddNodeForm({ onAdd, onCancel }) {
             <input style={S.input} value={form.label} onChange={e => set('label', e.target.value)} placeholder="Topic name" autoFocus />
           </div>
           <div style={{ flex: 1 }}>
-            <label style={S.label}>Group</label>
-            <select style={S.select} value={form.group_id} onChange={e => set('group_id', e.target.value)}>
-              {GROUPS.map(g => <option key={g.value} value={g.value}>{g.label}</option>)}
+            <label style={S.label}>Category</label>
+            <select style={S.select} value={form[CATEGORY_FIELD]} onChange={e => set(CATEGORY_FIELD, e.target.value)}>
+              {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
             </select>
           </div>
         </div>
@@ -204,7 +216,7 @@ function AddNodeForm({ onAdd, onCancel }) {
   );
 }
 
-// Brain portal tab 
+// Brain portal tab
 export default function BrainTab() {
   const [nodes, setNodes] = useState([]);
   const [links, setLinks] = useState([]);
@@ -221,16 +233,17 @@ export default function BrainTab() {
   };
 
   useEffect(() => {
-    Promise.all([
+  (async () => {
+    const [{ data: n }, { data: l }] = await Promise.all([
       supabase.from('brain_nodes').select('*').order('sort_order'),
       supabase.from('brain_links').select('*'),
-    ]).then(([{ data: n }, { data: l }]) => {
-      setNodes(n || []);
-      setLinks(l || []);
-    });
-  }, []);
+    ]);
+    setNodes(n || []);
+    setLinks(l || []);
+  })();
+}, []);
 
-  const filtered = filter === 'all' ? nodes : nodes.filter(n => n.group_id === filter);
+  const filtered = filter === 'all' ? nodes : nodes.filter(n => n[CATEGORY_FIELD] === filter);
 
   return (
     <div>
@@ -251,10 +264,10 @@ export default function BrainTab() {
           style={{ ...S.btnGhost, borderColor: filter === 'all' ? ACCENT : '#E0E0E0', color: filter === 'all' ? ACCENT : '#666' }}>
           All ({nodes.length})
         </button>
-        {GROUPS.filter(g => nodes.some(n => n.group_id === g.value)).map(g => (
-          <button key={g.value} onClick={() => setFilter(g.value)}
-            style={{ ...S.btnGhost, borderColor: filter === g.value ? GROUP_COLORS[g.value] : '#E0E0E0', color: filter === g.value ? GROUP_COLORS[g.value] : '#666' }}>
-            {g.label} ({nodes.filter(n => n.group_id === g.value).length})
+        {CATEGORIES.filter(c => nodes.some(n => n[CATEGORY_FIELD] === c.value)).map(c => (
+          <button key={c.value} onClick={() => setFilter(c.value)}
+            style={{ ...S.btnGhost, borderColor: filter === c.value ? CATEGORY_COLORS[c.value] : '#E0E0E0', color: filter === c.value ? CATEGORY_COLORS[c.value] : '#666' }}>
+            {c.label} ({nodes.filter(n => n[CATEGORY_FIELD] === c.value).length})
           </button>
         ))}
       </div>

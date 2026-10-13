@@ -2,10 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import NavHeader from "../components/NavHeader.jsx";
 import AvatarFigure from "../components/AvatarFigure.jsx";
-import PageLoader from "../components/PageLoader.jsx";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import { supabase } from "../lib/supabase.js";
-import { getVisitorId, fetchScoreMap } from "../lib/scores.js";
+import { getVisitorId, fetchScoreMap, readName } from "../lib/scores.js";
 
 const ACCENT = "#D96614";
 const MUTED = "#B4B4B4";
@@ -267,7 +266,7 @@ function SubmitPanel({ onSubmit }) {
           setAvatarData(parsed.selection);
           setMessage(parsed.message || "");
         }
-        const visitorName = localStorage.getItem("murb_visitor_name");
+        const visitorName = readName();
         if (visitorName) setName(visitorName);
       } catch { /* ignore */ }
     });
@@ -333,7 +332,6 @@ export default function Guestbook() {
   const [entries, setEntries] = useState([]);
   const [scoreMap, setScoreMap] = useState({});
   const [ready, setReady] = useState(false);
-  const [playing, setPlaying] = useState(true);
   const [layout, setLayout] = useState(() => loadLayout());
 
   // Entries and scores load together, so a card never pops in without its score
@@ -370,10 +368,7 @@ export default function Guestbook() {
     saveLayout({});
   };
 
-  // The game sits on top until the data has landed and the visitor says go
-  if (playing) {
-    return <PageLoader ready={ready} onDone={() => setPlaying(false)} />;
-  }
+  if (!ready) return null;
 
   const pins = entries.map((_, i) => PIN_COLORS[i % PIN_COLORS.length]);
 

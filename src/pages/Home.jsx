@@ -2,8 +2,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import NavHeader from "../components/NavHeader.jsx";
-import PageLoader from "../components/PageLoader.jsx";
-import { getLastPath } from "../lib/navHistory.js";
 
 const ACCENT = "#D96614";
 const MUTED = "#B4B4B4";
@@ -771,10 +769,7 @@ function MobileHome() {
 export default function Home() {
   const isMobile = useIsMobile();
 
-  // Coming back from the guestbook, the game stands in for the intro screen,
-  // so the visitor is not asked to press enter twice in a row
-  const [loading, setLoading] = useState(() => getLastPath() === "/guestbook");
-  const [phase, setPhase] = useState(() => getLastPath() === "/guestbook" ? "done" : "idle");
+  const [phase, setPhase] = useState("idle");
   const [eraseIndex, setEraseIndex] = useState(0);
   const [typedCount, setTypedCount] = useState(0);
 
@@ -824,9 +819,6 @@ export default function Home() {
       return () => clearTimeout(t);
     }
   }, [phase, eraseIndex, typedCount]);
-
-  // Home has nothing to fetch, so the game is ready to leave right away
-  if (loading) return <PageLoader ready onDone={() => setLoading(false)} />;
 
   if (isMobile) return <MobileHome />;
 

@@ -1,6 +1,4 @@
-import { useEffect } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { setLastPath } from "./lib/navHistory.js";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import World from "./pages/World.jsx";
@@ -17,14 +15,6 @@ import Guestbook from "./pages/Guestbook.jsx";
 import Game from "./pages/Game.jsx";
 
 function App() {
-  const location = useLocation();
-
-  // Recorded after the new page has rendered, so that page can still see
-  // which one the visitor came from while it sets itself up
-  useEffect(() => {
-    setLastPath(location.pathname);
-  }, [location.pathname]);
-
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/home" replace />} />

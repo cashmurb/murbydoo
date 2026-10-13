@@ -40,13 +40,45 @@ export function readAvatar() {
   }
 }
 
-function readName() {
-  try { return localStorage.getItem("murb_visitor_name"); } catch { return null; }
+// The character's own name wins. The terminal name is the fallback for
+// anyone who never named their avatar.
+export function readName() {
+  try {
+    const raw = localStorage.getItem("murb_avatar");
+    const avatarName = raw ? JSON.parse(raw).name : null;
+    if (avatarName) return avatarName;
+    return localStorage.getItem("murb_visitor_name");
+  } catch {
+    return null;
+  }
 }
 
-export async function submitScore(score) {
-  if (!score || score <= getLocalBest()) return;
+// Called when an avatar is saved, with the name the visitor gave it.
+// The terminal greets them by the same name, and each named character gets
+// its own score row, so renaming starts a fresh one rather than relabelling
+// the old. The first character to be named keeps the score already there.
+export function saveCharacterName(name) {
+  try {
+    // The name the current score row is filed under. This has to be the same
+    // lookup the scoreboard uses, because the name may have come from the
+    // terminal rather than from a previous avatar.
+    const previous = readName();
 
+    if (name) localStorage.setItem("murb_visitor_name", name);
+
+    if (!previous) return;
+    if (previous === (name || "")) return;
+
+    localStorage.setItem(ID_KEY, crypto.randomUUID());
+    localStorage.removeItem(BEST_KEY);
+  } catch { /* ignore */ }
+}
+
+// Runs after every game over. The score only ever goes up, but the name and
+// the face are rewritten each time, so a row left under an old name puts
+// itself right on the next run instead of staying wrong until someone
+// beats their best.
+export async function submitScore(score) {
   const visitorId = getVisitorId();
   if (!visitorId) return;
 
@@ -56,20 +88,17 @@ export async function submitScore(score) {
     .eq("visitor_id", visitorId)
     .maybeSingle();
 
-  if (existing && existing.score >= score) {
-    setLocalBest(existing.score);
-    return;
-  }
+  const best = Math.max(score || 0, existing?.score || 0, getLocalBest());
 
   const { error } = await supabase.from("scores").upsert({
     visitor_id: visitorId,
     name: readName(),
     avatar_data: readAvatar(),
-    score,
+    score: best,
     updated_at: new Date().toISOString(),
   }, { onConflict: "visitor_id" });
 
-  if (!error) setLocalBest(score);
+  if (!error) setLocalBest(best);
 }
 
 // Top ten of all time for the scoreboard on the game page

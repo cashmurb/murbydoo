@@ -4,7 +4,7 @@ import NavHeader from "../components/NavHeader.jsx";
 import DinoGame from "../components/DinoGame.jsx";
 import AvatarFigure from "../components/AvatarFigure.jsx";
 import { useIsMobile } from "../hooks/useIsMobile.js";
-import { fetchTopScores, getVisitorId, readAvatar } from "../lib/scores.js";
+import { fetchTopScores, getVisitorId, readAvatar, readName } from "../lib/scores.js";
 
 const ACCENT = "#D96614";
 const MUTED = "#B4B4B4";
@@ -98,6 +98,7 @@ function Scoreboard({ rows, visitorId }) {
 export default function Game() {
   const isMobile = useIsMobile();
   const [avatarData] = useState(readAvatar);
+  const [characterName] = useState(readName);
   const [rows, setRows] = useState([]);
   const visitorId = getVisitorId();
 
@@ -107,6 +108,9 @@ export default function Game() {
 
   useEffect(() => { loadScores(); }, [loadScores]);
 
+  // The outer box is the same centred column every other page uses. The nav
+  // header places itself at a fixed offset inside it, so without this the
+  // cat graph drifts away from where it sits elsewhere.
   return (
     <div style={{
       position: "relative",
@@ -125,10 +129,17 @@ export default function Game() {
         padding: isMobile ? "120px 16px 72px" : "170px 40px 100px",
       }}>
         <div style={{ marginBottom: 10 }}>
-          <h1 style={{ fontSize: isMobile ? 28 : 40, fontWeight: 400, margin: 0, marginBottom: 8 }}>she a runner, she a track star</h1>
+          <h1 style={{ fontSize: isMobile ? 28 : 40, fontWeight: 400, margin: 0, marginBottom: 8 }}>game</h1>
           <p style={{ fontSize: 13, color: MUTED, margin: 0 }}>
             {isMobile ? "tap to jump." : "space to jump."} your best run goes on the board.
           </p>
+          {characterName && (
+            <p style={{ fontSize: 12, color: MUTED, margin: "6px 0 0" }}>
+              running as <span style={{ color: ACCENT }}>{characterName}</span>
+              {" · "}
+              <Link to="/avatar" style={{ color: MUTED }}>change</Link>
+            </p>
+          )}
         </div>
 
         <div style={{ marginBottom: 36 }}>

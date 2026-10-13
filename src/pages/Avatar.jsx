@@ -4,6 +4,7 @@ import ScaleWrap from "../components/ScaleWrap.jsx";
 import NavHeader from "../components/NavHeader.jsx";
 import AvatarFigure from "../components/AvatarFigure.jsx";
 import { useIsMobile } from "../hooks/useIsMobile.js";
+import { saveCharacterName } from "../lib/scores.js";
 import {
   OPTIONS,
   HEAD_HOTSPOTS,
@@ -259,10 +260,14 @@ function MobileAvatar() {
   const navigate = useNavigate();
   const [selection, setSelection] = useState(DEFAULT_SELECTION);
   const [message, setMessage] = useState("");
+  const [name, setName] = useState("");
   const [step, setStep] = useState("build");
 
   const activate = () => {
-    const data = { selection, message };
+    const data = { selection, message, name: name.trim() };
+    // Called before the new avatar overwrites the old one, so it can see
+    // whether the name changed
+    saveCharacterName(name.trim());
     try { localStorage.setItem("murb_avatar", JSON.stringify(data)); } catch (e) { void e; }
     window.dispatchEvent(new StorageEvent("storage", { key: "murb_avatar", newValue: JSON.stringify(data) }));
     setStep("done");
@@ -341,6 +346,13 @@ function MobileAvatar() {
 
         {step === "message" && (
           <div>
+            <div style={{ fontSize: 12, color: MUTED, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>Name your character</div>
+            <p style={{ fontSize: 13, color: MUTED, marginBottom: 12 }}>This is the name on the scoreboard and your guestbook card.</p>
+            <input value={name} onChange={e => setName(e.target.value.slice(0, 20))}
+              onKeyDown={e => { if (e.key === "Enter") activate(); }}
+              placeholder="who is this?" maxLength={20}
+              style={{ width: "100%", padding: "12px 14px", border: "1px solid #E0E0E0", borderRadius: 8, fontSize: 14, fontFamily: "Kode Mono, monospace", outline: "none", boxSizing: "border-box", marginBottom: 24 }} />
+
             <div style={{ fontSize: 12, color: MUTED, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>Leave a message</div>
             <p style={{ fontSize: 13, color: MUTED, marginBottom: 16 }}>This sits on your guestbook card, right under your avatar.</p>
             <textarea value={message} onChange={e => setMessage(e.target.value.slice(0, 80))}
@@ -363,7 +375,7 @@ function MobileAvatar() {
         {step === "done" && (
           <div style={{ textAlign: "center", padding: "32px 0" }}>
             <div style={{ fontSize: 18, marginBottom: 12 }}>avatar activated!</div>
-            <p style={{ fontSize: 13, color: MUTED, marginBottom: 24 }}>Use ← → arrow keys to walk and spacebar to jump.</p>
+            <p style={{ fontSize: 13, color: MUTED, marginBottom: 24 }}>Tap to jump. Your best run goes on the scoreboard.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <button onClick={() => navigate("/game")}
                 style={{ padding: "12px 20px", background: ACCENT, color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontFamily: "Kode Mono, monospace", cursor: "pointer" }}>
@@ -391,6 +403,7 @@ export default function Avatar() {
   const [headExpanded, setHeadExpanded] = useState(true);
   const [selection, setSelection] = useState(DEFAULT_SELECTION);
   const [message, setMessage] = useState("");
+  const [name, setName] = useState("");
   const [step, setStep] = useState("build");
 
   useEffect(() => {
@@ -401,6 +414,7 @@ export default function Avatar() {
           const parsed = JSON.parse(raw);
           if (parsed.selection) setSelection(parsed.selection);
           if (parsed.message) setMessage(parsed.message);
+          if (parsed.name) setName(parsed.name);
         }
       } catch (e) { void e; }
     });
@@ -442,7 +456,10 @@ export default function Avatar() {
   };
 
   const activate = () => {
-    const data = { selection, message };
+    const data = { selection, message, name: name.trim() };
+    // Called before the new avatar overwrites the old one, so it can see
+    // whether the name changed
+    saveCharacterName(name.trim());
     try { localStorage.setItem("murb_avatar", JSON.stringify(data)); } catch (e) { void e; }
     window.dispatchEvent(new StorageEvent("storage", { key: "murb_avatar", newValue: JSON.stringify(data) }));
     setStep("done");
@@ -504,7 +521,32 @@ export default function Avatar() {
             }}>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <div style={{ fontSize: 12, color: MUTED, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>
-                  thought bubble message
+                  character name
+                </div>
+                <input
+                  value={name}
+                  onChange={e => setName(e.target.value.slice(0, 20))}
+                  onKeyDown={e => { if (e.key === "Enter") activate(); }}
+                  placeholder="who is this?"
+                  style={{
+                    width: 260,
+                    padding: "10px 14px",
+                    border: "1px solid #E0E0E0",
+                    borderRadius: 8,
+                    fontSize: 13,
+                    fontFamily: "Kode Mono, monospace",
+                    outline: "none",
+                    textAlign: "center",
+                  }}
+                />
+                <div style={{ fontSize: 10, color: MUTED, marginTop: 4 }}>
+                  shown on the scoreboard and your guestbook card
+                </div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <div style={{ fontSize: 12, color: MUTED, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>
+                  guestbook message
                 </div>
                 <input
                   value={message}
@@ -681,8 +723,8 @@ export default function Avatar() {
         <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%,-50%)", textAlign: "center" }}>
           <div style={{ fontSize: 28, fontWeight: 400, marginBottom: 16 }}>avatar activated!</div>
           <p style={{ fontSize: 15, color: MUTED, marginBottom: 32, maxWidth: 480, lineHeight: 1.7 }}>
-            Use ← → arrow keys to walk and spacebar to jump.<br />
-            Hover or click your avatar to show your message.
+            Press space to jump. Your best run goes on the scoreboard.<br />
+            Your message shows on your guestbook card.
           </p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
             <button onClick={() => navigate("/game")}

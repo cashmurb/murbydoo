@@ -18,7 +18,7 @@ const CATEGORIES = {
 };
 
 const CATEGORY_ORDER = ["notes", "books", "anime", "music", "hobbies"];
-const FILTER_CATEGORIES = ["notes", "music"];
+const FILTER_CATEGORIES = ["notes", "anime", "books", "music", "hobbies"];
 
 function nodeColor(node) {
   return CATEGORIES[node.category]?.color || "#999";

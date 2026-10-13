@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import NavHeader from "../components/NavHeader.jsx";
@@ -541,16 +541,10 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
     el.scrollTop = el.scrollHeight;
   }, [history]);
 
-  useLayoutEffect(() => {
-    const inputElement = inputRef.current;
-    if (!inputElement || document.activeElement !== inputElement) return;
-    const cursorPosition = inputElement.value.length;
-    inputElement.setSelectionRange(cursorPosition, cursorPosition);
-  }, [input]);
-
   const handleSubmit = () => {
-    const raw = input;
+    const raw = inputRef.current?.value || "";
     setInput("");
+    if (inputRef.current) inputRef.current.value = "";
 
     if (raw.trim().toLowerCase() === "clear") {
       setHistory([]);
@@ -696,8 +690,8 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
             data-terminal-input
             type="text"
             dir="ltr"
-            value={input}
-            onChange={e => {
+            defaultValue=""
+            onInput={e => {
               setInput(e.target.value);
               const cursorPosition = e.target.value.length;
               requestAnimationFrame(() => {

@@ -1,3 +1,5 @@
+import typingSoundUrl from "../assets/click_003.ogg";
+
 let audioContext;
 let musicTimer;
 let musicGain;
@@ -38,7 +40,10 @@ export function playClickSound() {
 }
 
 export function playTypingSound() {
-  playTone({ frequency: 680, duration: 0.025, volume: 0.018, type: "sine" });
+  const sound = new Audio(typingSoundUrl);
+  sound.volume = 0.32;
+  const playback = sound.play();
+  if (playback) playback.catch(() => { void 0; });
 }
 
 export function startGameMusic() {

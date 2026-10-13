@@ -63,7 +63,8 @@ export function saveCharacterName(name) {
 }
 export async function submitScore(score) {
   const visitorId = getVisitorId();
-  if (!visitorId) return;
+  const avatarData = readAvatar();
+  if (!visitorId || !avatarData) return;
 
   const { data: existing } = await supabase
     .from("scores")
@@ -76,7 +77,7 @@ export async function submitScore(score) {
   const { error } = await supabase.from("scores").upsert({
     visitor_id: visitorId,
     name: readName(),
-    avatar_data: readAvatar(),
+    avatar_data: avatarData,
     score: best,
     updated_at: new Date().toISOString(),
   }, { onConflict: "visitor_id" });
@@ -88,6 +89,7 @@ export async function fetchTopScores(limit = 10) {
   const { data } = await supabase
     .from("scores")
     .select("visitor_id, name, avatar_data, score")
+    .not("avatar_data", "is", null)
     .order("score", { ascending: false })
     .limit(limit);
   return data || [];

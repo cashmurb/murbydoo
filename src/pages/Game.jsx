@@ -100,7 +100,7 @@ export default function Game() {
   const [avatarData] = useState(readAvatar);
   const [characterName] = useState(readName);
   const [rows, setRows] = useState([]);
-  const visitorId = getVisitorId();
+  const visitorId = avatarData ? getVisitorId() : null;
 
   const loadScores = useCallback(() => {
     fetchTopScores(10).then(setRows);

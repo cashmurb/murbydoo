@@ -1,4 +1,5 @@
 import typingSoundUrl from "../assets/click_003.ogg";
+import dieSoundUrl from "../assets/error_004.ogg";
 
 let audioContext;
 let musicTimer;
@@ -98,8 +99,8 @@ export function stopGameMusic() {
 }
 
 export function playDieSound() {
-  playTone({ frequency: 180, duration: 0.22, volume: 0.08, type: "sawtooth" });
-  window.setTimeout(() => {
-    playTone({ frequency: 75, duration: 0.32, volume: 0.055, type: "square" });
-  }, 90);
+  const sound = new Audio(dieSoundUrl);
+  sound.volume = 0.6;
+  const playback = sound.play();
+  if (playback) playback.catch(() => { void 0; });
 }

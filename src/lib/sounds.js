@@ -38,7 +38,7 @@ async function playTone({ frequency, duration, volume, type }) {
 }
 
 export function playClickSound() {
-  playTone({ frequency: 520, duration: 0.045, volume: 0.035, type: "square" });
+  playTone({ frequency: 520, duration: 0.045, volume: 0.015, type: "square" });
 }
 
 export function playTypingSound() {
@@ -56,7 +56,7 @@ export function startGameMusic() {
     if (!context || !musicPlaying) return;
 
     musicGain = context.createGain();
-    musicGain.gain.setValueAtTime(0.018, context.currentTime);
+    musicGain.gain.setValueAtTime(0.030, context.currentTime);
     musicGain.connect(context.destination);
 
     const notes = [196, 247, 294, 247, 220, 262, 330, 262];
@@ -101,14 +101,14 @@ export function stopGameMusic() {
 
 export function playDieSound() {
   const sound = new Audio(dieSoundUrl);
-  sound.volume = 0.6;
+  sound.volume = 0.30;
   const playback = sound.play();
   if (playback) playback.catch(() => { void 0; });
 }
 
 export function playJumpSound() {
   const sound = new Audio(jumpSoundUrl);
-  sound.volume = 0.55;
+  sound.volume = 0.30;
   const playback = sound.play();
   if (playback) playback.catch(() => { void 0; });
 }

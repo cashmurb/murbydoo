@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import NavHeader from "../components/NavHeader.jsx";
+import scubaGif from "../assets/scuba.gif";
 
 const ACCENT = "#D96614";
 const MUTED = "#B4B4B4";
@@ -718,7 +719,7 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
             color: ACCENT,
             marginBottom: 4,
           }}>
-            <pre className="goodbye-cat">{CAT_ASCII}</pre>
+            <img className="goodbye-cat" src={scubaGif} alt="scuuuubaaaa" />
           </div>
 
           <div className="goodbye-text" style={{

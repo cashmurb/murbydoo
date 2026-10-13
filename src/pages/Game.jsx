@@ -88,7 +88,7 @@ function Scoreboard({ rows, visitorId }) {
       )}
 
       <div style={{ textAlign: "center", marginTop: 18, fontSize: 11, color: MUTED }}>
-        your best score follows your avatar into the{" "}
+        save your run into the{" "}
         <Link to="/guestbook" style={{ color: ACCENT }}>guestbook</Link>
       </div>
     </div>

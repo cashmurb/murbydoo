@@ -280,7 +280,7 @@ function MobileAvatar() {
       <NavHeader active="avatar" />
       <div style={{ padding: "32px 24px 80px" }}>
         <h1 style={{ fontSize: 28, fontWeight: 400, marginBottom: 8 }}>avatar</h1>
-        <p style={{ fontSize: 13, color: MUTED, marginBottom: 32 }}>Build your avatar, leave a message, then roam the site.</p>
+        <p style={{ fontSize: 13, color: MUTED, marginBottom: 32 }}>Build your avatar, leave a message, then take it for a run.</p>
 
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 32 }}>
           <div style={{ transform: "scale(0.7)", transformOrigin: "top center", height: 222, width: 128 }}>
@@ -342,7 +342,7 @@ function MobileAvatar() {
         {step === "message" && (
           <div>
             <div style={{ fontSize: 12, color: MUTED, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>Leave a message</div>
-            <p style={{ fontSize: 13, color: MUTED, marginBottom: 16 }}>This will float above your avatar as a thought bubble while you roam.</p>
+            <p style={{ fontSize: 13, color: MUTED, marginBottom: 16 }}>This sits on your guestbook card, right under your avatar.</p>
             <textarea value={message} onChange={e => setMessage(e.target.value.slice(0, 80))}
               placeholder="say something..." maxLength={80}
               style={{ width: "100%", padding: "12px 14px", border: "1px solid #E0E0E0", borderRadius: 8, fontSize: 14, fontFamily: "Kode Mono, monospace", resize: "none", height: 100, outline: "none", boxSizing: "border-box" }} />
@@ -354,7 +354,7 @@ function MobileAvatar() {
               </button>
               <button onClick={activate}
                 style={{ flex: 1, padding: "12px 20px", background: "#000", color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontFamily: "Kode Mono, monospace", cursor: "pointer" }}>
-                start roaming
+                save avatar
               </button>
             </div>
           </div>
@@ -365,9 +365,9 @@ function MobileAvatar() {
             <div style={{ fontSize: 18, marginBottom: 12 }}>avatar activated!</div>
             <p style={{ fontSize: 13, color: MUTED, marginBottom: 24 }}>Use ← → arrow keys to walk and spacebar to jump.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <button onClick={() => navigate("/")}
+              <button onClick={() => navigate("/game")}
                 style={{ padding: "12px 20px", background: ACCENT, color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontFamily: "Kode Mono, monospace", cursor: "pointer" }}>
-                go roam →
+                play the game →
               </button>
               <button onClick={() => navigate("/guestbook")}
                 style={{ padding: "12px 20px", background: "none", border: "1px solid #E0E0E0", borderRadius: 8, fontSize: 14, fontFamily: "Kode Mono, monospace", cursor: "pointer" }}>
@@ -537,7 +537,7 @@ export default function Avatar() {
                   cursor: "pointer",
                 }}
               >
-                start roaming →
+                save avatar →
               </button>
             </div>
           )}
@@ -685,9 +685,9 @@ export default function Avatar() {
             Hover or click your avatar to show your message.
           </p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
-            <button onClick={() => navigate("/")}
+            <button onClick={() => navigate("/game")}
               style={{ padding: "12px 32px", background: ACCENT, color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontFamily: "Kode Mono, monospace", cursor: "pointer" }}>
-              go roam →
+              play the game →
             </button>
             <button onClick={() => navigate("/guestbook")}
               style={{ padding: "12px 32px", background: "none", border: "1px solid #E0E0E0", borderRadius: 8, fontSize: 14, fontFamily: "Kode Mono, monospace", cursor: "pointer" }}>

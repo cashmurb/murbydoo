@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import NavHeader from "../components/NavHeader.jsx";
+import PageLoader from "../components/PageLoader.jsx";
+import { getLastPath } from "../lib/navHistory.js";
 
 const ACCENT = "#D96614";
 const MUTED = "#B4B4B4";
@@ -257,6 +259,10 @@ function buildLsOutput() {
         <span style={{ color: DIM }}>{" "}→ </span>
         <span style={{ color: "#555" }}>see who's visited</span>
         <br />
+        <span style={{ color: "#000", fontWeight: 600 }}>game</span>
+        <span style={{ color: DIM }}>{"     "}→ </span>
+        <span style={{ color: "#555" }}>run, jump, chase a high score</span>
+        <br />
         <span style={{ color: "#000", fontWeight: 600 }}>cat</span>
         <span style={{ color: DIM }}>{"      "}→ </span>
         <span style={{ color: "#555" }}>a small surprise</span>
@@ -387,6 +393,18 @@ function processCommand(raw, conv) {
       content: (
         <OutputLine>
           let's make your avatar. <Link to="/avatar" className="term-link term-link-accent">→ start</Link>
+        </OutputLine>
+      ),
+    });
+    return { outputs, nextConv };
+  }
+
+  if (cmd === "game" || cmd === "play" || cmd === "dino") {
+    outputs.push({
+      kind: "output",
+      content: (
+        <OutputLine>
+          space to jump. that's the whole game. <Link to="/game" className="term-link term-link-accent">→ play</Link>
         </OutputLine>
       ),
     });
@@ -753,7 +771,10 @@ function MobileHome() {
 export default function Home() {
   const isMobile = useIsMobile();
 
-  const [phase, setPhase] = useState("idle");
+  // Coming back from the guestbook, the game stands in for the intro screen,
+  // so the visitor is not asked to press enter twice in a row
+  const [loading, setLoading] = useState(() => getLastPath() === "/guestbook");
+  const [phase, setPhase] = useState(() => getLastPath() === "/guestbook" ? "done" : "idle");
   const [eraseIndex, setEraseIndex] = useState(0);
   const [typedCount, setTypedCount] = useState(0);
 
@@ -761,14 +782,6 @@ export default function Home() {
     if (phase !== "idle") return;
     setPhase("erasing");
     setEraseIndex(0);
-  }, [phase]);
-
-  useEffect(() => {
-    const active = phase === "idle" || phase === "erasing";
-    window.dispatchEvent(new CustomEvent("murb-intro-state", { detail: { active } }));
-    return () => {
-      window.dispatchEvent(new CustomEvent("murb-intro-state", { detail: { active: false } }));
-    };
   }, [phase]);
 
   useEffect(() => {
@@ -811,6 +824,9 @@ export default function Home() {
       return () => clearTimeout(t);
     }
   }, [phase, eraseIndex, typedCount]);
+
+  // Home has nothing to fetch, so the game is ready to leave right away
+  if (loading) return <PageLoader ready onDone={() => setLoading(false)} />;
 
   if (isMobile) return <MobileHome />;
 

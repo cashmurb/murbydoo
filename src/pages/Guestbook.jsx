@@ -2,8 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import NavHeader from "../components/NavHeader.jsx";
 import AvatarFigure from "../components/AvatarFigure.jsx";
+import PageLoader from "../components/PageLoader.jsx";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import { supabase } from "../lib/supabase.js";
+import { getVisitorId, fetchScoreMap } from "../lib/scores.js";
 
 const ACCENT = "#D96614";
 const MUTED = "#B4B4B4";
@@ -50,7 +52,7 @@ function Pushpin({ color }) {
   );
 }
 
-function GuestCard({ entry, pinColor, delay, layout, onLayoutChange }) {
+function GuestCard({ entry, pinColor, delay, layout, onLayoutChange, score }) {
   const { avatar_data, message, name, created_at } = entry;
   const date = created_at
     ? new Date(created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })
@@ -194,7 +196,28 @@ function GuestCard({ entry, pinColor, delay, layout, onLayoutChange }) {
         </div>
       )}
 
-      <div style={{ marginTop: message ? 10 : 4, fontSize: 9, color: MUTED, fontFamily: "Kode Mono, monospace", display: "flex", justifyContent: "space-between", pointerEvents: "none" }}>
+      {score > 0 && (
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "4px 7px",
+          background: "#F6F4EE",
+          border: "1px solid #E8E3D8",
+          borderRadius: 5,
+          fontSize: 9,
+          fontFamily: "Kode Mono, monospace",
+          color: "#777",
+          pointerEvents: "none",
+        }}>
+          <span style={{ letterSpacing: 0.5 }}>best run</span>
+          <span style={{ color: ACCENT, fontWeight: 600, letterSpacing: 0.5 }}>
+            {String(score).padStart(5, "0")}
+          </span>
+        </div>
+      )}
+
+      <div style={{ marginTop: message || score > 0 ? 10 : 4, fontSize: 9, color: MUTED, fontFamily: "Kode Mono, monospace", display: "flex", justifyContent: "space-between", pointerEvents: "none" }}>
         {name && <span style={{ fontWeight: 600, color: "#888" }}>{name}</span>}
         <span>{date}</span>
       </div>
@@ -257,6 +280,7 @@ function SubmitPanel({ onSubmit }) {
       avatar_data: avatarData,
       message: message.trim(),
       name: name.trim() || null,
+      visitor_id: getVisitorId(),
     });
     setSaving(false);
     if (!error) { setDone(true); onSubmit(); }
@@ -307,12 +331,24 @@ function SubmitPanel({ onSubmit }) {
 export default function Guestbook() {
   const isMobile = useIsMobile();
   const [entries, setEntries] = useState([]);
+  const [scoreMap, setScoreMap] = useState({});
   const [ready, setReady] = useState(false);
+  const [playing, setPlaying] = useState(true);
   const [layout, setLayout] = useState(() => loadLayout());
 
+  // Entries and scores load together, so a card never pops in without its score
   const load = () => {
-    supabase.from("guestbook").select("*").order("created_at", { ascending: false })
-      .then(({ data }) => { setEntries(data || []); setReady(true); });
+    Promise.all([
+      supabase.from("guestbook").select("*").order("created_at", { ascending: false }),
+      fetchScoreMap(),
+    ]).then(([entryRes, scores]) => {
+      setEntries(entryRes.data || []);
+      setScoreMap(scores);
+      setReady(true);
+    }).catch(() => {
+      // Never leave the visitor stuck on the loader if the fetch fails
+      setReady(true);
+    });
   };
 
   useEffect(() => { load(); }, []);
@@ -334,7 +370,10 @@ export default function Guestbook() {
     saveLayout({});
   };
 
-  if (!ready) return null;
+  // The game sits on top until the data has landed and the visitor says go
+  if (playing) {
+    return <PageLoader ready={ready} onDone={() => setPlaying(false)} />;
+  }
 
   const pins = entries.map((_, i) => PIN_COLORS[i % PIN_COLORS.length]);
 
@@ -367,6 +406,7 @@ export default function Guestbook() {
                   delay={i * 60}
                   layout={layout[entry.id]}
                   onLayoutChange={handleLayoutChange}
+                  score={scoreMap[entry.visitor_id] || 0}
                 />
               ))}
             </div>
@@ -449,6 +489,7 @@ export default function Guestbook() {
                     delay={i * 60}
                     layout={layout[entry.id]}
                     onLayoutChange={handleLayoutChange}
+                    score={scoreMap[entry.visitor_id] || 0}
                   />
                 ))}
               </div>

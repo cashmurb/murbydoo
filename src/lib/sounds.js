@@ -1,5 +1,6 @@
 import typingSoundUrl from "../assets/click_003.ogg";
 import dieSoundUrl from "../assets/error_004.ogg";
+import jumpSoundUrl from "../assets/maximize_009.ogg";
 
 let audioContext;
 let musicTimer;
@@ -101,6 +102,13 @@ export function stopGameMusic() {
 export function playDieSound() {
   const sound = new Audio(dieSoundUrl);
   sound.volume = 0.6;
+  const playback = sound.play();
+  if (playback) playback.catch(() => { void 0; });
+}
+
+export function playJumpSound() {
+  const sound = new Audio(jumpSoundUrl);
+  sound.volume = 0.55;
   const playback = sound.play();
   if (playback) playback.catch(() => { void 0; });
 }

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import AvatarFigure from "./AvatarFigure.jsx";
 import { getLocalBest, submitScore } from "../lib/scores.js";
-import { playDieSound, startGameMusic, stopGameMusic } from "../lib/sounds.js";
+import { playDieSound, playJumpSound, startGameMusic, stopGameMusic } from "../lib/sounds.js";
 
 const GAME_H = 220;
 const GROUND_Y = 170;
@@ -214,6 +214,7 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
     if (s.grounded) {
       s.vy = JUMP_V;
       s.grounded = false;
+      playJumpSound();
     }
   }, []);
 

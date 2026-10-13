@@ -108,16 +108,24 @@ export default function Game() {
   useEffect(() => { loadScores(); }, [loadScores]);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "Kode Mono, monospace" }}>
+    <div style={{
+      position: "relative",
+      width: 1440,
+      maxWidth: "100%",
+      margin: "0 auto",
+      minHeight: "100vh",
+      background: "#fff",
+      fontFamily: "Kode Mono, monospace",
+    }}>
       <NavHeader />
 
       <div style={{
         maxWidth: 900,
         margin: "0 auto",
-        padding: isMobile ? "120px 16px 72px" : "160px 40px 100px",
+        padding: isMobile ? "120px 16px 72px" : "170px 40px 100px",
       }}>
         <div style={{ marginBottom: 10 }}>
-          <h1 style={{ fontSize: isMobile ? 28 : 40, fontWeight: 400, margin: 0, marginBottom: 8 }}>she a runner, she a track star</h1>
+          <h1 style={{ fontSize: isMobile ? 28 : 40, fontWeight: 400, margin: 0, marginBottom: 8 }}>game</h1>
           <p style={{ fontSize: 13, color: MUTED, margin: 0 }}>
             {isMobile ? "tap to jump." : "space to jump."} your best run goes on the board.
           </p>

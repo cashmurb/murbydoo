@@ -265,8 +265,6 @@ function MobileAvatar() {
 
   const activate = () => {
     const data = { selection, message, name: name.trim() };
-    // Called before the new avatar overwrites the old one, so it can see
-    // whether the name changed
     saveCharacterName(name.trim());
     try { localStorage.setItem("murb_avatar", JSON.stringify(data)); } catch (e) { void e; }
     window.dispatchEvent(new StorageEvent("storage", { key: "murb_avatar", newValue: JSON.stringify(data) }));
@@ -457,8 +455,6 @@ export default function Avatar() {
 
   const activate = () => {
     const data = { selection, message, name: name.trim() };
-    // Called before the new avatar overwrites the old one, so it can see
-    // whether the name changed
     saveCharacterName(name.trim());
     try { localStorage.setItem("murb_avatar", JSON.stringify(data)); } catch (e) { void e; }
     window.dispatchEvent(new StorageEvent("storage", { key: "murb_avatar", newValue: JSON.stringify(data) }));

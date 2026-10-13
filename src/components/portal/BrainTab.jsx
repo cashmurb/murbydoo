@@ -3,8 +3,6 @@ import { supabase } from '../../lib/supabase.js';
 
 const ACCENT = '#D96614';
 
-// Field on brain_nodes that stores the category value.
-// Flip to 'group_id' if the live column wasn't renamed.
 const CATEGORY_FIELD = 'category';
 
 const CATEGORIES = [
@@ -40,7 +38,6 @@ const S = {
   sectionTitle: { fontSize: 16, fontWeight: 600, marginBottom: 16, marginTop: 32, paddingBottom: 8, borderBottom: '1px solid #E0E0E0' },
 };
 
-// Node card
 function NodeCard({ node, allNodes, links, onSave, onDelete }) {
   const [form, setForm] = useState({
     label: node.label,
@@ -165,7 +162,6 @@ function NodeCard({ node, allNodes, links, onSave, onDelete }) {
   );
 }
 
-// Add node form
 function AddNodeForm({ onAdd, onCancel }) {
   const [form, setForm] = useState({ label: '', [CATEGORY_FIELD]: 'notes', description: '', url: '' });
   const [status, setStatus] = useState(null);
@@ -216,7 +212,6 @@ function AddNodeForm({ onAdd, onCancel }) {
   );
 }
 
-// Brain portal tab
 export default function BrainTab() {
   const [nodes, setNodes] = useState([]);
   const [links, setLinks] = useState([]);

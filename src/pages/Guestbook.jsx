@@ -39,7 +39,7 @@ function loadLayout() {
 }
 
 function saveLayout(layout) {
-  try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout)); } catch { /* ignore */ }
+  try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout)); } catch { void 0; }
 }
 
 function Pushpin({ color }) {
@@ -81,7 +81,7 @@ function GuestCard({ entry, pinColor, delay, layout, onLayoutChange, score }) {
     };
 
     setDragging(true);
-    try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* ignore */ }
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch { void 0; }
   };
 
   const onPointerMove = (e) => {
@@ -99,7 +99,7 @@ function GuestCard({ entry, pinColor, delay, layout, onLayoutChange, score }) {
     if (dragRef.current?.mode === "drag") {
       dragRef.current = null;
       setDragging(false);
-      try { e.currentTarget.releasePointerCapture(e.pointerId); } catch { /* ignore */ }
+      try { e.currentTarget.releasePointerCapture(e.pointerId); } catch { void 0; }
     }
   };
 
@@ -115,7 +115,7 @@ function GuestCard({ entry, pinColor, delay, layout, onLayoutChange, score }) {
     };
 
     setResizing(true);
-    try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* ignore */ }
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch { void 0; }
   };
 
   const onResizePointerMove = (e) => {
@@ -130,7 +130,7 @@ function GuestCard({ entry, pinColor, delay, layout, onLayoutChange, score }) {
     if (dragRef.current?.mode === "resize") {
       dragRef.current = null;
       setResizing(false);
-      try { e.currentTarget.releasePointerCapture(e.pointerId); } catch { /* ignore */ }
+      try { e.currentTarget.releasePointerCapture(e.pointerId); } catch { void 0; }
     }
   };
 
@@ -268,7 +268,7 @@ function SubmitPanel({ onSubmit }) {
         }
         const visitorName = readName();
         if (visitorName) setName(visitorName);
-      } catch { /* ignore */ }
+      } catch { void 0; }
     });
   }, []);
 
@@ -334,7 +334,6 @@ export default function Guestbook() {
   const [ready, setReady] = useState(false);
   const [layout, setLayout] = useState(() => loadLayout());
 
-  // Entries and scores load together, so a card never pops in without its score
   const load = () => {
     Promise.all([
       supabase.from("guestbook").select("*").order("created_at", { ascending: false }),
@@ -344,7 +343,6 @@ export default function Guestbook() {
       setScoreMap(scores);
       setReady(true);
     }).catch(() => {
-      // Never leave the visitor stuck on the loader if the fetch fails
       setReady(true);
     });
   };

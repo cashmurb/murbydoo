@@ -2,18 +2,14 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import AvatarFigure from "./AvatarFigure.jsx";
 import { getLocalBest, submitScore } from "../lib/scores.js";
 
-// World sizes in css pixels. The canvas is always this tall and as wide as
-// whatever box it is dropped into.
 const GAME_H = 220;
 const GROUND_Y = 170;
 
-// The avatar art is 183 by 317, so this keeps its proportions
 const RUNNER_H = 80;
 const RUNNER_W = Math.round(183 * (RUNNER_H / 317));
 const RUNNER_X = 60;
 const AVATAR_SCALE = RUNNER_H / 317;
 
-// Movement tuning. One unit of time is one frame at 60fps.
 const GRAVITY = 0.65;
 const JUMP_V = 13.5;
 const START_SPEED = 6;
@@ -27,7 +23,6 @@ const CLOUD = "#DEDEDE";
 const DIM = "#8A8A8A";
 const ACCENT = "#D96614";
 
-// Obstacles. Birds sit at one of three heights above the ground.
 const CACTI = [
   { kind: "cactus", w: 26, h: 46 },
   { kind: "cactus", w: 32, h: 64 },
@@ -38,17 +33,48 @@ const BIRD_HEIGHTS = [4, 48, 84];
 
 const GAME_CSS = `
 @keyframes dinoRun {
-  0%   { transform: translateY(0) rotate(-4deg); }
-  25%  { transform: translateY(-3px) rotate(0deg); }
-  50%  { transform: translateY(0) rotate(4deg); }
-  75%  { transform: translateY(-3px) rotate(0deg); }
-  100% { transform: translateY(0) rotate(-4deg); }
+  0%,  49%  { transform: scale(1, 1); }
+  50%, 100% { transform: scale(1.02, 0.96); }
+}
+@keyframes dinoIdle {
+  0%, 100% { transform: scale(1, 1); }
+  50%      { transform: scale(1, 0.99); }
 }
 .dino-runner-art {
   transform-origin: bottom center;
 }
 .dino-running .dino-runner-art {
-  animation: dinoRun 0.4s ease-in-out infinite;
+  animation: dinoRun 0.34s linear infinite;
+}
+.dino-idle .dino-runner-art {
+  animation: dinoIdle 2.4s ease-in-out infinite;
+}
+.dino-jumping .dino-runner-art {
+  transform: scale(0.99, 1.03);
+}
+
+@keyframes dinoDie {
+  0%   { transform: scale(1, 1);      opacity: 1; }
+  20%  { transform: scale(1.18, 0.78); opacity: 1; }
+  100% { transform: scale(1.32, 0.18); opacity: 0; }
+}
+@keyframes ghostRise {
+  0%   { opacity: 0; transform: translateY(8px)   scale(0.55); }
+  18%  { opacity: 1; transform: translateY(-6px)  scale(1); }
+  100% { opacity: 0; transform: translateY(-98px) scale(1.05); }
+}
+@keyframes ghostSway {
+  0%, 100% { transform: translateX(-5px) rotate(-5deg); }
+  50%      { transform: translateX(5px)  rotate(5deg); }
+}
+.dino-dead .dino-runner-art {
+  animation: dinoDie 0.5s ease-in both;
+}
+.dino-ghost {
+  animation: ghostRise 1.9s ease-out both;
+}
+.dino-ghost-art {
+  animation: ghostSway 1.1s ease-in-out infinite;
 }
 `;
 
@@ -56,7 +82,22 @@ function pad(n) {
   return String(Math.floor(n)).padStart(5, "0");
 }
 
-// A plain figure for visitors who have not built an avatar yet
+function Ghost() {
+  return (
+    <svg width="32" height="38" viewBox="0 0 32 38" fill="none">
+      <path
+        d="M16 2 C8 2 2.5 7.6 2.5 15.5 L2.5 34 L7 29.5 L11.5 34 L16 29.5 L20.5 34 L25 29.5 L29.5 34 L29.5 15.5 C29.5 7.6 24 2 16 2 Z"
+        fill="#fff"
+        stroke={INK}
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <circle cx="11.5" cy="15" r="2.1" fill={INK} />
+      <circle cx="20.5" cy="15" r="2.1" fill={INK} />
+    </svg>
+  );
+}
+
 function DefaultRunner() {
   return (
     <svg width={RUNNER_W} height={RUNNER_H} viewBox="0 0 46 80" fill="none">
@@ -77,12 +118,10 @@ function drawCactus(ctx, x, top, w, h) {
   const armH = Math.round(h * 0.3);
   const barH = Math.max(4, Math.round(armW * 0.9));
 
-  // Left arm rises out of a short bar that joins it to the trunk
   const leftTop = top + Math.round(h * 0.3);
   ctx.fillRect(x, leftTop, armW, armH);
   ctx.fillRect(x, leftTop + armH - barH, trunkX - x, barH);
 
-  // Right arm sits a little higher so the two are not level
   const rightX = x + w - armW;
   const rightTop = top + Math.round(h * 0.18);
   ctx.fillRect(rightX, rightTop, armW, armH);
@@ -99,7 +138,6 @@ function drawBird(ctx, x, top, w, h, wingUp) {
   else ctx.fillRect(x + 15, bodyY + bodyH, 18, wingH);
 }
 
-// Stepped shape so it reads as a cloud rather than a grey block
 function drawCloud(ctx, x, y) {
   ctx.fillStyle = CLOUD;
   ctx.fillRect(x + 14, y, 18, 3);
@@ -114,7 +152,6 @@ function drawObstacle(ctx, ob) {
   if (ob.kind === "bird") {
     drawBird(ctx, ob.x, top, ob.w, ob.h, ob.wingUp);
   } else if (ob.kind === "cluster") {
-    // Two cacti side by side, the second a little shorter
     drawCactus(ctx, ob.x, top, 22, ob.h);
     drawCactus(ctx, ob.x + 30, top + 9, 22, ob.h - 9);
   } else {
@@ -150,10 +187,10 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
 
   const [status, setStatus] = useState("ready");
   const [finalScore, setFinalScore] = useState(0);
+  const [deathY, setDeathY] = useState(0);
 
   useEffect(() => { savedRef.current = onScoreSaved; }, [onScoreSaved]);
 
-  // Jump, or start a run, or restart after a crash
   const press = useCallback(() => {
     const s = stateRef.current;
     if (!s) return;
@@ -200,7 +237,6 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
     let last = performance.now();
 
     const spawnObstacle = (s) => {
-      // Birds only turn up once the run has picked up some speed
       const canFly = s.speed > START_SPEED + 1.6;
       const useBird = canFly && Math.random() < 0.28;
       const base = useBird ? BIRD : CACTI[Math.floor(Math.random() * CACTI.length)];
@@ -211,13 +247,11 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
         wingUp: true,
         flap: 0,
       });
-      // Bigger gaps at low speed, tighter ones later, never unfair
       const gap = 320 + Math.random() * 280 + (MAX_SPEED - s.speed) * 26;
       s.nextObstacle = gap;
     };
 
     const hits = (s, ob) => {
-      // The drawn box is wider than the figure, so pull the edges in a little
       const rx = RUNNER_X + 11;
       const rw = RUNNER_W - 22;
       const rTop = GROUND_Y - RUNNER_H - s.y + 6;
@@ -238,7 +272,6 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
       s.distance += s.speed * dt;
       s.score = Math.floor(s.distance / SCORE_DIVISOR);
 
-      // Runner physics. y counts upward from the ground line.
       if (!s.grounded) {
         s.vy -= GRAVITY * dt;
         s.y += s.vy * dt;
@@ -284,7 +317,6 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
 
       s.clouds.forEach(c => drawCloud(ctx, c.x, c.y));
 
-      // Ground line, with specks underneath that scroll with the run
       ctx.fillStyle = INK;
       ctx.fillRect(0, GROUND_Y, width, 1);
       ctx.fillStyle = FAINT;
@@ -296,7 +328,6 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
 
       s.obstacles.forEach(ob => drawObstacle(ctx, ob));
 
-      // Score block in the top right, current run next to the best ever
       ctx.font = "600 14px 'Kode Mono', monospace";
       ctx.textAlign = "right";
       ctx.textBaseline = "top";
@@ -310,7 +341,6 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
 
     const tick = (now) => {
       const s = stateRef.current;
-      // Cap the step so a backgrounded tab does not teleport the runner
       const dt = Math.min(2.5, (now - last) / (1000 / 60));
       last = now;
 
@@ -320,14 +350,17 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
 
       if (runnerRef.current) {
         runnerRef.current.style.transform = `translateY(${-s.y}px)`;
-        // The legs only move while the runner is on the ground
-        const shouldRun = s.status === "running" && s.grounded;
-        runnerRef.current.className = shouldRun ? "dino-running" : "";
+        let pose = "";
+        if (s.status === "ready") pose = "dino-idle";
+        else if (s.status === "running") pose = s.grounded ? "dino-running" : "dino-jumping";
+        else if (s.status === "over") pose = "dino-dead";
+        runnerRef.current.className = pose;
       }
 
       if (wasRunning && s.status === "over" && !s.reported) {
         s.reported = true;
         setFinalScore(s.score);
+        setDeathY(s.y);
         setStatus("over");
         submitScore(s.score).then(() => {
           if (savedRef.current) savedRef.current(s.score);
@@ -345,10 +378,10 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
     };
   }, []);
 
-  // Space on desktop, a tap anywhere on the game on mobile
   useEffect(() => {
     const onKey = (e) => {
       if (e.code !== "Space" && e.key !== " ") return;
+      if (e.repeat) return;
       const t = e.target;
       const tag = t?.tagName?.toLowerCase();
       if (tag === "input" || tag === "textarea" || t?.isContentEditable) return;
@@ -402,6 +435,28 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
           )}
         </div>
       </div>
+
+      {status === "over" && (
+        <div
+          className="dino-ghost"
+          style={{
+            position: "absolute",
+            left: RUNNER_X,
+            top: GROUND_Y - RUNNER_H - deathY,
+            width: RUNNER_W,
+            height: RUNNER_H,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            pointerEvents: "none",
+            zIndex: 3,
+          }}
+        >
+          <div className="dino-ghost-art">
+            <Ghost />
+          </div>
+        </div>
+      )}
 
       {status === "ready" && (
         <div style={{

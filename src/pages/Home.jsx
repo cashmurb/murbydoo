@@ -294,7 +294,7 @@ function processCommand(raw, conv) {
       return { outputs, nextConv: conv };
     }
     nextConv = { awaitingName: false, name };
-    try { localStorage.setItem("murb_visitor_name", name); } catch { /* ignore */ }
+    try { localStorage.setItem("murb_visitor_name", name); } catch { void 0; }
 
     outputs.push({
       kind: "output",
@@ -438,7 +438,7 @@ function processCommand(raw, conv) {
       cmd === "forget" || cmd === "forget me" || cmd === "clear avatar") {
     let hasName = !!conv.name;
     let hasAvatar = false;
-    try { hasAvatar = !!localStorage.getItem("murb_avatar"); } catch { /* ignore */ }
+    try { hasAvatar = !!localStorage.getItem("murb_avatar"); } catch { void 0; }
 
     if (!hasName && !hasAvatar) {
       outputs.push({
@@ -548,17 +548,17 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
     setHistory(h => [...h, { kind: "input", text: raw }, ...outputs]);
 
     if (resetName) {
-      try { localStorage.removeItem("murb_visitor_name"); } catch { /* ignore */ }
+      try { localStorage.removeItem("murb_visitor_name"); } catch { void 0; }
     }
 
     if (resetAvatar) {
-      try { localStorage.removeItem("murb_avatar"); } catch { /* ignore */ }
+      try { localStorage.removeItem("murb_avatar"); } catch { void 0; }
       window.dispatchEvent(new CustomEvent("murb-avatar-reset"));
     }
 
     if (quit) {
       setTimeout(() => {
-        try { window.close(); } catch { /* ignore */ }
+        try { window.close(); } catch { void 0; }
         setTimeout(() => {
           if (!window.closed) setClosed(true);
         }, 300);

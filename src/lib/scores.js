@@ -25,7 +25,7 @@ export function getLocalBest() {
 }
 
 function setLocalBest(score) {
-  try { localStorage.setItem(BEST_KEY, String(score)); } catch { /* ignore */ }
+  try { localStorage.setItem(BEST_KEY, String(score)); } catch { void 0; }
 }
 
 export function readAvatar() {
@@ -59,7 +59,7 @@ export function saveCharacterName(name) {
 
     localStorage.setItem(ID_KEY, crypto.randomUUID());
     localStorage.removeItem(BEST_KEY);
-  } catch { /* ignore */ }
+  } catch { void 0; }
 }
 export async function submitScore(score) {
   const visitorId = getVisitorId();

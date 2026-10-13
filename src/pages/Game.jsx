@@ -125,7 +125,7 @@ export default function Game() {
         padding: isMobile ? "120px 16px 72px" : "170px 40px 100px",
       }}>
         <div style={{ marginBottom: 10 }}>
-          <h1 style={{ fontSize: isMobile ? 28 : 40, fontWeight: 400, margin: 0, marginBottom: 8 }}>game</h1>
+          <h1 style={{ fontSize: isMobile ? 28 : 40, fontWeight: 400, margin: 0, marginBottom: 8 }}>she a runner, she a track star</h1>
           <p style={{ fontSize: 13, color: MUTED, margin: 0 }}>
             {isMobile ? "tap to jump." : "space to jump."} your best run goes on the board.
           </p>

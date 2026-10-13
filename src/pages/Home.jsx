@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import NavHeader from "../components/NavHeader.jsx";
@@ -541,6 +541,13 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
     el.scrollTop = el.scrollHeight;
   }, [history]);
 
+  useLayoutEffect(() => {
+    const inputElement = inputRef.current;
+    if (!inputElement || document.activeElement !== inputElement) return;
+    const cursorPosition = inputElement.value.length;
+    inputElement.setSelectionRange(cursorPosition, cursorPosition);
+  }, [input]);
+
   const handleSubmit = () => {
     const raw = input;
     setInput("");
@@ -687,8 +694,18 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
           <input
             ref={inputRef}
             data-terminal-input
+            type="text"
+            dir="ltr"
             value={input}
-            onChange={e => setInput(e.target.value)}
+            onChange={e => {
+              setInput(e.target.value);
+              const cursorPosition = e.target.value.length;
+              requestAnimationFrame(() => {
+                if (document.activeElement === inputRef.current) {
+                  inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
+                }
+              });
+            }}
             onKeyDown={e => {
               playTypingSound();
               handleKeyDown(e);

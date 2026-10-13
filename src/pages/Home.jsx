@@ -854,6 +854,7 @@ export default function Home() {
 
       {showIntro && (
         <div
+          data-silent-sounds
           onClick={startErase}
           style={{
             position: "fixed",

@@ -19,10 +19,12 @@ import { playClickSound, playTypingSound } from "./lib/sounds.js";
 function App() {
   useEffect(() => {
     const onClick = event => {
+      if (event.target.closest("[data-silent-sounds]")) return;
       if (event.target.closest("button, a")) playClickSound();
     };
 
     const onKeyDown = event => {
+      if (event.target.closest("[data-silent-sounds]")) return;
       if (event.target.closest("[data-terminal-input]")) return;
       const isTypingKey = event.key.length === 1 || event.key === "Enter" || event.key === "Backspace";
       if (!isTypingKey || event.ctrlKey || event.metaKey || event.altKey) return;

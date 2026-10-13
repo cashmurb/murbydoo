@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import AvatarFigure from "./AvatarFigure.jsx";
 import { getLocalBest, submitScore } from "../lib/scores.js";
+import { playDieSound, startGameMusic, stopGameMusic } from "../lib/sounds.js";
 
 const GAME_H = 220;
 const GROUND_Y = 170;
@@ -200,12 +201,14 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
       next.status = "running";
       stateRef.current = next;
       setStatus("running");
+      startGameMusic();
       return;
     }
 
     if (s.status === "ready") {
       s.status = "running";
       setStatus("running");
+      startGameMusic();
     }
 
     if (s.grounded) {
@@ -359,6 +362,8 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
 
       if (wasRunning && s.status === "over" && !s.reported) {
         s.reported = true;
+        stopGameMusic();
+        playDieSound();
         setFinalScore(s.score);
         setDeathY(s.y);
         setStatus("over");
@@ -375,6 +380,7 @@ export default function DinoGame({ avatarData, onScoreSaved }) {
     return () => {
       window.removeEventListener("resize", resize);
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
+      stopGameMusic();
     };
   }, []);
 

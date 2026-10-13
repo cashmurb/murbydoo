@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
@@ -13,8 +14,29 @@ import NotesPage from "./pages/NotesPage.jsx";
 import Portal from "./pages/Portal.jsx";
 import Guestbook from "./pages/Guestbook.jsx";
 import Game from "./pages/Game.jsx";
+import { playClickSound, playTypingSound } from "./lib/sounds.js";
 
 function App() {
+  useEffect(() => {
+    const onClick = event => {
+      if (event.target.closest("button, a")) playClickSound();
+    };
+
+    const onKeyDown = event => {
+      if (event.target.closest("[data-terminal-input]")) return;
+      const isTypingKey = event.key.length === 1 || event.key === "Enter" || event.key === "Backspace";
+      if (!isTypingKey || event.ctrlKey || event.metaKey || event.altKey) return;
+      playTypingSound();
+    };
+
+    document.addEventListener("click", onClick);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("click", onClick);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/home" replace />} />

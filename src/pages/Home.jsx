@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import NavHeader from "../components/NavHeader.jsx";
 import scubaGif from "../assets/scuba.gif";
+import { playTypingSound } from "../lib/sounds.js";
 
 const ACCENT = "#D96614";
 const MUTED = "#B4B4B4";
@@ -685,9 +686,13 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
 
           <input
             ref={inputRef}
+            data-terminal-input
             value={input}
             onChange={e => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onKeyDown={e => {
+              playTypingSound();
+              handleKeyDown(e);
+            }}
             autoFocus={!compact}
             spellCheck={false}
             autoComplete="off"

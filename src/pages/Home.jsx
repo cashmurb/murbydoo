@@ -131,7 +131,7 @@ const TERM_CSS = `
 .goodbye-cat {
   animation: catWave 1.6s ease-in-out infinite;
   display: block;
-  width: min(360px, 80vw);
+  width: min(430px, 88vw);
   height: auto;
   max-height: 42vh;
   object-fit: contain;
@@ -714,7 +714,7 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: 28,
+          gap: 12,
           fontFamily: "Kode Mono, monospace",
           color: "#4A4A4A",
           animation: "fadeIn 0.6s ease-out",

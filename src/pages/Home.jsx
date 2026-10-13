@@ -259,7 +259,7 @@ function buildLsOutput() {
         <br />
         <span style={{ color: "#000", fontWeight: 600 }}>game</span>
         <span style={{ color: DIM }}>{"     "}→ </span>
-        <span style={{ color: "#555" }}>run, jump, chase a high score</span>
+        <span style={{ color: "#555" }}>anti-brainrot game</span>
         <br />
         <span style={{ color: "#000", fontWeight: 600 }}>cat</span>
         <span style={{ color: DIM }}>{"      "}→ </span>
@@ -402,7 +402,7 @@ function processCommand(raw, conv) {
       kind: "output",
       content: (
         <OutputLine>
-          space to jump. that's the whole game. <Link to="/game" className="term-link term-link-accent">→ play</Link>
+          want to run away from all your problems? <Link to="/game" className="term-link term-link-accent">→ let's go</Link>
         </OutputLine>
       ),
     });

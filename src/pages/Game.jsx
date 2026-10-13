@@ -88,7 +88,7 @@ function Scoreboard({ rows, visitorId }) {
       )}
 
       <div style={{ textAlign: "center", marginTop: 18, fontSize: 11, color: MUTED }}>
-        save your run into the{" "}
+        save your best run into the{" "}
         <Link to="/guestbook" style={{ color: ACCENT }}>guestbook</Link>
       </div>
     </div>
@@ -152,7 +152,7 @@ export default function Game() {
             borderRadius: 8,
             fontSize: 13,
           }}>
-            you are running as a stick figure.{" "}
+            you are running as a stick man.{" "}
             <Link to="/avatar" style={{ color: ACCENT }}>make your avatar →</Link>
           </div>
         )}

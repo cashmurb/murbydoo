@@ -734,10 +734,10 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
             gap: 14,
           }}>
             <div style={{ fontSize: 14, letterSpacing: 2, textTransform: "uppercase", color: "#8A8A8A" }}>
-              see you soon, {farewellName}
+              farewell, {farewellName}! i'll miss you 
             </div>
             <div style={{ fontSize: 12, color: "#4A4A4A", letterSpacing: 1 }}>
-              you can close this tab now
+              you may close this tab now
             </div>
             <div style={{
               marginTop: 8,

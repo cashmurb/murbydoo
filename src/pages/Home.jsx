@@ -130,18 +130,23 @@ const TERM_CSS = `
 }
 .goodbye-cat {
   animation: catWave 1.6s ease-in-out infinite;
-  font-family: "Courier New", Courier, "Lucida Console", monospace;
-  color: ${ACCENT};
-  white-space: pre;
-  text-align: left;
-  line-height: 1.1;
-  letter-spacing: 0;
+  display: block;
+  width: min(360px, 80vw);
+  height: auto;
+  max-height: 42vh;
+  object-fit: contain;
+  margin: 0 auto;
+  transform-origin: 50% 90%;
+  user-select: none;
+  pointer-events: none;
+}
+.goodbye-image {
+  order: 1;
   margin: 0;
   display: block;
-  user-select: none;
-  transform-origin: 50% 90%;
 }
 .goodbye-text {
+  order: 2;
   animation: goodbyeFadeIn 0.8s ease-out 0.4s both;
 }
 .term-hint {
@@ -714,7 +719,7 @@ function InteractiveTerminal({ showMurbText, visibleTyped, showCursorOnMurb, com
           color: "#4A4A4A",
           animation: "fadeIn 0.6s ease-out",
         }}>
-          <div style={{
+          <div className="goodbye-image" style={{
             fontSize: 26,
             color: ACCENT,
             marginBottom: 4,

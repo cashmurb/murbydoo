@@ -789,15 +789,21 @@ function MobileHome() {
   );
 }
 
-function HomeFooter({ align = "center" }) {
+function HomeFooter() {
   return (
     <footer style={{
-      padding: "24px",
-      textAlign: align,
+      position: "fixed",
+      left: "50%",
+      bottom: 16,
+      transform: "translateX(-50%)",
+      padding: "8px 16px",
+      textAlign: "center",
       fontSize: 11,
       color: "#888",
       fontFamily: "Kode Mono, monospace",
       lineHeight: 1.7,
+      whiteSpace: "nowrap",
+      zIndex: 20,
     }}>
       <div>built by Cashmere Alin</div>
       <div>All rights reserved. ©</div>

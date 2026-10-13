@@ -775,7 +775,7 @@ function MobileHome() {
       <style>{TERM_CSS}</style>
       <NavHeader />
       <div style={{ padding: "24px 16px 64px" }}>
-        <TerminalFrame title="murb — zsh">
+        <TerminalFrame title="murbydoo — zsh">
           <InteractiveTerminal
             compact
             showMurbText
@@ -784,7 +784,24 @@ function MobileHome() {
           />
         </TerminalFrame>
       </div>
+      <HomeFooter align="left" />
     </div>
+  );
+}
+
+function HomeFooter({ align = "center" }) {
+  return (
+    <footer style={{
+      padding: "24px",
+      textAlign: align,
+      fontSize: 11,
+      color: "#888",
+      fontFamily: "Kode Mono, monospace",
+      lineHeight: 1.7,
+    }}>
+      <div>built by Cashmere Alin</div>
+      <div>All rights reserved. ©</div>
+    </footer>
   );
 }
 
@@ -912,7 +929,7 @@ export default function Home() {
               margin: "0 auto",
               padding: "140px 40px 80px",
             }}>
-              <TerminalFrame title="cashmere@blanche — ~ — zsh">
+              <TerminalFrame title="murbydoo — ~ — zsh">
                 <InteractiveTerminal
                   showMurbText
                   visibleTyped={MURB_FINAL}
@@ -922,6 +939,7 @@ export default function Home() {
             </div>
           )}
         </div>
+        <HomeFooter />
       </div>
     </>
   );

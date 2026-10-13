@@ -473,7 +473,7 @@ function processCommand(raw, conv) {
     };
   }
 
-  if (cmd === "bye" || cmd === "goodbye" || cmd === "see ya" || cmd === "cya" ||
+  if (cmd === "bye" || cmd === "goodbye" || cmd === "see ya" || cmd === "cya" || 
       cmd === "q" || cmd === "quit" || cmd === "exit") {
     const farewell = conv.name
       ? `thanks for stopping by, ${conv.name}!`
